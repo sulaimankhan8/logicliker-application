@@ -55,20 +55,25 @@ class AppController {
   loadState() {
     const saved = localStorage.getItem('logiclike_demo_player');
     if (saved) {
-      try { return JSON.parse(saved); } catch(e) {}
+      try { 
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') {
+          return {
+            stars: parsed.stars ?? 0,
+            streak: parsed.streak ?? 1,
+            rankLevel: parsed.rankLevel ?? 1,
+            claimedStreakToday: parsed.claimedStreakToday ?? false,
+            completedStages: parsed.completedStages || {}
+          };
+        }
+      } catch(e) {}
     }
     return {
-      stars: 129,
-      streak: 5,
-      rankLevel: 7,
+      stars: 0,
+      streak: 1,
+      rankLevel: 1,
       claimedStreakToday: false,
-      completedStages: {
-        "logic-odd-one-out": { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3, 10: 3, 11: 3, 12: 3, 13: 3, 14: 3, 15: 3 },
-        "math-balance-scales": { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3, 10: 3, 11: 3, 12: 3, 13: 3, 14: 3, 15: 3 },
-        "math-rebus-keypad": { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3, 10: 3, 11: 3, 12: 3, 13: 3, 14: 3, 15: 3 },
-        "spatial-3d-cubes": { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3, 10: 3, 11: 3, 12: 3, 13: 3, 14: 3, 15: 3 },
-        "sudoku-matrix-grid": { 1: 3, 2: 3, 3: 3 }
-      }
+      completedStages: {}
     };
   }
 
