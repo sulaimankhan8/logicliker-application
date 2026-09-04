@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogicLike - Interactive Educational Brain Games</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top App Navigation Header -->
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="brand-logo">💡</div>
+      <div class="brand-title">Logic<span>Like</span></div>
+    </div>
+    
+    <div class="stats-bar">
+      <div class="stat-pill clickable" id="pill-stars" title="Stars Bank">
+        <span class="stat-icon">⭐</span>
+        <span id="stat-stars">0 ★</span>
+      </div>
+      <div class="stat-pill clickable" id="pill-streak" title="Daily Streak">
+        <span class="stat-icon">🔥</span>
+        <span id="stat-streak">0 Days</span>
+      </div>
+      <div class="stat-pill clickable" id="pill-rank" title="Player Rank">
+        <span class="stat-icon">🏆</span>
+        <span id="stat-rank">Lvl 1</span>
+      </div>
+      <button class="btn-shell-action" id="btn-open-badges" title="View Badges">🏆 Badges</button>
+      <button class="btn-shell-action" id="btn-open-analytics" title="Parent Analytics">📊 Analytics</button>
+      <button class="btn-shell-action btn-certificate" id="btn-open-certificate" title="Logic Diploma">📜 Certificate</button>
+      <button class="btn-icon" id="btn-audio-toggle" title="Toggle Sound">🔊</button>
+    </div>
+  </header>
+
+  <!-- Category Selection Navigation Bar -->
+  <nav class="category-nav" id="category-nav">
+    <!-- Category tabs rendered dynamically by JS -->
+  </nav>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    <!-- Course Banner -->
+    <section class="course-banner">
+      <div class="banner-info">
+        <h2 id="banner-title">Logic & Reasoning</h2>
+        <p id="banner-desc">Develop critical thinking, pattern recognition, and odd-one-out categorization skills.</p>
+      </div>
+      <div class="banner-badge">Ages 6–10</div>
+    </section>
+
+    <!-- Linear Progression Roadmap -->
+    <section class="roadmap-container">
+      <div class="roadmap-path" id="roadmap-list">
+        <!-- Stage Nodes rendered dynamically by JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive Game Modal Canvas -->
+  <div class="modal-overlay" id="game-modal">
+    <div class="game-card-modal">
+      <div class="game-header">
+        <div class="game-title-group">
+          <h3 id="game-modal-title">Odd One Out</h3>
+          <p id="game-modal-subtitle">Stage 1 of 5 • Basic Shape & Color Match</p>
+        </div>
+        <div class="game-actions">
+          <button class="btn-hint" id="btn-hint">💡 Hint</button>
+          <button class="btn-icon" id="btn-close-modal">✕</button>
+        </div>
+      </div>
+      <div class="game-progress-bar">
+        <div class="game-progress-fill" id="game-progress-fill"></div>
+      </div>
+      <div class="game-arena">
+        <div class="question-prompt" id="question-prompt">
+          <span>Which item does NOT belong with the others?</span>
+          <button class="btn-audio-speak" id="btn-audio-speak">🔊</button>
+        </div>
+        <div id="game-arena">
+          <!-- Game specific interaction component rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Victory Celebration Modal -->
+  <div class="modal-overlay" id="victory-modal">
+    <div class="game-card-modal feedback-modal">
+      <div class="feedback-icon">🎉</div>
+      <h2 style="font-weight:900; color:var(--primary-indigo);">Stage Completed!</h2>
+      <p style="font-size:18px; font-weight:700; color:var(--text-muted);">Outstanding logic skills!</p>
+      <div class="stars-earned" id="victory-stars">
+        <span class="star-icon filled">★</span>
+        <span class="star-icon filled">★</span>
+        <span class="star-icon filled">★</span>
+      </div>
+      <button class="btn-continue" id="btn-victory-continue">Continue Road</button>
+    </div>
+  </div>
+
+  <!-- Learn from Mistakes Review Modal -->
+  <div class="modal-overlay" id="review-modal">
+    <div class="game-card-modal feedback-modal" style="border-top: 6px solid var(--solar-orange);">
+      <div class="feedback-icon">💡</div>
+      <h2 style="font-weight:900; color:var(--solar-orange);">Learn From Mistakes</h2>
+      <p id="review-text" style="font-size:17px; font-weight:600; color:var(--text-dark); max-width: 500px; line-height:1.5;">
+        Let's analyze why that choice broke the logical rule!
+      </p>
+      <button class="btn-continue" id="btn-review-retry" style="background:var(--solar-orange);">Try Again</button>
+    </div>
+  </div>
+
+  <!-- 📊 Parent Analytics & Progress Modal -->
+  <div class="modal-overlay" id="analytics-modal">
+    <div class="game-card-modal shell-modal">
+      <div class="shell-modal-header">
+        <h2>📊 Parent & Educator Analytics Dashboard</h2>
+        <button class="btn-icon" id="btn-close-analytics">✕</button>
+      </div>
+      <div class="analytics-content">
+        <div class="analytics-overview-cards">
+          <div class="analytics-card">
+            <span class="analytics-card-val" id="analytics-total-stages">75 / 75</span>
+            <span class="analytics-card-lbl">Stages Solved</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-card-val" id="analytics-total-stars">225 ★</span>
+            <span class="analytics-card-lbl">Total Stars Earned</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-card-val" id="analytics-rank-title">Lvl 15 • Grandmaster</span>
+            <span class="analytics-card-lbl">Logic Title</span>
+          </div>
+        </div>
+
+        <h3 class="analytics-section-title">Course Mastery Breakdown</h3>
+        <div class="analytics-breakdown-list" id="analytics-breakdown-list">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="analytics-footer">
+          <button class="btn-danger" id="btn-reset-progress">🗑️ Reset All Progress</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🏆 Achievement Badges Modal -->
+  <div class="modal-overlay" id="badges-modal">
+    <div class="game-card-modal shell-modal">
+      <div class="shell-modal-header">
+        <h2>🏆 Player Achievement Badges</h2>
+        <button class="btn-icon" id="btn-close-badges">✕</button>
+      </div>
+      <div class="badges-grid" id="badges-grid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔥 Daily Streak Calendar Modal -->
+  <div class="modal-overlay" id="streak-modal">
+    <div class="game-card-modal shell-modal">
+      <div class="shell-modal-header">
+        <h2>🔥 7-Day Logic Streak Calendar</h2>
+        <button class="btn-icon" id="btn-close-streak">✕</button>
+      </div>
+      <div class="streak-calendar-wrapper">
+        <p class="streak-desc">Keep your brain sharp every day to claim bonus stars and logic rewards!</p>
+        <div class="streak-days-row" id="streak-days-row">
+          <!-- Populated by JS -->
+        </div>
+        <button class="btn-continue" id="btn-claim-streak" style="margin-top:16px;">🔥 Claim Today's Bonus (+15 ★)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📜 Official Diploma Certificate Modal -->
+  <div class="modal-overlay" id="certificate-modal">
+    <div class="game-card-modal certificate-modal-card">
+      <button class="btn-icon cert-close-btn" id="btn-close-certificate">✕</button>
+      <div class="certificate-paper" id="printable-certificate">
+        <div class="cert-border-outer">
+          <div class="cert-border-inner">
+            <div class="cert-header">
+              <div class="cert-badge-emblem">💡</div>
+              <h1 class="cert-title">CERTIFICATE OF LOGIC MASTERY</h1>
+              <p class="cert-subtitle">LOGICLIKE EDUCATIONAL COGNITIVE ACADEMY</p>
+            </div>
+            
+            <div class="cert-body">
+              <p class="cert-present-text">This official diploma is proudly presented to</p>
+              <input type="text" class="cert-student-name" id="cert-student-name" value="Young Logician" placeholder="Enter Student Name">
+              <p class="cert-achievement-text">
+                For demonstrating exceptional analytical reasoning, problem-solving, and cognitive mastery across all 5 logic game engines:
+              </p>
+              <div class="cert-skills-chips">
+                <span>🎴 Card Grid Logic</span>
+                <span>⚖️ Physics Balance</span>
+                <span>🔢 Rebus Algebra</span>
+                <span>📦 3D Spatial Projection</span>
+                <span>🧩 Sudoku Matrix</span>
+              </div>
+            </div>
+
+            <div class="cert-footer">
+              <div class="cert-seal">
+                <div class="seal-ribbon">⭐ OFFICIAL ⭐</div>
+                <div class="seal-text">VERIFIED LOGIC SEAL</div>
+              </div>
+              <div class="cert-stats">
+                <p><strong>Stars Bank:</strong> <span id="cert-stars-val">225 ★</span></p>
+                <p><strong>Rank Title:</strong> <span id="cert-rank-val">Grandmaster Logician</span></p>
+                <p><strong>Issue Date:</strong> <span id="cert-date-val">Sept 4, 2026</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cert-actions-bar">
+        <button class="btn-continue" id="btn-print-certificate">🖨️ Print / Save Diploma PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
