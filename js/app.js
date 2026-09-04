@@ -151,6 +151,13 @@ class AppController {
     this.elBtnPrintCertificate = document.getElementById('btn-print-certificate');
   }
 
+  closeAllModals() {
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.classList.remove('open');
+    });
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+
   bindEvents() {
     this.elAudioBtn.addEventListener('click', () => {
       const isMuted = sound.toggleMute();
@@ -180,18 +187,37 @@ class AppController {
       }
     });
 
-    this.elCloseModalBtn.addEventListener('click', () => {
-      this.closeGameModal();
+    // Close Buttons for all Modals
+    this.elCloseModalBtn.addEventListener('click', () => this.closeAllModals());
+    this.elCloseAnalytics.addEventListener('click', () => this.closeAllModals());
+    this.elCloseBadges.addEventListener('click', () => this.closeAllModals());
+    this.elCloseStreak.addEventListener('click', () => this.closeAllModals());
+    this.elCloseCertificate.addEventListener('click', () => this.closeAllModals());
+
+    // Backdrop Click on Overlay Closes Modal
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          this.closeAllModals();
+        }
+      });
+    });
+
+    // ESC Key Closes Any Open Modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeAllModals();
+      }
     });
 
     this.elBtnVictoryContinue.addEventListener('click', () => {
-      this.elVictoryModal.classList.remove('open');
+      this.closeAllModals();
       this.renderRoadmap();
       this.renderCategoryNav();
     });
 
     this.elBtnReviewRetry.addEventListener('click', () => {
-      this.elReviewModal.classList.remove('open');
+      this.closeAllModals();
       this.renderStageContent();
     });
 
@@ -199,17 +225,13 @@ class AppController {
     this.elPillStars.addEventListener('click', () => this.openAnalyticsModal());
     this.elPillRank.addEventListener('click', () => this.openAnalyticsModal());
     this.elBtnOpenAnalytics.addEventListener('click', () => this.openAnalyticsModal());
-    this.elCloseAnalytics.addEventListener('click', () => this.elAnalyticsModal.classList.remove('open'));
 
     this.elBtnOpenBadges.addEventListener('click', () => this.openBadgesModal());
-    this.elCloseBadges.addEventListener('click', () => this.elBadgesModal.classList.remove('open'));
 
     this.elPillStreak.addEventListener('click', () => this.openStreakModal());
-    this.elCloseStreak.addEventListener('click', () => this.elStreakModal.classList.remove('open'));
     this.elBtnClaimStreak.addEventListener('click', () => this.claimDailyStreak());
 
     this.elBtnOpenCertificate.addEventListener('click', () => this.openCertificateModal());
-    this.elCloseCertificate.addEventListener('click', () => this.elCertificateModal.classList.remove('open'));
     this.elBtnPrintCertificate.addEventListener('click', () => {
       sound.playFanfare();
       window.print();
@@ -226,7 +248,7 @@ class AppController {
           completedStages: {}
         };
         this.saveState();
-        this.elAnalyticsModal.classList.remove('open');
+        this.closeAllModals();
         this.renderRoadmap();
         this.renderCategoryNav();
       }
