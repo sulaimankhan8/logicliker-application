@@ -1,12 +1,11 @@
 /**
  * LogicLike Stage 2: Drag & Drop Balance Scale Physics Engine
- * Full-fledged engine for visual balance scales, weight physics, and algebraic equilibrium.
+ * Universal Pointer & Touch Drag-and-Drop + Tap-to-Place Engine
  * Features:
- * - HTML5 & Touch Drag-and-Drop onto Left & Right scale pans
+ * - HTML5, Pointer Events, and Touch Drag-and-Drop onto Scale Pans
  * - Real-time physics beam tilt animation based on mass differential
- * - Interactive weight removal by clicking/dragging off pans
+ * - Interactive weight removal by clicking placed weight chips
  * - Equilibrium status badge (Balanced vs Tilted Left/Right)
- * - Supports metric weights (kg) & visual object weights (Apples, Cats, Blocks)
  * - 3-step hint engine for physics deduction
  */
 
@@ -92,18 +91,12 @@ export class BalanceScaleEngine {
       }
     });
 
-    // Draggable weights bank click & drag handlers
+    // Draggable weights bank click & universal pointer drag handlers
     wrapper.querySelectorAll('.weight-chip.draggable').forEach(chip => {
-      chip.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text/plain', chip.getAttribute('data-weight'));
-      });
-      chip.addEventListener('click', () => {
-        const weightVal = chip.getAttribute('data-weight');
-        const numericW = parseInt(weightVal) || weightVal;
-        sound.playTap();
-        this.rightWeights.push(numericW);
-        this.updatePhysicsBeam(wrapper);
-      });
+      const weightVal = chip.getAttribute('data-weight');
+      const numericW = parseInt(weightVal) || weightVal;
+
+      this.bindUniversalWeightDrag(chip, numericW, wrapper);
     });
 
     // Verify button handler
@@ -118,6 +111,85 @@ export class BalanceScaleEngine {
 
     containerEl.appendChild(wrapper);
     setTimeout(() => this.updatePhysicsBeam(wrapper), 50);
+  }
+
+  bindUniversalWeightDrag(chipEl, numericW, wrapper) {
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let floatingAvatar = null;
+
+    const onPointerDown = (e) => {
+      if (e.button !== undefined && e.button !== 0) return;
+
+      isDragging = false;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      const onPointerMove = (moveEvt) => {
+        const dx = moveEvt.clientX - startX;
+        const dy = moveEvt.clientY - startY;
+
+        if (!isDragging && Math.hypot(dx, dy) > 5) {
+          isDragging = true;
+          floatingAvatar = document.createElement('div');
+          floatingAvatar.className = 'dragging-floating-chip';
+          floatingAvatar.innerHTML = `<span>⚖️ ${numericW} kg</span>`;
+          document.body.appendChild(floatingAvatar);
+        }
+
+        if (isDragging && floatingAvatar) {
+          floatingAvatar.style.left = `${moveEvt.clientX}px`;
+          floatingAvatar.style.top = `${moveEvt.clientY}px`;
+
+          const elemBelow = document.elementFromPoint(moveEvt.clientX, moveEvt.clientY);
+          const isOverPan = elemBelow ? elemBelow.closest('#right-pan') : null;
+          const rightPan = wrapper.querySelector('#right-pan');
+          if (rightPan) rightPan.classList.toggle('drag-over', !!isOverPan);
+        }
+      };
+
+      const onPointerUp = (upEvt) => {
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
+
+        const rightPan = wrapper.querySelector('#right-pan');
+        if (rightPan) rightPan.classList.remove('drag-over');
+
+        if (isDragging) {
+          if (floatingAvatar) {
+            floatingAvatar.remove();
+            floatingAvatar = null;
+          }
+
+          const elemBelow = document.elementFromPoint(upEvt.clientX, upEvt.clientY);
+          const isOverPan = elemBelow ? elemBelow.closest('#right-pan') : null;
+
+          if (isOverPan) {
+            sound.playTap();
+            this.rightWeights.push(numericW);
+            this.updatePhysicsBeam(wrapper);
+            return;
+          }
+        } else {
+          // It was a tap / click: place weight directly on right pan
+          sound.playTap();
+          this.rightWeights.push(numericW);
+          this.updatePhysicsBeam(wrapper);
+        }
+      };
+
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerUp);
+    };
+
+    chipEl.addEventListener('pointerdown', onPointerDown);
+
+    chipEl.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', numericW);
+    });
   }
 
   sumWeights(arr) {
@@ -136,6 +208,8 @@ export class BalanceScaleEngine {
     const rightPanEl = wrapperEl.querySelector('#right-pan');
     const statusText = wrapperEl.querySelector('#status-text');
     const statusBar = wrapperEl.querySelector('#equilibrium-status');
+
+    if (!beam || !leftPanEl || !rightPanEl) return;
 
     // Beam tilt calculation (-25° to +25°)
     const diff = rightTotal - leftTotal;
@@ -168,16 +242,16 @@ export class BalanceScaleEngine {
       });
     });
 
-    // Update Equilibrium Status Text & Styling
+    // Update Status Indicator
     if (diff === 0 && leftTotal > 0) {
-      statusText.textContent = `Balanced! Both Pans = ${leftTotal} kg ✅`;
       statusBar.className = 'equilibrium-status-bar balanced';
-    } else if (diff < 0) {
-      statusText.textContent = `Tilting Left ⬅️ (Left ${leftTotal} kg > Right ${rightTotal} kg)`;
-      statusBar.className = 'equilibrium-status-bar tilted-left';
-    } else {
-      statusText.textContent = `Tilting Right ➡️ (Right ${rightTotal} kg > Left ${leftTotal} kg)`;
+      statusText.textContent = `⚖️ Balanced in Perfect Equilibrium (${leftTotal} kg = ${rightTotal} kg)`;
+    } else if (diff > 0) {
       statusBar.className = 'equilibrium-status-bar tilted-right';
+      statusText.textContent = `⚖️ Tilting Right ➔ (Right ${rightTotal} kg > Left ${leftTotal} kg)`;
+    } else {
+      statusBar.className = 'equilibrium-status-bar tilted-left';
+      statusText.textContent = `⚖️ Tilting Left ⬅️ (Left ${leftTotal} kg > Right ${rightTotal} kg)`;
     }
   }
 
@@ -185,9 +259,13 @@ export class BalanceScaleEngine {
     const leftTotal = this.sumWeights(this.leftWeights);
     const rightTotal = this.sumWeights(this.rightWeights);
 
-    const targetTotal = this.currentStage.requiredRightTotal || leftTotal;
+    if (rightTotal === 0) {
+      sound.playError();
+      alert("⚠️ Place weights on the Right Pan first!");
+      return;
+    }
 
-    if (leftTotal === rightTotal && rightTotal === targetTotal) {
+    if (leftTotal === rightTotal && rightTotal === this.currentStage.requiredRightTotal) {
       sound.playSuccess();
       this.app.handleCorrectAnswer();
     } else {
@@ -201,26 +279,23 @@ export class BalanceScaleEngine {
     this.hintStep = (this.hintStep % 3) + 1;
     const btnHint = wrapperEl.querySelector('#btn-trigger-hint');
 
-    const leftTotal = this.sumWeights(this.leftWeights);
-    const currentRightTotal = this.sumWeights(this.rightWeights);
-    const needed = leftTotal - currentRightTotal;
-
     if (this.hintStep === 1) {
       btnHint.textContent = '💡 Hint: Step 2/3 (Highlight Weight)';
-      alert(`💡 BALANCE EQUATIONS CLUE:\n\nLeft Pan Total = ${leftTotal} kg.\nRight Pan currently has ${currentRightTotal} kg.`);
-    } else if (this.hintStep === 2) {
-      btnHint.textContent = '💡 Hint: Step 3/3 (Show Solution)';
-      const targetWeight = this.currentStage.correctWeightToDrop;
-      if (targetWeight) {
-        const weightChip = wrapperEl.querySelector(`[data-weight="${targetWeight}"]`);
-        if (weightChip) {
-          weightChip.classList.add('hint-clue-pulse');
-          setTimeout(() => weightChip.classList.remove('hint-clue-pulse'), 2500);
-        }
+      const targetW = this.currentStage.correctWeightToDrop;
+      const targetChip = wrapperEl.querySelector(`.weight-chip.draggable[data-weight="${targetW}"]`);
+      if (targetChip) {
+        targetChip.classList.add('hint-clue-pulse');
+        setTimeout(() => targetChip.classList.remove('hint-clue-pulse'), 2500);
       }
+    } else if (this.hintStep === 2) {
+      btnHint.textContent = '💡 Hint: Step 3/3 (Auto Place)';
+      alert(`💡 BALANCE PHYSICS HINT:\n\nLeft pan total is ${this.sumWeights(this.leftWeights)} kg. Right pan currently has ${this.sumWeights(this.rightWeights)} kg.`);
     } else if (this.hintStep === 3) {
       btnHint.textContent = '💡 Hint Used (Reset)';
-      alert(`💡 GUIDED BALANCE EXPLANATION:\n\n${this.currentStage.hint}`);
+      const targetW = this.currentStage.correctWeightToDrop;
+      this.rightWeights = [this.currentStage.requiredRightTotal];
+      this.updatePhysicsBeam(wrapperEl);
+      alert(`💡 GUIDED REASONING:\n\n${this.currentStage.review}`);
     }
   }
 }

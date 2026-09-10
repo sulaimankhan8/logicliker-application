@@ -1,11 +1,13 @@
 /**
  * LogicLike Drag & Drop Category & Habitat Placement Engine
+ * Universal Pointer & Touch Drag-and-Drop + Tap-to-Place Engine
  * Features:
- * - 2 to 3 Themed Dropzone Containers (e.g., "Ocean 🌊", "Forest 🌲", "Solids 🧊", "Liquids 💧", "Evens", "Odds")
- * - Draggable & Click-to-place item chips
- * - Click placed item chip to return it back to bank
- * - Visual placement counter (e.g. 4/4 placed)
- * - 3-step hint engine
+ * - Rock-solid Pointer Events drag (works flawlessly across desktop mouse, iPad/tablets, mobile touch)
+ * - Dynamic floating drag avatar following cursor/finger with tilt and shadow
+ * - Real-time hover dropzone highlight
+ * - Fallback tap-to-select & tap-zone-to-place
+ * - Click placed chip to return back to bank
+ * - Real-time answer validation and 3-step hint engine
  */
 
 import { sound } from '../audio.js';
@@ -50,7 +52,16 @@ export class DragDropZonesEngine {
         </div>
       `;
 
-      // Drag over and drop listeners
+      // Tap to place when an item is selected
+      zoneEl.addEventListener('click', () => {
+        if (this.selectedItem) {
+          this.placeItemInZone(this.selectedItem.id, zone.id, wrapper);
+          this.selectedItem = null;
+          this.updateBankSelection(wrapper);
+        }
+      });
+
+      // HTML5 Drag & Drop backup
       zoneEl.addEventListener('dragover', (e) => {
         e.preventDefault();
         zoneEl.classList.add('drag-active');
@@ -66,15 +77,6 @@ export class DragDropZonesEngine {
         const itemId = e.dataTransfer.getData('text/plain');
         if (itemId) {
           this.placeItemInZone(itemId, zone.id, wrapper);
-        }
-      });
-
-      // Click to place when an item is selected
-      zoneEl.addEventListener('click', () => {
-        if (this.selectedItem) {
-          this.placeItemInZone(this.selectedItem.id, zone.id, wrapper);
-          this.selectedItem = null;
-          this.updateBankSelection(wrapper);
         }
       });
 
@@ -131,6 +133,7 @@ export class DragDropZonesEngine {
 
   renderBankAndSlots(wrapper) {
     const bankEl = wrapper.querySelector('#drag-bank-items');
+    if (!bankEl) return;
     bankEl.innerHTML = '';
 
     // Clear all zone slots
@@ -161,7 +164,7 @@ export class DragDropZonesEngine {
           slotEl.appendChild(placedChip);
         }
       } else {
-        // Render in source items bank
+        // Render in source items bank with Universal Pointer Drag
         const bankChip = document.createElement('div');
         bankChip.className = `drag-item-chip ${this.selectedItem && this.selectedItem.id === item.id ? 'selected-chip' : ''}`;
         bankChip.setAttribute('draggable', 'true');
@@ -172,20 +175,7 @@ export class DragDropZonesEngine {
           <span class="drag-chip-label">${item.label}</span>
         `;
 
-        bankChip.addEventListener('dragstart', (e) => {
-          e.dataTransfer.setData('text/plain', item.id);
-        });
-
-        bankChip.addEventListener('click', (e) => {
-          e.stopPropagation();
-          sound.playTap();
-          if (this.selectedItem && this.selectedItem.id === item.id) {
-            this.selectedItem = null;
-          } else {
-            this.selectedItem = item;
-          }
-          this.updateBankSelection(wrapper);
-        });
+        this.bindUniversalPointerDrag(bankChip, item, wrapper);
 
         bankEl.appendChild(bankChip);
       }
@@ -194,6 +184,106 @@ export class DragDropZonesEngine {
     if (bankEl.children.length === 0) {
       bankEl.innerHTML = `<div class="bank-all-placed-msg">🎉 All items placed! Click "Check & Submit" above.</div>`;
     }
+  }
+
+  bindUniversalPointerDrag(chipEl, item, wrapper) {
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let floatingAvatar = null;
+
+    const onPointerDown = (e) => {
+      // Only primary mouse button or single touch
+      if (e.button !== undefined && e.button !== 0) return;
+
+      isDragging = false;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      const onPointerMove = (moveEvt) => {
+        const dx = moveEvt.clientX - startX;
+        const dy = moveEvt.clientY - startY;
+
+        if (!isDragging && Math.hypot(dx, dy) > 5) {
+          isDragging = true;
+          this.selectedItem = null;
+          this.updateBankSelection(wrapper);
+
+          // Create floating drag avatar
+          floatingAvatar = document.createElement('div');
+          floatingAvatar.className = 'dragging-floating-chip';
+          floatingAvatar.innerHTML = `
+            <span>${item.icon || '🏷️'}</span>
+            <span>${item.label}</span>
+          `;
+          document.body.appendChild(floatingAvatar);
+          chipEl.classList.add('chip-origin-hidden');
+        }
+
+        if (isDragging && floatingAvatar) {
+          floatingAvatar.style.left = `${moveEvt.clientX}px`;
+          floatingAvatar.style.top = `${moveEvt.clientY}px`;
+
+          // Hit test dropzones
+          const elemBelow = document.elementFromPoint(moveEvt.clientX, moveEvt.clientY);
+          const targetZone = elemBelow ? elemBelow.closest('.dropzone-card') : null;
+
+          wrapper.querySelectorAll('.dropzone-card').forEach(z => {
+            z.classList.toggle('drag-active', z === targetZone);
+          });
+        }
+      };
+
+      const onPointerUp = (upEvt) => {
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
+
+        chipEl.classList.remove('chip-origin-hidden');
+
+        if (isDragging) {
+          if (floatingAvatar) {
+            floatingAvatar.remove();
+            floatingAvatar = null;
+          }
+
+          // Clear dropzone highlights
+          wrapper.querySelectorAll('.dropzone-card').forEach(z => z.classList.remove('drag-active'));
+
+          // Identify dropzone under pointer
+          const elemBelow = document.elementFromPoint(upEvt.clientX, upEvt.clientY);
+          const targetZone = elemBelow ? elemBelow.closest('.dropzone-card') : null;
+
+          if (targetZone) {
+            const zoneId = targetZone.getAttribute('data-zone-id');
+            if (zoneId) {
+              this.placeItemInZone(item.id, zoneId, wrapper);
+              return;
+            }
+          }
+        } else {
+          // It was a tap / click!
+          sound.playTap();
+          if (this.selectedItem && this.selectedItem.id === item.id) {
+            this.selectedItem = null;
+          } else {
+            this.selectedItem = item;
+          }
+          this.updateBankSelection(wrapper);
+        }
+      };
+
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerUp);
+    };
+
+    chipEl.addEventListener('pointerdown', onPointerDown);
+
+    // Native HTML5 drag backup
+    chipEl.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', item.id);
+    });
   }
 
   updateBankSelection(wrapper) {
@@ -245,7 +335,6 @@ export class DragDropZonesEngine {
       alert(`💡 HINT: ${this.currentStage.hint}`);
     } else if (this.hintStep === 2) {
       btnHint.textContent = '💡 Hint: Step 3/3 (Full Rule)';
-      // Auto place 1 unplaced or misplaced item
       const targetItem = this.currentStage.items.find(i => this.placements[i.id] !== i.correctZoneId);
       if (targetItem) {
         this.placements[targetItem.id] = targetItem.correctZoneId;

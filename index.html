@@ -31,7 +31,7 @@
       <button class="btn-shell-action" id="btn-open-badges" title="View Badges">🏆 Badges</button>
       <button class="btn-shell-action" id="btn-open-analytics" title="Parent Analytics">📊 Analytics</button>
       <button class="btn-shell-action btn-certificate" id="btn-open-certificate" title="Logic Diploma">📜 Certificate</button>
-      <button class="btn-icon" id="btn-audio-toggle" title="Toggle Sound">🔊</button>
+      <button class="btn-header-audio" id="btn-audio-toggle" title="Toggle Sound">🔊</button>
     </div>
   </header>
 
@@ -41,22 +41,8 @@
   </nav>
 
   <!-- Main Container -->
-  <main class="main-container">
-    <!-- Course Banner -->
-    <section class="course-banner">
-      <div class="banner-info">
-        <h2 id="banner-title">Logic & Reasoning</h2>
-        <p id="banner-desc">Develop critical thinking, pattern recognition, and odd-one-out categorization skills.</p>
-      </div>
-      <div class="banner-badge">Ages 6–10</div>
-    </section>
-
-    <!-- Linear Progression Roadmap -->
-    <section class="roadmap-container">
-      <div class="roadmap-path" id="roadmap-list">
-        <!-- Stage Nodes rendered dynamically by JS -->
-      </div>
-    </section>
+  <main class="main-container" id="main-container-root">
+    <!-- Rendered dynamically by app.js: Course Banner, Level Selector Tabs, 5-Stage Mission Deck & Level Navigation -->
   </main>
 
   <!-- Interactive Game Modal Canvas -->
@@ -80,7 +66,7 @@
           <span>Which item does NOT belong with the others?</span>
           <button class="btn-audio-speak" id="btn-audio-speak">🔊</button>
         </div>
-        <div id="game-arena">
+        <div class="game-arena-content" id="game-arena">
           <!-- Game specific interaction component rendered by JS -->
         </div>
       </div>
@@ -92,13 +78,16 @@
     <div class="game-card-modal feedback-modal">
       <div class="feedback-icon">🎉</div>
       <h2 style="font-weight:900; color:var(--primary-indigo);">Stage Completed!</h2>
-      <p style="font-size:18px; font-weight:700; color:var(--text-muted);">Outstanding logic skills!</p>
+      <p style="font-size:16px; font-weight:700; color:var(--text-muted);" id="victory-feedback-sub">Outstanding logic skills!</p>
       <div class="stars-earned" id="victory-stars">
         <span class="star-icon filled">★</span>
         <span class="star-icon filled">★</span>
         <span class="star-icon filled">★</span>
       </div>
-      <button class="btn-continue" id="btn-victory-continue">Continue Road</button>
+      <div class="victory-actions-row">
+        <button class="btn-continue btn-victory-next" id="btn-victory-next">▶ Next Problem</button>
+        <button class="btn-victory-road" id="btn-victory-continue">🗺️ Back to Map</button>
+      </div>
     </div>
   </div>
 
