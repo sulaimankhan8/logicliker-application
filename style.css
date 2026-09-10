@@ -259,31 +259,102 @@ body {
   position: relative;
 }
 
+/* Level Milestone Milestone Headers */
+.level-milestone-header {
+  width: 100%;
+  background: linear-gradient(135deg, #F8FAFC, #EEF2F6);
+  border: 2px dashed #CBD5E1;
+  border-radius: var(--border-radius-md);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0 16px 0;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.level-milestone-header:first-child {
+  margin-top: 0;
+}
+
+.level-milestone-header.complete {
+  background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+  border: 2px solid #34D399;
+}
+
+.level-milestone-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.level-milestone-icon {
+  font-size: 28px;
+  background: white;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.level-milestone-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--primary-indigo);
+  margin-bottom: 2px;
+}
+
+.level-milestone-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.level-milestone-badge {
+  background: #E2E8F0;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+.level-milestone-badge.completed-badge {
+  background: var(--emerald-green);
+  color: white;
+  box-shadow: 0 2px 8px rgba(40, 199, 111, 0.3);
+}
+
 /* Stage Node Cards */
 .stage-node {
   width: 100%;
   background: white;
   border: 3px solid #E2E8F0;
   border-radius: var(--border-radius-md);
-  padding: 20px 24px;
+  padding: 16px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   transition: var(--transition-bounce);
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   box-shadow: var(--box-shadow-card);
 }
 
 .stage-node::after {
   content: '';
   position: absolute;
-  bottom: -27px;
+  bottom: -23px;
   left: 50%;
   transform: translateX(-50%);
   width: 4px;
-  height: 24px;
+  height: 20px;
   background: #CBD5E1;
   border-radius: 2px;
 }
@@ -293,7 +364,7 @@ body {
 }
 
 .stage-node:hover {
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-3px) scale(1.015);
   border-color: var(--solar-orange);
   box-shadow: 0 10px 25px rgba(255, 122, 0, 0.15);
 }
@@ -310,7 +381,7 @@ body {
 }
 
 .stage-node.locked {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
   background: #F8FAFC;
   border-color: #E2E8F0;
@@ -330,12 +401,13 @@ body {
 .node-left {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
+  flex: 1;
 }
 
 .node-number {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: #E2E8F0;
   color: var(--text-muted);
@@ -343,7 +415,8 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  font-size: 20px;
+  font-size: 18px;
+  flex-shrink: 0;
   transition: var(--transition-bounce);
 }
 
@@ -357,16 +430,63 @@ body {
   color: white;
 }
 
+.node-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.node-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .node-info h4 {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text-dark);
+}
+
+.engine-badge-pill {
+  font-size: 11px;
   font-weight: 800;
-  margin-bottom: 4px;
+  background: #EDE9FE;
+  color: #6D28D9;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stage-node.completed .engine-badge-pill {
+  background: #DCFCE7;
+  color: #15803D;
 }
 
 .node-info p {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
   font-weight: 600;
+}
+
+.stage-locked-lbl {
+  color: #94A3B8;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.nav-tab-badge {
+  font-size: 11px;
+  opacity: 0.9;
+  margin-left: 6px;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 900;
 }
 
 .node-right {

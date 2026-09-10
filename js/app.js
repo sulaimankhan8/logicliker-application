@@ -1,11 +1,10 @@
 /**
  * LogicLike Application Controller & 5 Game Mechanics Engine
- * Stage 1: Card Grid Selection Engine Integrated.
- * Stage 2: Drag & Drop Balance Scale Physics Engine Integrated.
- * Stage 3: Numeric Keypad & Rebus Math Engine Integrated.
- * Stage 4: 3D Isometric Cube Counter Engine Integrated.
- * Stage 5: Sudoku & Matrix Grid Engine Integrated.
- * Stage 6: Unified Platform Shell, Persistence & Gamification Economy Integrated.
+ * Features:
+ * - 3 Comprehensive Courses for Kids: Mathematics 📐, Science & Nature 🔬, Aptitude & Logic 💡
+ * - 5-Level Structured Progression with Milestone Headers & Badges
+ * - Dynamic Mix of 5 Game Engines (Cards Grid, Balance Scale, Rebus Keypad, 3D Spatial, Sudoku Matrix)
+ * - Gamification Economy (Stars, 7-Day Streaks, Level Titles, Badges, Analytics, Official Diploma)
  */
 
 import { sound } from './audio.js';
@@ -18,18 +17,26 @@ import { SudokuMatrixEngine } from './engines/sudoku_matrix_engine.js';
 
 const BADGES_CATALOG = [
   { id: 'first_step', icon: '🌟', name: 'First Steps', desc: 'Solve your first logic puzzle', check: (state, totalSolved) => totalSolved >= 1 },
-  { id: 'card_master', icon: '🎴', name: 'Card Detective', desc: 'Complete 5 Card Grid stages', check: (state) => Object.keys(state.completedStages['logic-odd-one-out'] || {}).length >= 5 },
-  { id: 'balance_guru', icon: '⚖️', name: 'Physics Master', desc: 'Complete 5 Balance Scale stages', check: (state) => Object.keys(state.completedStages['math-balance-scales'] || {}).length >= 5 },
-  { id: 'rebus_wizard', icon: '🔢', name: 'Rebus Wizard', desc: 'Complete 5 Rebus Math stages', check: (state) => Object.keys(state.completedStages['math-rebus-keypad'] || {}).length >= 5 },
-  { id: 'cube_architect', icon: '📦', name: 'Spatial Architect', desc: 'Complete 5 3D Isometric stages', check: (state) => Object.keys(state.completedStages['spatial-3d-cubes'] || {}).length >= 5 },
-  { id: 'sudoku_genius', icon: '🧩', name: 'Sudoku Genius', desc: 'Complete 5 Sudoku Matrix stages', check: (state) => Object.keys(state.completedStages['sudoku-matrix-grid'] || {}).length >= 5 },
+  { id: 'math_prodigy', icon: '📐', name: 'Math Prodigy', desc: 'Complete 10+ Math stages', check: (state) => Object.keys(state.completedStages['math-course'] || {}).length >= 10 },
+  { id: 'science_hero', icon: '🔬', name: 'Science Explorer', desc: 'Complete 10+ Science stages', check: (state) => Object.keys(state.completedStages['science-course'] || {}).length >= 10 },
+  { id: 'aptitude_ace', icon: '💡', name: 'Aptitude Ace', desc: 'Complete 10+ Aptitude stages', check: (state) => Object.keys(state.completedStages['aptitude-course'] || {}).length >= 10 },
+  { id: 'level_master', icon: '🚀', name: 'Level Conqueror', desc: 'Unlock Level 3 in any course', check: (state) => Object.values(state.completedStages).some(map => Object.keys(map).length >= 8) },
+  { id: 'engine_expert', icon: '🎛️', name: 'All-Engine Master', desc: 'Solve 20+ puzzles across all 5 engines', check: (state, totalSolved) => totalSolved >= 20 },
   { id: 'streak_champ', icon: '🔥', name: 'Streak Champion', desc: 'Reach a 5-day daily streak', check: (state) => state.streak >= 5 },
-  { id: 'grandmaster', icon: '👑', name: 'Logic Grandmaster', desc: 'Earn 150+ stars across all courses', check: (state) => state.stars >= 150 }
+  { id: 'grandmaster', icon: '👑', name: 'Logic Grandmaster', desc: 'Earn 100+ stars across courses', check: (state) => state.stars >= 100 }
 ];
+
+const ENGINE_META = {
+  'cards-grid': { icon: '🎴', label: 'Card Grid' },
+  'balance-scale': { icon: '⚖️', label: 'Balance Scale' },
+  'rebus-keypad': { icon: '🔢', label: 'Rebus Math' },
+  'spatial-3d': { icon: '📦', label: '3D Spatial' },
+  'sudoku-matrix': { icon: '🧩', label: 'Sudoku Matrix' }
+};
 
 class AppController {
   constructor() {
-    this.activeCategory = "cards-grid";
+    this.activeCategory = "math-course";
     this.activeGame = GAMES_CATALOG[0];
     this.activeStageIndex = 0;
     this.currentStageData = null;
@@ -92,11 +99,12 @@ class AppController {
 
   getRankTitle() {
     const totalSolved = this.getTotalStagesSolved();
-    if (totalSolved >= 70) return "Lvl 15 • Grandmaster Logician";
-    if (totalSolved >= 50) return "Lvl 12 • Cognitive Strategist";
-    if (totalSolved >= 35) return "Lvl 9 • Logic Detective";
-    if (totalSolved >= 20) return "Lvl 6 • Junior Thinker";
-    return "Lvl 3 • Novice Explorer";
+    if (totalSolved >= 60) return "Lvl 15 • Grandmaster Logician 👑";
+    if (totalSolved >= 45) return "Lvl 12 • Cognitive Strategist ⚡";
+    if (totalSolved >= 30) return "Lvl 9 • Master Detective 🔍";
+    if (totalSolved >= 15) return "Lvl 6 • Junior Thinker 🚀";
+    if (totalSolved >= 5)  return "Lvl 3 • Curious Explorer 🌱";
+    return "Lvl 1 • Novice Apprentice 🌟";
   }
 
   initDOMElements() {
@@ -276,7 +284,7 @@ class AppController {
       btn.className = `nav-tab ${game.category === this.activeCategory ? 'active' : ''}`;
       btn.innerHTML = `
         <span>${game.icon}</span> ${game.name}
-        <span class="nav-tab-badge" style="font-size:11px; opacity:0.8; margin-left:6px; background:rgba(0,0,0,0.06); padding:2px 8px; border-radius:10px;">${completedCount}/${totalCount}</span>
+        <span class="nav-tab-badge">${completedCount}/${totalCount}</span>
       `;
       btn.addEventListener('click', () => {
         sound.playTap();
@@ -291,13 +299,49 @@ class AppController {
 
   renderRoadmap() {
     const game = this.activeGame;
+    const completedCount = Object.keys(this.playerState.completedStages[game.id] || {}).length;
+    const totalCount = game.stages.length;
+
     this.elBannerTitle.textContent = `${game.icon} ${game.name}`;
     this.elBannerDesc.textContent = game.description;
 
     this.elRoadmapList.innerHTML = '';
     const gameProgress = this.playerState.completedStages[game.id] || {};
 
+    let currentLevel = 0;
+
     game.stages.forEach((stage, idx) => {
+      // If entering a new level, insert Level Milestone Header
+      if (stage.level !== currentLevel) {
+        currentLevel = stage.level;
+        const levelDef = (game.levelThemes && game.levelThemes.find(l => l.level === currentLevel)) || {
+          level: currentLevel,
+          name: `Level ${currentLevel}`,
+          icon: '⭐',
+          desc: 'Progression Challenges'
+        };
+
+        const levelStages = game.stages.filter(s => s.level === currentLevel);
+        const levelSolvedCount = levelStages.filter(s => gameProgress[s.stageNum] !== undefined).length;
+        const isLevelComplete = levelSolvedCount === levelStages.length;
+
+        const milestoneHeader = document.createElement('div');
+        milestoneHeader.className = `level-milestone-header ${isLevelComplete ? 'complete' : ''}`;
+        milestoneHeader.innerHTML = `
+          <div class="level-milestone-left">
+            <span class="level-milestone-icon">${levelDef.icon}</span>
+            <div>
+              <h3 class="level-milestone-title">Level ${currentLevel}: ${levelDef.name}</h3>
+              <p class="level-milestone-desc">${levelDef.desc}</p>
+            </div>
+          </div>
+          <div class="level-milestone-badge ${isLevelComplete ? 'completed-badge' : ''}">
+            ${isLevelComplete ? '✓ Mastered' : `${levelSolvedCount}/${levelStages.length}`}
+          </div>
+        `;
+        this.elRoadmapList.appendChild(milestoneHeader);
+      }
+
       const isCompleted = gameProgress[stage.stageNum] !== undefined;
       const starsEarned = gameProgress[stage.stageNum] || 0;
       
@@ -307,6 +351,8 @@ class AppController {
       let statusClass = 'locked';
       if (isCompleted) statusClass = 'completed';
       else if (isActive) statusClass = 'active';
+
+      const engineInfo = ENGINE_META[stage.type] || { icon: '🎮', label: stage.type };
 
       const nodeEl = document.createElement('div');
       nodeEl.className = `stage-node ${statusClass}`;
@@ -322,13 +368,16 @@ class AppController {
         <div class="node-left">
           <div class="node-number">${isCompleted ? '✓' : (isUnlocked ? stage.stageNum : '🔒')}</div>
           <div class="node-info">
-            <h4>Stage ${stage.stageNum}: ${stage.title}</h4>
+            <div class="node-title-row">
+              <h4>${stage.title}</h4>
+              <span class="engine-badge-pill">${engineInfo.icon} ${engineInfo.label}</span>
+            </div>
             <p>${stage.subtitle}</p>
           </div>
         </div>
         <div class="node-right">
           ${isCompleted ? `<div class="star-rating">${starsHTML}</div>` : ''}
-          ${isUnlocked ? `<button class="btn-play-stage">${isCompleted ? 'Replay' : 'Play Stage'}</button>` : '<span style="color:#94A3B8; font-weight:700;">Locked</span>'}
+          ${isUnlocked ? `<button class="btn-play-stage">${isCompleted ? 'Replay' : 'Play Stage'}</button>` : '<span class="stage-locked-lbl">🔒 Locked</span>'}
         </div>
       `;
 
@@ -402,7 +451,9 @@ class AppController {
   openAnalyticsModal() {
     sound.playTap();
     const totalSolved = this.getTotalStagesSolved();
-    document.getElementById('analytics-total-stages').textContent = `${totalSolved} / 75`;
+    const totalAvailable = GAMES_CATALOG.reduce((acc, g) => acc + g.stages.length, 0);
+
+    document.getElementById('analytics-total-stages').textContent = `${totalSolved} / ${totalAvailable}`;
     document.getElementById('analytics-total-stars').textContent = `${this.playerState.stars} ★`;
     document.getElementById('analytics-rank-title').textContent = this.getRankTitle();
 
@@ -419,7 +470,7 @@ class AppController {
       row.innerHTML = `
         <div class="analytics-row-info">
           <span>${game.icon}</span>
-          <span>${game.name} (${solved}/${total})</span>
+          <span>${game.name} (${solved}/${total} Stages)</span>
         </div>
         <div style="display:flex; align-items:center; gap:12px;">
           <div class="analytics-progress-bar">
