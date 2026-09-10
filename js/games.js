@@ -1,13 +1,18 @@
 /**
- * LogicLike Games Catalog & Curriculum Engine
- * 3 Fully Coherent Educational Courses for Kids:
- * 1. 📐 Mathematics (Counting -> Addition -> Subtraction -> Multiplication -> Multi-Step Algebra)
- * 2. 🔬 Science & Nature (Animal Kingdom -> Biomes & Habitats -> States of Matter -> Space Astronomy -> Ecosystems & Energy)
- * 3. 💡 Aptitude & Logic (Visual Patterns -> 90° Rotations -> Multi-Attribute Venn -> Mirror Projections -> Deductive Syllogisms)
+ * LogicLike Games Catalog & Educational Curriculum Engine
+ * 3 Coherent, Kid-Friendly Courses:
+ * 1. 📐 Mathematics (Counting -> Addition -> Subtraction -> Multiplication -> Fractions & Algebra)
+ * 2. 🔬 Science & Nature (Animal Habitats & Diets -> Plants & Living Things -> States of Matter -> Solar System -> Human Body & Ecosystems)
+ * 3. 💡 Aptitude & Logic (Visual Shapes -> Directions & Opposites -> Multi-Attribute Venn -> 3D Projections -> Deductive Logic)
  *
- * Each level has a SINGLE, FOCUSED pedagogical learning objective.
- * All 5 puzzles inside a level teach and reinforce THAT SPECIFIC THEME across the 5 game engines:
- * 🎴 cards-grid | ⚖️ balance-scale | 🔢 rebus-keypad | 📦 spatial-3d | 🧩 sudoku-matrix
+ * Engines:
+ * 🎴 cards-grid (Selection & Odd-One-Out)
+ * 🎯 drag-drop-zones (Habitat & Category Sorting)
+ * 🔗 matching-pairs (Two-column Connecting Cords)
+ * ⚖️ balance-scale (Mass & Physics Balance)
+ * 🔢 rebus-keypad (Picture Arithmetic & Equations)
+ * 📦 spatial-3d (3D Isometric Spatial Projection)
+ * 🧩 sudoku-matrix (Deductive Constraint Grids)
  */
 
 export const GAMES_CATALOG = [
@@ -19,13 +24,13 @@ export const GAMES_CATALOG = [
     name: "Mathematics",
     category: "math-course",
     icon: "📐",
-    description: "Master arithmetic step-by-step: Counting Quantities ➔ Addition ➔ Subtraction ➔ Multiplication ➔ Multi-Step Algebra!",
+    description: "Master math step-by-step: Counting Quantities ➔ Addition ➔ Subtraction ➔ Multiplication ➔ Fractions & Algebra!",
     levelThemes: [
       { level: 1, name: "Counting & Number Quantities (1–10)", icon: "🍎", desc: "Count objects, compare quantities, and understand single-digit numbers" },
-      { level: 2, name: "Addition & Making Target Sums", icon: "➕", desc: "Combine two groups, find total sums, and balance addition equations" },
+      { level: 2, name: "Addition & Making Target Sums", icon: "➕", desc: "Combine numbers, find total sums, and balance addition equations" },
       { level: 3, name: "Subtraction & Missing Differences", icon: "➖", desc: "Take away quantities, find differences, and solve missing-part balances" },
       { level: 4, name: "Multiplication & Equal Arrays", icon: "✖️", desc: "Repeated addition, factor arrays, and equal-group volume calculations" },
-      { level: 5, name: "Multi-Step Algebra & Operations", icon: "🧮", desc: "Order of operations, 3-variable substitution systems, and Latin squares" }
+      { level: 5, name: "Fractions & Multi-Step Algebra", icon: "🧮", desc: "Halves, quarters, order of operations, and 3-variable substitution systems" }
     ],
     stages: [
       /* --- Level 1: Counting & Number Quantities (1–10) --- */
@@ -44,40 +49,46 @@ export const GAMES_CATALOG = [
           { id: "c3", icon: "🍎🍎🍎🍎🍎", label: "5 Apples", isCorrect: true },
           { id: "c4", icon: "🍎🍎🍎🍎🍎🍎", label: "6 Apples", isCorrect: false }
         ],
-        hint: "Point and count each apple one by one: 1, 2, 3, 4, 5!",
+        hint: "Point and count each apple: 1, 2, 3, 4, 5!",
         review: "The third basket has exactly 5 apples (1 + 1 + 1 + 1 + 1 = 5)!"
       },
       {
         stageNum: 2,
         level: 1,
         levelStageNum: "2 of 5",
-        title: "Match the Count Balance",
-        subtitle: "Level 1: Counting • ⚖️ Balance Scale",
-        prompt: "Left pan has a count of 5 kg. Drag the matching 5 kg weight to balance!",
-        type: "balance-scale",
-        leftWeights: [5],
-        rightWeights: [],
-        availableWeights: [2, 3, 4, 5],
-        requiredRightTotal: 5,
-        correctWeightToDrop: 5,
-        hint: "Count 5 on the left pan. Drag the 5 kg weight to make both sides equal!",
-        review: "5 kg on the left equals 5 kg on the right pan. Both sides balance at count 5!"
+        title: "Sort Numbers: Small vs Large",
+        subtitle: "Level 1: Counting • 🎯 Drag & Sort",
+        prompt: "Sort numbers into 'Less than 5' vs '5 or More':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "less5", title: "Less than 5 (< 5)", icon: "🔹", color: "#3B82F6" },
+          { id: "more5", title: "5 or More (≥ 5)", icon: "🔸", color: "#F59E0B" }
+        ],
+        items: [
+          { id: "n2", label: "Number 2", icon: "2️⃣", correctZoneId: "less5" },
+          { id: "n3", label: "Number 3", icon: "3️⃣", correctZoneId: "less5" },
+          { id: "n7", label: "Number 7", icon: "7️⃣", correctZoneId: "more5" },
+          { id: "n9", label: "Number 9", icon: "9️⃣", correctZoneId: "more5" }
+        ],
+        hint: "Numbers 2 and 3 are smaller than 5. Numbers 7 and 9 are 5 or greater!",
+        review: "2 and 3 are < 5. 7 and 9 are ≥ 5!"
       },
       {
         stageNum: 3,
         level: 1,
         levelStageNum: "3 of 5",
-        title: "Single Item Quantity Count",
-        subtitle: "Level 1: Counting • 🔢 Rebus Keypad",
-        prompt: "How many stars ⭐ are shown in this single group count?",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["⭐", "+", "⭐", "+", "⭐"], right: 9 }
+        title: "Match Words to Quantities",
+        subtitle: "Level 1: Counting • 🔗 Match Pairs",
+        prompt: "Connect each number word on the left to its matching visual count on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Two", leftIcon: "2️⃣", rightText: "⭐⭐", rightIcon: "2 Stars" },
+          { id: "p2", leftText: "Three", leftIcon: "3️⃣", rightText: "🍎🍎🍎", rightIcon: "3 Apples" },
+          { id: "p3", leftText: "Four", leftIcon: "4️⃣", rightText: "🚗🚗🚗🚗", rightIcon: "4 Cars" },
+          { id: "p4", leftText: "Five", leftIcon: "5️⃣", rightText: "🎈🎈🎈🎈🎈", rightIcon: "5 Balloons" }
         ],
-        targetSymbol: "⭐",
-        correctAnswer: 3,
-        hint: "Three identical stars count up to 9. Split 9 into 3 equal parts (3 + 3 + 3 = 9)!",
-        review: "Each star ⭐ represents a count of 3, because 3 + 3 + 3 = 9!"
+        hint: "Count the items on the right and connect to the word: Two ➔ 2, Three ➔ 3, Four ➔ 4, Five ➔ 5!",
+        review: "Two = 2, Three = 3, Four = 4, and Five = 5!"
       },
       {
         stageNum: 4,
@@ -142,7 +153,45 @@ export const GAMES_CATALOG = [
         stageNum: 7,
         level: 2,
         levelStageNum: "2 of 5",
-        title: "Complete the Addition Balance",
+        title: "Sort Addition by Target Sum",
+        subtitle: "Level 2: Addition • 🎯 Drag & Sort",
+        prompt: "Sort addition equations into '= 8' vs '= 10':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "sum8", title: "Equals 8 (= 8)", icon: "🎱", color: "#8B5CF6" },
+          { id: "sum10", title: "Equals 10 (= 10)", icon: "🔟", color: "#10B981" }
+        ],
+        items: [
+          { id: "eq1", label: "5 + 3", icon: "➕", correctZoneId: "sum8" },
+          { id: "eq2", label: "4 + 4", icon: "➕", correctZoneId: "sum8" },
+          { id: "eq3", label: "6 + 4", icon: "➕", correctZoneId: "sum10" },
+          { id: "eq4", label: "7 + 3", icon: "➕", correctZoneId: "sum10" }
+        ],
+        hint: "5 + 3 = 8, 4 + 4 = 8. 6 + 4 = 10, 7 + 3 = 10!",
+        review: "5+3 and 4+4 make 8. 6+4 and 7+3 make 10!"
+      },
+      {
+        stageNum: 8,
+        level: 2,
+        levelStageNum: "3 of 5",
+        title: "Match Equations to Sums",
+        subtitle: "Level 2: Addition • 🔗 Match Pairs",
+        prompt: "Connect each addition problem to its correct sum answer:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "3 + 4", leftIcon: "➕", rightText: "7", rightIcon: "7️⃣" },
+          { id: "p2", leftText: "5 + 5", leftIcon: "➕", rightText: "10", rightIcon: "🔟" },
+          { id: "p3", leftText: "6 + 2", leftIcon: "➕", rightText: "8", rightIcon: "8️⃣" },
+          { id: "p4", leftText: "4 + 5", leftIcon: "➕", rightText: "9", rightIcon: "9️⃣" }
+        ],
+        hint: "3+4=7, 5+5=10, 6+2=8, 4+5=9!",
+        review: "3+4=7, 5+5=10, 6+2=8, and 4+5=9!"
+      },
+      {
+        stageNum: 9,
+        level: 2,
+        levelStageNum: "4 of 5",
+        title: "Complete Addition Balance",
         subtitle: "Level 2: Addition • ⚖️ Balance Scale",
         prompt: "Left pan has 10 kg. Right pan has 4 kg. Add the missing weight to make 10 kg!",
         type: "balance-scale",
@@ -155,9 +204,9 @@ export const GAMES_CATALOG = [
         review: "10 kg on the left equals 4 kg + 6 kg on the right pan (4 + 6 = 10)!"
       },
       {
-        stageNum: 8,
+        stageNum: 10,
         level: 2,
-        levelStageNum: "3 of 5",
+        levelStageNum: "5 of 5",
         title: "Addition Rebus Equation",
         subtitle: "Level 2: Addition • 🔢 Rebus Keypad",
         prompt: "Find the value of Banana 🍌 in this addition puzzle:",
@@ -170,45 +219,6 @@ export const GAMES_CATALOG = [
         correctAnswer: 6,
         hint: "1. 🍓 + 🍓 = 8 means 🍓 = 4. 2. 4 + 🍌 = 10, so 🍌 = 10 - 4!",
         review: "🍓 = 4. Adding: 4 + 🍌 = 10 ➔ 🍌 = 6!"
-      },
-      {
-        stageNum: 9,
-        level: 2,
-        levelStageNum: "4 of 5",
-        title: "Addition of 3D Towers",
-        subtitle: "Level 2: Addition • 📦 3D Spatial",
-        prompt: "Tower A has 3 cubes and Tower B has 4 cubes. What is the total sum of cubes?",
-        type: "spatial-3d",
-        heightMap: [
-          [3, 4]
-        ],
-        totalCubes: 7,
-        hint: "Add the two column heights together: 3 cubes + 4 cubes = ?",
-        review: "Adding the two towers: 3 + 4 = 7 unit cubes in total!"
-      },
-      {
-        stageNum: 10,
-        level: 2,
-        levelStageNum: "5 of 5",
-        title: "3x3 Addition Matrix Puzzle",
-        subtitle: "Level 2: Addition • 🧩 Sudoku Matrix",
-        prompt: "Complete the matrix with numbers 2, 4, 6 so each appears once per row/column:",
-        type: "sudoku-matrix",
-        gridSize: 3,
-        symbols: ["2", "4", "6"],
-        initialGrid: [
-          ["2", "4", "6"],
-          ["4", "6", null],
-          ["6", null, "4"]
-        ],
-        solutionGrid: [
-          ["2", "4", "6"],
-          ["4", "6", "2"],
-          ["6", "2", "4"]
-        ],
-        targetCell: { r: 1, c: 2, answer: "2", explanation: "Row 2 has 4 and 6, so the missing addition term is 2!" },
-        hint: "Row 2 contains 4 and 6. Which number from [2, 4, 6] is missing?",
-        review: "Each row and column contains 2, 4, and 6 in balance!"
       },
 
       /* --- Level 3: Subtraction & Missing Differences --- */
@@ -234,6 +244,44 @@ export const GAMES_CATALOG = [
         stageNum: 12,
         level: 3,
         levelStageNum: "2 of 5",
+        title: "Sort by Subtraction Result",
+        subtitle: "Level 3: Subtraction • 🎯 Drag & Sort",
+        prompt: "Sort subtractions into 'Result = 3' vs 'Result = 5':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "res3", title: "Result is 3 (= 3)", icon: "3️⃣", color: "#3B82F6" },
+          { id: "res5", title: "Result is 5 (= 5)", icon: "5️⃣", color: "#EC4899" }
+        ],
+        items: [
+          { id: "s1", label: "8 - 5", icon: "➖", correctZoneId: "res3" },
+          { id: "s2", label: "10 - 7", icon: "➖", correctZoneId: "res3" },
+          { id: "s3", label: "9 - 4", icon: "➖", correctZoneId: "res5" },
+          { id: "s4", label: "12 - 7", icon: "➖", correctZoneId: "res5" }
+        ],
+        hint: "8 - 5 = 3, 10 - 7 = 3. 9 - 4 = 5, 12 - 7 = 5!",
+        review: "8-5 and 10-7 equal 3. 9-4 and 12-7 equal 5!"
+      },
+      {
+        stageNum: 13,
+        level: 3,
+        levelStageNum: "3 of 5",
+        title: "Match Subtractions to Results",
+        subtitle: "Level 3: Subtraction • 🔗 Match Pairs",
+        prompt: "Connect each subtraction problem on the left to its correct result on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "10 - 3", leftIcon: "➖", rightText: "7", rightIcon: "7️⃣" },
+          { id: "p2", leftText: "8 - 4", leftIcon: "➖", rightText: "4", rightIcon: "4️⃣" },
+          { id: "p3", leftText: "9 - 6", leftIcon: "➖", rightText: "3", rightIcon: "3️⃣" },
+          { id: "p4", leftText: "15 - 9", leftIcon: "➖", rightText: "6", rightIcon: "6️⃣" }
+        ],
+        hint: "10-3=7, 8-4=4, 9-6=3, 15-9=6!",
+        review: "10-3=7, 8-4=4, 9-6=3, and 15-9=6!"
+      },
+      {
+        stageNum: 14,
+        level: 3,
+        levelStageNum: "4 of 5",
         title: "Subtraction Counterbalance",
         subtitle: "Level 3: Subtraction • ⚖️ Balance Scale",
         prompt: "Left pan has 25 kg. Right pan has 18 kg. What difference weight balances the scale?",
@@ -245,40 +293,6 @@ export const GAMES_CATALOG = [
         correctWeightToDrop: 7,
         hint: "Find the difference: 25 - 18 = 7 kg needed on the right pan!",
         review: "25 kg minus 18 kg = 7 kg. Adding 7 kg balances the scale at 25 kg!"
-      },
-      {
-        stageNum: 13,
-        level: 3,
-        levelStageNum: "3 of 5",
-        title: "Subtraction Rebus Equation",
-        subtitle: "Level 3: Subtraction • 🔢 Rebus Keypad",
-        prompt: "Find the value of UFO 🛸 in this subtraction equation:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["🚀", "-", "4"], right: 6 },
-          { left: ["🚀", "-", "🛸"], right: 3 }
-        ],
-        targetSymbol: "🛸",
-        correctAnswer: 7,
-        hint: "1. 🚀 - 4 = 6 ➔ 🚀 = 10. 2. 10 - 🛸 = 3 ➔ 🛸 = 10 - 3!",
-        review: "🚀 = 10. In the second equation, 10 - 🛸 = 3 ➔ 🛸 = 7!"
-      },
-      {
-        stageNum: 14,
-        level: 3,
-        levelStageNum: "4 of 5",
-        title: "Subtracted Hollow 3D Block",
-        subtitle: "Level 3: Subtraction • 📦 3D Spatial",
-        prompt: "A 3x3 solid base has cubes removed from its corners. Count the remaining cubes:",
-        type: "spatial-3d",
-        heightMap: [
-          [0, 1, 0],
-          [1, 1, 1],
-          [0, 1, 0]
-        ],
-        totalCubes: 5,
-        hint: "A 3x3 grid has 9 spots minus 4 empty corners: 9 - 4 = ?",
-        review: "9 total grid spots minus 4 subtracted corners = 5 unit cubes!"
       },
       {
         stageNum: 15,
@@ -328,34 +342,39 @@ export const GAMES_CATALOG = [
         stageNum: 17,
         level: 4,
         levelStageNum: "2 of 5",
-        title: "Multiplication Weight Balance",
-        subtitle: "Level 4: Multiplication • ⚖️ Balance Scale",
-        prompt: "Left pan has 24 kg. Right pan has two 8 kg boxes (2 × 8 = 16 kg). Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [24],
-        rightWeights: [8, 8],
-        availableWeights: [4, 6, 8, 10],
-        requiredRightTotal: 24,
-        correctWeightToDrop: 8,
-        hint: "24 kg total needed. 3 × 8 = 24 kg! Right pan needs one more 8 kg weight (24 - 16 = 8)!",
-        review: "3 groups of 8 kg equal 24 kg (3 × 8 = 24 kg)!"
+        title: "Sort Multiples of 3 vs Multiples of 4",
+        subtitle: "Level 4: Multiplication • 🎯 Drag & Sort",
+        prompt: "Sort numbers into 'Multiples of 3' vs 'Multiples of 4':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "mult3", title: "Multiples of 3 (3×)", icon: "3️⃣", color: "#3B82F6" },
+          { id: "mult4", title: "Multiples of 4 (4×)", icon: "4️⃣", color: "#10B981" }
+        ],
+        items: [
+          { id: "m6", label: "Number 6 (3×2)", icon: "🔢", correctZoneId: "mult3" },
+          { id: "m9", label: "Number 9 (3×3)", icon: "🔢", correctZoneId: "mult3" },
+          { id: "m8", label: "Number 8 (4×2)", icon: "🔢", correctZoneId: "mult4" },
+          { id: "m16", label: "Number 16 (4×4)", icon: "🔢", correctZoneId: "mult4" }
+        ],
+        hint: "6 and 9 are in the 3 times table. 8 and 16 are in the 4 times table!",
+        review: "3×2=6, 3×3=9. 4×2=8, 4×4=16!"
       },
       {
         stageNum: 18,
         level: 4,
         levelStageNum: "3 of 5",
-        title: "Multiplication Picture Rebus",
-        subtitle: "Level 4: Multiplication • 🔢 Rebus Keypad",
-        prompt: "Find the value of Bear 🐻 in this multiplication puzzle:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["🦁", "×", "🦁"], right: 36 },
-          { left: ["🦁", "×", "🐻"], right: 30 }
+        title: "Match Multiplication Equations",
+        subtitle: "Level 4: Multiplication • 🔗 Match Pairs",
+        prompt: "Connect each multiplication problem to its correct product on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "3 × 4", leftIcon: "✖️", rightText: "12", rightIcon: "1️⃣2️⃣" },
+          { id: "p2", leftText: "5 × 5", leftIcon: "✖️", rightText: "25", rightIcon: "2️⃣5️⃣" },
+          { id: "p3", leftText: "6 × 2", leftIcon: "✖️", rightText: "12", rightIcon: "1️⃣2️⃣" },
+          { id: "p4", leftText: "4 × 5", leftIcon: "✖️", rightText: "20", rightIcon: "2️⃣0️⃣" }
         ],
-        targetSymbol: "🐻",
-        correctAnswer: 5,
-        hint: "1. 🦁 × 🦁 = 36 ➔ 🦁 = 6. 2. 6 × 🐻 = 30 ➔ 🐻 = 30 ÷ 6!",
-        review: "🦁 = 6. In equation 2: 6 × 🐻 = 30 ➔ 🐻 = 5!"
+        hint: "3×4=12, 5×5=25, 6×2=12, 4×5=20!",
+        review: "3×4=12, 5×5=25, 6×2=12, and 4×5=20!"
       },
       {
         stageNum: 19,
@@ -401,7 +420,7 @@ export const GAMES_CATALOG = [
         review: "Digits 1, 2, 3, and 4 appear exactly once in each row and column!"
       },
 
-      /* --- Level 5: Multi-Step Algebra & Operations --- */
+      /* --- Level 5: Fractions & Multi-Step Algebra --- */
       {
         stageNum: 21,
         level: 5,
@@ -424,22 +443,44 @@ export const GAMES_CATALOG = [
         stageNum: 22,
         level: 5,
         levelStageNum: "2 of 5",
-        title: "Multi-Step Precision Balance",
-        subtitle: "Level 5: Algebra • ⚖️ Balance Scale",
-        prompt: "Left pan has 48 kg. Right pan has 15 kg + 18 kg (33 kg). Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [48],
-        rightWeights: [15, 18],
-        availableWeights: [10, 12, 15, 18],
-        requiredRightTotal: 48,
-        correctWeightToDrop: 15,
-        hint: "Right pan has 15 + 18 = 33 kg. 48 - 33 = 15 kg needed!",
-        review: "48 kg on the left equals 15 kg + 18 kg + 15 kg on the right pan (48 kg balance)!"
+        title: "Sort Fractions: Half vs Quarter",
+        subtitle: "Level 5: Algebra • 🎯 Drag & Sort",
+        prompt: "Sort representations into 'Half (1/2)' vs 'Quarter (1/4)':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "half", title: "Half (1/2 or 50%)", icon: "🌗", color: "#6366F1" },
+          { id: "quarter", title: "Quarter (1/4 or 25%)", icon: "🌘", color: "#F59E0B" }
+        ],
+        items: [
+          { id: "f1", label: "2 out of 4 slices", icon: "🍕", correctZoneId: "half" },
+          { id: "f2", label: "50 out of 100", icon: "💯", correctZoneId: "half" },
+          { id: "f3", label: "1 out of 4 slices", icon: "🍕", correctZoneId: "quarter" },
+          { id: "f4", label: "25 out of 100", icon: "🪙", correctZoneId: "quarter" }
+        ],
+        hint: "2/4 and 50/100 are equal to one half (1/2). 1/4 and 25/100 are equal to one quarter (1/4)!",
+        review: "2/4 = 1/2 (Half). 1/4 = 25% (Quarter)!"
       },
       {
         stageNum: 23,
         level: 5,
         levelStageNum: "3 of 5",
+        title: "Match Fractions to Percentages",
+        subtitle: "Level 5: Algebra • 🔗 Match Pairs",
+        prompt: "Connect each fraction on the left to its percentage value on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "1/2 (One Half)", leftIcon: "🌗", rightText: "50%", rightIcon: "📊" },
+          { id: "p2", leftText: "1/4 (One Quarter)", leftIcon: "🌘", rightText: "25%", rightIcon: "📊" },
+          { id: "p3", leftText: "3/4 (Three Quarters)", leftIcon: "🌖", rightText: "75%", rightIcon: "📊" },
+          { id: "p4", leftText: "1/10 (One Tenth)", leftIcon: "🌑", rightText: "10%", rightIcon: "📊" }
+        ],
+        hint: "1/2 = 50%, 1/4 = 25%, 3/4 = 75%, 1/10 = 10%!",
+        review: "1/2 = 50%, 1/4 = 25%, 3/4 = 75%, and 1/10 = 10%!"
+      },
+      {
+        stageNum: 24,
+        level: 5,
+        levelStageNum: "4 of 5",
         title: "Three-Variable Algebraic System",
         subtitle: "Level 5: Algebra • 🔢 Rebus Keypad",
         prompt: "Find the value of Trophy 🏆 in this 3-step algebra system:",
@@ -453,23 +494,6 @@ export const GAMES_CATALOG = [
         correctAnswer: 9,
         hint: "1. 👑 = 8. 2. 8 × 💎 = 32 ➔ 💎 = 4. 3. 4 + 🏆 = 13 ➔ 🏆 = 13 - 4!",
         review: "👑 = 8, 💎 = 4, and 4 + 🏆 = 13 ➔ 🏆 = 9!"
-      },
-      {
-        stageNum: 24,
-        level: 5,
-        levelStageNum: "4 of 5",
-        title: "Multi-Tier Stepped Pyramid",
-        subtitle: "Level 5: Algebra • 📦 3D Spatial",
-        prompt: "Count cubes in this 3-tier structure (Base 3x3=9, Mid 2x2=4, Top 1x1=1):",
-        type: "spatial-3d",
-        heightMap: [
-          [1, 1, 1],
-          [1, 3, 1],
-          [1, 1, 1]
-        ],
-        totalCubes: 11,
-        hint: "8 perimeter cubes of height 1 plus 1 central tower of height 3: 8 + 3 = ?",
-        review: "8 base cubes + 3 central column cubes = 11 cubes in total!"
       },
       {
         stageNum: 25,
@@ -501,96 +525,106 @@ export const GAMES_CATALOG = [
   },
 
   /* ==========================================================================
-     COURSE 2: 🔬 SCIENCE & NATURE
+     COURSE 2: 🔬 SCIENCE & NATURE (Pure, Authentic Science)
      ========================================================================== */
   {
     id: "science-course",
     name: "Science & Nature",
     category: "science-course",
     icon: "🔬",
-    description: "Explore the natural world step-by-step: Animal Kingdom ➔ Habitats & Biomes ➔ States of Matter ➔ Space Astronomy ➔ Ecosystems & Energy!",
+    description: "Explore the natural world step-by-step: Animal Habitats & Diets ➔ Plants & Living Things ➔ States of Matter ➔ Space Astronomy ➔ Human Body & Food Chains!",
     levelThemes: [
-      { level: 1, name: "Animal Kingdom & Traits", icon: "🐾", desc: "Identify animal classifications, physical adaptations, and animal anatomy" },
-      { level: 2, name: "Habitats & Earth's Biomes", icon: "🌍", desc: "Explore Forests, Oceans, Deserts, and environmental adaptation" },
-      { level: 3, name: "States of Matter & Materials", icon: "⚗️", desc: "Investigate Solids, Liquids, Gases, density, and chemical molecules" },
-      { level: 4, name: "Space, Planets & Astronomy", icon: "🌌", desc: "Learn about the Solar System, planetary orbits, lunar phases, and gravity" },
-      { level: 5, name: "Ecosystems, Energy & Food Chains", icon: "⚡", desc: "Master photosynthesis, predator-prey chains, and conservation of mass" }
+      { level: 1, name: "Animal Habitats, Diets & Classification", icon: "🐾", desc: "Sort animals into habitats (Ocean vs Land), match diets, and identify mammals" },
+      { level: 2, name: "Living vs Non-Living & Plant Life", icon: "🌱", desc: "Classify living organisms, identify plant anatomy (roots, leaves), and life cycles" },
+      { level: 3, name: "States of Matter & Physical Materials", icon: "⚗️", desc: "Sort Solids, Liquids, Gases, match melting/freezing changes, and density" },
+      { level: 4, name: "Solar System, Planets & Astronomy", icon: "🌌", desc: "Classify Rocky Planets vs Gas Giants, match celestial bodies, and lunar orbits" },
+      { level: 5, name: "Human Body & Ecosystem Food Chains", icon: "🫀", desc: "Match vital organs (Heart, Lungs, Brain) and sort Producers, Consumers, Decomposers" }
     ],
     stages: [
-      /* --- Level 1: Animal Kingdom & Traits --- */
+      /* --- Level 1: Animal Habitats, Diets & Classification --- */
       {
         stageNum: 1,
         level: 1,
         levelStageNum: "1 of 5",
-        title: "Flight Adaptation Rule",
-        subtitle: "Level 1: Animal Kingdom • 🎴 Card Grid",
-        prompt: "Which animal CANNOT fly in the air?",
-        type: "cards-grid",
-        layout: "2x2",
-        cards: [
-          { id: "c1", icon: "🦅", label: "Eagle (Flyer)", isCorrect: false },
-          { id: "c2", icon: "🦉", label: "Owl (Flyer)", isCorrect: false },
-          { id: "c3", icon: "🐘", label: "Elephant (Land Mammal)", isCorrect: true },
-          { id: "c4", icon: "🦜", label: "Parrot (Flyer)", isCorrect: false }
+        title: "Put Animals in their Habitats",
+        subtitle: "Level 1: Animals • 🎯 Drag & Sort",
+        prompt: "Put the marine animals in the Ocean 🌊 and land animals in the Jungle 🌴:",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "ocean", title: "Ocean Habitat 🌊", icon: "🌊", color: "#0EA5E9" },
+          { id: "jungle", title: "Jungle Habitat 🌴", icon: "🌴", color: "#16A34A" }
         ],
-        hint: "Three animals are birds with wings that fly. One is a heavy land mammal!",
-        review: "Eagles, Owls, and Parrots have wings for flight. Elephants are land mammals without wings!"
+        items: [
+          { id: "a1", label: "Dolphin", icon: "🐬", correctZoneId: "ocean" },
+          { id: "a2", label: "Shark", icon: "🦈", correctZoneId: "ocean" },
+          { id: "a3", label: "Tiger", icon: "🐯", correctZoneId: "jungle" },
+          { id: "a4", label: "Monkey", icon: "🐒", correctZoneId: "jungle" }
+        ],
+        hint: "Dolphins and Sharks swim in saltwater oceans. Tigers and Monkeys live in terrestrial jungle forests!",
+        review: "Dolphins & Sharks live in the Ocean (🌊). Tigers & Monkeys live in the Jungle (🌴)!"
       },
       {
         stageNum: 2,
         level: 1,
         levelStageNum: "2 of 5",
-        title: "Animal Mass Balance",
-        subtitle: "Level 1: Animal Kingdom • ⚖️ Balance Scale",
-        prompt: "A baby tiger on the left pan weighs 8 kg. Right pan has 3 kg. Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [8],
-        rightWeights: [3],
-        availableWeights: [2, 4, 5, 6],
-        requiredRightTotal: 8,
-        correctWeightToDrop: 5,
-        hint: "8 kg on the left pan. 8 - 3 = 5 kg needed to balance!",
-        review: "8 kg tiger cub balances with 3 kg + 5 kg counterweights!"
+        title: "Match Animals to their Food",
+        subtitle: "Level 1: Animals • 🔗 Match Pairs",
+        prompt: "Connect each animal on the left to what it eats on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Rabbit 🐰", leftIcon: "🐰", rightText: "Carrot 🥕 (Herbivore)", rightIcon: "🥕" },
+          { id: "p2", leftText: "Monkey 🐒", leftIcon: "🐒", rightText: "Banana 🍌 (Fruit/Leaves)", rightIcon: "🍌" },
+          { id: "p3", leftText: "Frog 🐸", leftIcon: "🐸", rightText: "Fly 🪰 (Insectivore)", rightIcon: "🪰" },
+          { id: "p4", leftText: "Panda 🐼", leftIcon: "🐼", rightText: "Bamboo 🎋 (Herbivore)", rightIcon: "🎋" }
+        ],
+        hint: "Rabbits love crunchy carrots, monkeys eat bananas, frogs catch flying insects, and pandas feed on bamboo!",
+        review: "Rabbit ➔ Carrot, Monkey ➔ Banana, Frog ➔ Fly, Panda ➔ Bamboo!"
       },
       {
         stageNum: 3,
         level: 1,
         levelStageNum: "3 of 5",
-        title: "Animal Anatomy: Leg Count",
-        subtitle: "Level 1: Animal Kingdom • 🔢 Rebus Keypad",
-        prompt: "How many legs does one Duck 🦆 have?",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["🐶", "+", "🐶"], right: 8 },
-          { left: ["🐶", "+", "🦆"], right: 6 }
+        title: "Mammal Classification Rule",
+        subtitle: "Level 1: Animals • 🎴 Card Grid",
+        prompt: "Which animal is a MAMMAL that gives birth to live babies and breathes air?",
+        type: "cards-grid",
+        layout: "2x2",
+        cards: [
+          { id: "c1", icon: "🐬", label: "Dolphin (Mammal)", isCorrect: true },
+          { id: "c2", icon: "🦅", label: "Eagle (Bird - Lays eggs)", isCorrect: false },
+          { id: "c3", icon: "🦎", label: "Lizard (Reptile - Lays eggs)", isCorrect: false },
+          { id: "c4", icon: "🐸", label: "Frog (Amphibian - Lays eggs)", isCorrect: false }
         ],
-        targetSymbol: "🦆",
-        correctAnswer: 2,
-        hint: "Two dogs have 8 legs (🐶 = 4 legs). If 4 + 🦆 = 6 legs, then 🦆 = 6 - 4!",
-        review: "Dogs have 4 legs (4 + 4 = 8). 4 + 🦆 = 6 ➔ Ducks have 2 legs!"
+        hint: "Eagles, lizards, and frogs lay eggs. Dolphins are marine mammals with live births and lungs!",
+        review: "Dolphins are warm-blooded mammals that breathe air using lungs and nurse their calves!"
       },
       {
         stageNum: 4,
         level: 1,
         levelStageNum: "4 of 5",
-        title: "Animal Habitat Enclosure",
-        subtitle: "Level 1: Animal Kingdom • 📦 3D Spatial",
-        prompt: "Count the unit shelter blocks in this tortoise habitat:",
-        type: "spatial-3d",
-        heightMap: [
-          [2, 1],
-          [1, 2]
+        title: "Sort Flyers vs Non-Flyers",
+        subtitle: "Level 1: Animals • 🎯 Drag & Sort",
+        prompt: "Sort animals into 'Can Fly in Air 🪽' vs 'Cannot Fly 🐾':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "fly", title: "Can Fly 🪽", icon: "🪽", color: "#6366F1" },
+          { id: "nofly", title: "Cannot Fly 🐾", icon: "🐾", color: "#D97706" }
         ],
-        totalCubes: 6,
-        hint: "Two corners have 2 blocks, and two corners have 1 block: 2 + 1 + 1 + 2 = ?",
-        review: "The tortoise shelter enclosure contains 6 unit blocks!"
+        items: [
+          { id: "f1", label: "Eagle", icon: "🦅", correctZoneId: "fly" },
+          { id: "f2", label: "Owl", icon: "🦉", correctZoneId: "fly" },
+          { id: "f3", label: "Elephant", icon: "🐘", correctZoneId: "nofly" },
+          { id: "f4", label: "Lion", icon: "🦁", correctZoneId: "nofly" }
+        ],
+        hint: "Eagles and owls have wings and feathers for flight. Elephants and lions are land mammals!",
+        review: "Eagles and Owls fly in the air. Elephants and Lions live on land!"
       },
       {
         stageNum: 5,
         level: 1,
         levelStageNum: "5 of 5",
         title: "3x3 Animal Classification Grid",
-        subtitle: "Level 1: Animal Kingdom • 🧩 Sudoku Matrix",
+        subtitle: "Level 1: Animals • 🧩 Sudoku Matrix",
         prompt: "Place Dog 🐶, Cat 🐱, and Rabbit 🐰 so none repeat per row or column:",
         type: "sudoku-matrix",
         gridSize: 3,
@@ -610,150 +644,161 @@ export const GAMES_CATALOG = [
         review: "Each row and column contains Dog, Cat, and Rabbit uniquely!"
       },
 
-      /* --- Level 2: Habitats & Earth's Biomes --- */
+      /* --- Level 2: Living vs Non-Living & Plant Life --- */
       {
         stageNum: 6,
         level: 2,
         levelStageNum: "1 of 5",
-        title: "Ocean Marine Habitat",
-        subtitle: "Level 2: Habitats • 🎴 Card Grid",
-        prompt: "Which creature lives in the OCEAN saltwater habitat?",
-        type: "cards-grid",
-        layout: "2x2",
-        cards: [
-          { id: "c1", icon: "🦁", label: "Lion (Savanna)", isCorrect: false },
-          { id: "c2", icon: "🐬", label: "Dolphin (Ocean)", isCorrect: true },
-          { id: "c3", icon: "🦒", label: "Giraffe (Savanna)", isCorrect: false },
-          { id: "c4", icon: "🦊", label: "Fox (Forest)", isCorrect: false }
+        title: "Living vs Non-Living Things",
+        subtitle: "Level 2: Living Things • 🎯 Drag & Sort",
+        prompt: "Sort items into 'Living Organisms 🌱' vs 'Non-Living Objects ⚙️':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "living", title: "Living Organisms 🌱", icon: "🌱", color: "#16A34A" },
+          { id: "nonliving", title: "Non-Living Objects ⚙️", icon: "⚙️", color: "#64748B" }
         ],
-        hint: "Look for the marine animal that swims in ocean water and uses a blowhole to breathe!",
-        review: "Dolphins are marine mammals that thrive in ocean ecosystems!"
+        items: [
+          { id: "l1", label: "Oak Tree (Grows & Breathes)", icon: "🌳", correctZoneId: "living" },
+          { id: "l2", label: "Bird (Grows & Reproduces)", icon: "🐦", correctZoneId: "living" },
+          { id: "nl1", label: "Granite Rock", icon: "🪨", correctZoneId: "nonliving" },
+          { id: "nl2", label: "Toy Car", icon: "🚗", correctZoneId: "nonliving" }
+        ],
+        hint: "Living things grow, breathe, and reproduce. Rocks and cars are non-living objects!",
+        review: "Trees & Birds are living organisms. Rocks & Cars are non-living!"
       },
       {
         stageNum: 7,
         level: 2,
         levelStageNum: "2 of 5",
-        title: "Polar Ice Mass Balance",
-        subtitle: "Level 2: Habitats • ⚖️ Balance Scale",
-        prompt: "Left pan has a 16 kg polar glacier ice core. Right pan has 6 kg. Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [16],
-        rightWeights: [6],
-        availableWeights: [8, 10, 12, 14],
-        requiredRightTotal: 16,
-        correctWeightToDrop: 10,
-        hint: "16 kg on left. 16 - 6 = 10 kg counterweight needed!",
-        review: "16 kg polar ice sample balances with 6 kg + 10 kg counterweights!"
+        title: "Match Plant Parts to Functions",
+        subtitle: "Level 2: Living Things • 🔗 Match Pairs",
+        prompt: "Connect each plant anatomy part on the left to its biological function on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Roots 🪴", leftIcon: "🪴", rightText: "Absorbs water & minerals from soil", rightIcon: "💧" },
+          { id: "p2", leftText: "Stem 🌿", leftIcon: "🌿", rightText: "Transports water & supports the plant", rightIcon: "⬆️" },
+          { id: "p3", leftText: "Leaves 🍃", leftIcon: "🍃", rightText: "Makes food using sunlight (Photosynthesis)", rightIcon: "☀️" },
+          { id: "p4", leftText: "Flower 🌸", leftIcon: "🌸", rightText: "Produces seeds for reproduction", rightIcon: "🌱" }
+        ],
+        hint: "Roots absorb water, Stems carry water upward, Leaves capture sunlight, Flowers make seeds!",
+        review: "Roots ➔ Water uptake, Stem ➔ Transport, Leaves ➔ Photosynthesis, Flower ➔ Seed reproduction!"
       },
       {
         stageNum: 8,
         level: 2,
         levelStageNum: "3 of 5",
-        title: "Biome Plant Algebra",
-        subtitle: "Level 2: Habitats • 🔢 Rebus Keypad",
-        prompt: "Find the growth unit value of Desert Cactus 🌵:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["🌲", "+", "🌲"], right: 10 },
-          { left: ["🌲", "+", "🌵"], right: 8 }
+        title: "Plant Anatomy: Water Uptake",
+        subtitle: "Level 2: Living Things • 🎴 Card Grid",
+        prompt: "Which part of a plant anchors it in the soil and ABSORBS WATER?",
+        type: "cards-grid",
+        layout: "2x2",
+        cards: [
+          { id: "c1", icon: "🪴", label: "Roots", isCorrect: true },
+          { id: "c2", icon: "🌸", label: "Petals", isCorrect: false },
+          { id: "c3", icon: "🍃", label: "Leaves", isCorrect: false },
+          { id: "c4", icon: "🪵", label: "Bark", isCorrect: false }
         ],
-        targetSymbol: "🌵",
-        correctAnswer: 3,
-        hint: "1. 🌲 + 🌲 = 10 ➔ 🌲 = 5. 2. 5 + 🌵 = 8 ➔ 🌵 = 8 - 5!",
-        review: "Forest Pine 🌲 = 5. In equation 2: 5 + 🌵 = 8 ➔ Desert Cactus 🌵 = 3!"
+        hint: "Look underground: roots absorb moisture and vital nutrients from the soil!",
+        review: "Plant roots grow deep into the ground to anchor the plant and drink water!"
       },
       {
         stageNum: 9,
         level: 2,
         levelStageNum: "4 of 5",
-        title: "Coral Reef 3D Formations",
-        subtitle: "Level 2: Habitats • 📦 3D Spatial",
-        prompt: "Count all 3D coral blocks in this underwater reef formation:",
-        type: "spatial-3d",
-        heightMap: [
-          [2, 2],
-          [2, 2]
+        title: "Match Baby Animals to Adults",
+        subtitle: "Level 2: Living Things • 🔗 Match Pairs",
+        prompt: "Connect each baby animal on the left to its adult parent on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Puppy 🐶", leftIcon: "🐶", rightText: "Adult Dog 🐕", rightIcon: "🐕" },
+          { id: "p2", leftText: "Kitten 🐱", leftIcon: "🐱", rightText: "Adult Cat 🐈", rightIcon: "🐈" },
+          { id: "p3", leftText: "Calf 🐮", leftIcon: "🐮", rightText: "Adult Cow 🐄", rightIcon: "🐄" },
+          { id: "p4", leftText: "Tadpole 🐸", leftIcon: "🫧", rightText: "Adult Frog 🐸", rightIcon: "🐸" }
         ],
-        totalCubes: 8,
-        hint: "A 2x2 grid where every column is 2 layers high: 2 × 4 = ?",
-        review: "There are 4 columns of 2 coral blocks each: 4 × 2 = 8 coral reef blocks!"
+        hint: "Puppy ➔ Dog, Kitten ➔ Cat, Calf ➔ Cow, Tadpole ➔ Frog!",
+        review: "Puppies grow into Dogs, Kittens into Cats, Calves into Cows, and Tadpoles into Frogs!"
       },
       {
         stageNum: 10,
         level: 2,
         levelStageNum: "5 of 5",
-        title: "3x3 Biome Ecosystem Grid",
-        subtitle: "Level 2: Habitats • 🧩 Sudoku Matrix",
-        prompt: "Place Forest 🌲, Ocean 🌊, and Desert 🏜️ with no repeats in any row or column:",
+        title: "3x3 Plant Kingdom Matrix",
+        subtitle: "Level 2: Living Things • 🧩 Sudoku Matrix",
+        prompt: "Place Flower 🌸, Tree 🌲, and Leaf 🍃 with no duplicate per row or column:",
         type: "sudoku-matrix",
         gridSize: 3,
-        symbols: ["🌲", "🌊", "🏜️"],
+        symbols: ["🌸", "🌲", "🍃"],
         initialGrid: [
-          ["🌲", "🌊", "🏜️"],
-          ["🌊", "🏜️", null],
-          ["🏜️", null, "🌊"]
+          ["🌸", "🌲", "🍃"],
+          ["🌲", "🍃", null],
+          ["🍃", null, "🌲"]
         ],
         solutionGrid: [
-          ["🌲", "🌊", "🏜️"],
-          ["🌊", "🏜️", "🌲"],
-          ["🏜️", "🌲", "🌊"]
+          ["🌸", "🌲", "🍃"],
+          ["🌲", "🍃", "🌸"],
+          ["🍃", "🌸", "🌲"]
         ],
-        targetCell: { r: 1, c: 2, answer: "🌲", explanation: "Row 2 contains Ocean and Desert, so the missing biome is Forest 🌲!" },
-        hint: "Row 2 contains 🌊 and 🏜️. Which biome is missing to complete [🌲, 🌊, 🏜️]?",
-        review: "Each row and column contains Forest, Ocean, and Desert biomes without duplicate!"
+        targetCell: { r: 1, c: 2, answer: "🌸", explanation: "Row 2 contains Tree and Leaf, so the missing plant symbol is Flower 🌸!" },
+        hint: "Row 2 contains 🌲 and 🍃. What is the missing botanical symbol?",
+        review: "Each row and column holds Flower, Tree, and Leaf without duplication!"
       },
 
-      /* --- Level 3: States of Matter & Materials --- */
+      /* --- Level 3: States of Matter & Physical Materials --- */
       {
         stageNum: 11,
         level: 3,
         levelStageNum: "1 of 5",
-        title: "Gaseous State of Matter",
-        subtitle: "Level 3: States of Matter • 🎴 Card Grid",
-        prompt: "Which item is in the GASEOUS state of matter at room temperature?",
-        type: "cards-grid",
-        layout: "2x2",
-        cards: [
-          { id: "c1", icon: "🧊", label: "Ice Cube (Solid)", isCorrect: false },
-          { id: "c2", icon: "💧", label: "Water Drop (Liquid)", isCorrect: false },
-          { id: "c3", icon: "💨", label: "Water Vapor / Air (Gas)", isCorrect: true },
-          { id: "c4", icon: "🪨", label: "Rock (Solid)", isCorrect: false }
+        title: "Sort Solids, Liquids, and Gases",
+        subtitle: "Level 3: States of Matter • 🎯 Drag & Sort",
+        prompt: "Sort each everyday item into its state of matter:",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "solid", title: "Solid 🧊 (Fixed Shape)", icon: "🧊", color: "#3B82F6" },
+          { id: "liquid", title: "Liquid 💧 (Flows in Cup)", icon: "💧", color: "#06B6D4" },
+          { id: "gas", title: "Gas 💨 (Fills Air)", icon: "💨", color: "#A855F7" }
         ],
-        hint: "Solids hold shape, liquids flow, and gases expand freely into the air!",
-        review: "Water vapor and air molecules are in the gaseous state, dispersing freely!"
+        items: [
+          { id: "m1", label: "Ice Cube", icon: "🧊", correctZoneId: "solid" },
+          { id: "m2", label: "Water", icon: "💧", correctZoneId: "liquid" },
+          { id: "m3", label: "Steam / Air", icon: "💨", correctZoneId: "gas" }
+        ],
+        hint: "Ice is a solid, liquid water flows in a glass, and steam is a gas that disperses into the air!",
+        review: "Ice = Solid 🧊, Water = Liquid 💧, Steam = Gas 💨!"
       },
       {
         stageNum: 12,
         level: 3,
         levelStageNum: "2 of 5",
-        title: "Liquid Volume Mass Balance",
-        subtitle: "Level 3: States of Matter • ⚖️ Balance Scale",
-        prompt: "Left pan has 24 kg chemical beaker. Right pan has 14 kg. Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [24],
-        rightWeights: [14],
-        availableWeights: [6, 8, 10, 12],
-        requiredRightTotal: 24,
-        correctWeightToDrop: 10,
-        hint: "24 kg total mass. 24 - 14 = 10 kg counterweight needed!",
-        review: "24 kg on the left equals 14 kg + 10 kg on the right pan!"
+        title: "Match Phase Changes of Water",
+        subtitle: "Level 3: States of Matter • 🔗 Match Pairs",
+        prompt: "Connect each thermal state change to what happens to water:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Melting ☀️", leftIcon: "☀️", rightText: "Solid Ice turns into Liquid Water (🧊 ➔ 💧)", rightIcon: "💧" },
+          { id: "p2", leftText: "Freezing ❄️", leftIcon: "❄️", rightText: "Liquid Water turns into Solid Ice (💧 ➔ 🧊)", rightIcon: "🧊" },
+          { id: "p3", leftText: "Evaporation ♨️", leftIcon: "♨️", rightText: "Liquid Water turns into Gas Steam (💧 ➔ 💨)", rightIcon: "💨" },
+          { id: "p4", leftText: "Condensation 🌧️", leftIcon: "🌧️", rightText: "Gas Vapor cools into Liquid Rain (💨 ➔ 💧)", rightIcon: "💧" }
+        ],
+        hint: "Melting: Ice ➔ Water. Freezing: Water ➔ Ice. Evaporation: Water ➔ Steam. Condensation: Vapor ➔ Water drops!",
+        review: "Melting (Solid ➔ Liquid), Freezing (Liquid ➔ Solid), Evaporation (Liquid ➔ Gas), Condensation (Gas ➔ Liquid)!"
       },
       {
         stageNum: 13,
         level: 3,
         levelStageNum: "3 of 5",
-        title: "Water Molecule Formula (H2O)",
-        subtitle: "Level 3: States of Matter • 🔢 Rebus Keypad",
-        prompt: "If Hydrogen ⚛️ = 1, what is the atomic mass of Oxygen 🧪 in H2O = 18?",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["🧪", "+", "⚛️", "+", "⚛️"], right: 18 },
-          { left: ["⚛️", "+", "⚛️"], right: 2 }
+        title: "Electrical Conductor Material",
+        subtitle: "Level 3: States of Matter • 🎴 Card Grid",
+        prompt: "Which material is an ELECTRICAL CONDUCTOR that allows electricity to flow?",
+        type: "cards-grid",
+        layout: "2x2",
+        cards: [
+          { id: "c1", icon: "🪙", label: "Copper Metal Wire", isCorrect: true },
+          { id: "c2", icon: "🪵", label: "Wooden Stick (Insulator)", isCorrect: false },
+          { id: "c3", icon: "🧤", label: "Rubber Glove (Insulator)", isCorrect: false },
+          { id: "c4", icon: "🥤", label: "Plastic Straw (Insulator)", isCorrect: false }
         ],
-        targetSymbol: "🧪",
-        correctAnswer: 16,
-        hint: "Two Hydrogens ⚛️ + ⚛️ = 2. In H2O, 🧪 + 2 = 18 ➔ 🧪 = 18 - 2!",
-        review: "Each Hydrogen is 1 (1 + 1 = 2). 🧪 (Oxygen) = 18 - 2 = 16 atomic mass units!"
+        hint: "Metals like copper and aluminum conduct electricity. Wood, rubber, and plastic are insulators!",
+        review: "Copper metal is an excellent electrical conductor used in electrical wiring!"
       },
       {
         stageNum: 14,
@@ -799,81 +844,86 @@ export const GAMES_CATALOG = [
         review: "Every row and column contains Solid, Liquid, Gas, and Plasma uniquely!"
       },
 
-      /* --- Level 4: Space, Planets & Astronomy --- */
+      /* --- Level 4: Solar System, Planets & Astronomy --- */
       {
         stageNum: 16,
         level: 4,
         levelStageNum: "1 of 5",
-        title: "Luminous Star vs Planets",
-        subtitle: "Level 4: Astronomy • 🎴 Card Grid",
-        prompt: "Which celestial body is a LUMINOUS STAR that generates its own light?",
-        type: "cards-grid",
-        layout: "2x2",
-        cards: [
-          { id: "c1", icon: "☀️", label: "The Sun (Star)", isCorrect: true },
-          { id: "c2", icon: "🌕", label: "The Moon (Satellite)", isCorrect: false },
-          { id: "c3", icon: "🪐", label: "Saturn (Planet)", isCorrect: false },
-          { id: "c4", icon: "☄️", label: "Comet (Ice/Dust)", isCorrect: false }
+        title: "Rocky Planets vs Gas Giants",
+        subtitle: "Level 4: Solar System • 🎯 Drag & Sort",
+        prompt: "Sort planets into 'Inner Rocky Planets 🪨' vs 'Outer Gas Giants 🪐':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "rocky", title: "Inner Rocky Planets 🪨", icon: "🪨", color: "#D97706" },
+          { id: "gasgiant", title: "Outer Gas Giants 🪐", icon: "🪐", color: "#8B5CF6" }
         ],
-        hint: "Moons and planets reflect light, but stars generate light via nuclear fusion!",
-        review: "The Sun is a glowing star that produces its own heat and light energy!"
+        items: [
+          { id: "pl1", label: "Mercury (Rocky)", icon: "☿️", correctZoneId: "rocky" },
+          { id: "pl2", label: "Mars (Rocky)", icon: "♂️", correctZoneId: "rocky" },
+          { id: "pl3", label: "Jupiter (Gas Giant)", icon: "♃️", correctZoneId: "gasgiant" },
+          { id: "pl4", label: "Saturn (Gas Giant)", icon: "🪐", correctZoneId: "gasgiant" }
+        ],
+        hint: "Mercury, Venus, Earth, Mars are small rocky worlds. Jupiter, Saturn, Uranus, Neptune are giant gas planets!",
+        review: "Mercury & Mars are Rocky Planets. Jupiter & Saturn are Gas Giants!"
       },
       {
         stageNum: 17,
         level: 4,
         levelStageNum: "2 of 5",
-        title: "Lunar Gravity Counterbalance",
-        subtitle: "Level 4: Astronomy • ⚖️ Balance Scale",
-        prompt: "Left pan has 36 kg Earth mass. Right pan has 16 kg + 10 kg. Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [36],
-        rightWeights: [16, 10],
-        availableWeights: [8, 10, 12, 14],
-        requiredRightTotal: 36,
-        correctWeightToDrop: 10,
-        hint: "Right pan currently has 16 + 10 = 26 kg. 36 - 26 = 10 kg needed!",
-        review: "36 kg on the left equals 16 kg + 10 kg + 10 kg on the right pan!"
+        title: "Match Celestial Objects",
+        subtitle: "Level 4: Solar System • 🔗 Match Pairs",
+        prompt: "Connect each celestial body on the left to its unique astronomical feature:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "The Sun ☀️", leftIcon: "☀️", rightText: "Center star of our solar system providing light", rightIcon: "🌟" },
+          { id: "p2", leftText: "The Earth 🌍", leftIcon: "🌍", rightText: "Habitable planet with liquid oceans & life", rightIcon: "🌊" },
+          { id: "p3", leftText: "The Moon 🌕", leftIcon: "🌕", rightText: "Natural satellite orbiting planet Earth", rightIcon: "🛰️" },
+          { id: "p4", leftText: "Saturn 🪐", leftIcon: "🪐", rightText: "Giant planet with spectacular icy rings", rightIcon: "💍" }
+        ],
+        hint: "The Sun is our star, Earth has life and oceans, the Moon orbits Earth, and Saturn has rings!",
+        review: "Sun ➔ Star, Earth ➔ Habitable Oceans, Moon ➔ Satellite, Saturn ➔ Rings!"
       },
       {
         stageNum: 18,
         level: 4,
         levelStageNum: "3 of 5",
-        title: "Planetary Orbit Speed Algebra",
-        subtitle: "Level 4: Astronomy • 🔢 Rebus Keypad",
-        prompt: "Find the orbit velocity value of Sun satellite ☀️:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["🪐", "+", "🪐"], right: 20 },
-          { left: ["🪐", "×", "☀️"], right: 60 }
+        title: "The Red Planet Identification",
+        subtitle: "Level 4: Solar System • 🎴 Card Grid",
+        prompt: "Which planet is known as the 'RED PLANET' due to iron oxide rust on its surface?",
+        type: "cards-grid",
+        layout: "2x2",
+        cards: [
+          { id: "c1", icon: "♂️", label: "Mars", isCorrect: true },
+          { id: "c2", icon: "♀️", label: "Venus", isCorrect: false },
+          { id: "c3", icon: "♆", label: "Neptune (Blue)", isCorrect: false },
+          { id: "c4", icon: "☿️", label: "Mercury", isCorrect: false }
         ],
-        targetSymbol: "☀️",
-        correctAnswer: 6,
-        hint: "1. 🪐 + 🪐 = 20 ➔ 🪐 = 10. 2. 10 × ☀️ = 60 ➔ ☀️ = 60 ÷ 10!",
-        review: "🪐 = 10. In equation 2: 10 × ☀️ = 60 ➔ ☀️ = 6!"
+        hint: "Mars is the 4th planet from the Sun, covered in red rusty dust where rovers explore!",
+        review: "Mars is called the Red Planet because iron minerals in its soil oxidize (rust) into red dust!"
       },
       {
         stageNum: 19,
         level: 4,
         levelStageNum: "4 of 5",
-        title: "Orbital Space Station 3D Model",
-        subtitle: "Level 4: Astronomy • 📦 3D Spatial",
-        prompt: "Count all 3D laboratory modules in this orbital space station:",
-        type: "spatial-3d",
-        heightMap: [
-          [1, 3, 1],
-          [3, 2, 3],
-          [1, 0, 1]
+        title: "Match Earth Seasons to Weather",
+        subtitle: "Level 4: Solar System • 🔗 Match Pairs",
+        prompt: "Connect each Earth season to its weather caused by Earth's orbital axial tilt:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Summer 🏖️", leftIcon: "🏖️", rightText: "Hot temperatures & longest daylight hours", rightIcon: "☀️" },
+          { id: "p2", leftText: "Winter ⛄", leftIcon: "⛄", rightText: "Cold temperatures, frost, snow & shorter days", rightIcon: "❄️" },
+          { id: "p3", leftText: "Autumn 🍂", leftIcon: "🍂", rightText: "Leaves turn golden-brown & cool breezes blow", rightIcon: "🍁" },
+          { id: "p4", leftText: "Spring 🌷", leftIcon: "🌷", rightText: "Flowers bloom & baby animals are born", rightIcon: "🌸" }
         ],
-        totalCubes: 15,
-        hint: "Row 1: 1+3+1=5. Row 2: 3+2+3=8. Row 3: 1+0+1=2. 5 + 8 + 2 = ?",
-        review: "There are 15 habitat and lab modules forming the orbital space station!"
+        hint: "Summer is hot, Winter brings snow, Autumn has falling leaves, and Spring brings fresh flowers!",
+        review: "Summer ➔ Hot/Long days, Winter ➔ Snow/Cold, Autumn ➔ Leaves fall, Spring ➔ Flowers bloom!"
       },
       {
         stageNum: 20,
         level: 4,
         levelStageNum: "5 of 5",
         title: "4x4 Celestial Constellation Matrix",
-        subtitle: "Level 4: Astronomy • 🧩 Sudoku Matrix",
+        subtitle: "Level 4: Solar System • 🧩 Sudoku Matrix",
         prompt: "Place Sun ☀️, Moon 🌙, Star ⭐, and Comet ☄️ without duplicate per row/column:",
         type: "sudoku-matrix",
         gridSize: 4,
@@ -895,14 +945,52 @@ export const GAMES_CATALOG = [
         review: "Each row and column holds Sun, Moon, Star, and Comet in perfect symmetry!"
       },
 
-      /* --- Level 5: Ecosystems, Energy & Food Chains --- */
+      /* --- Level 5: Human Body & Ecosystem Food Chains --- */
       {
         stageNum: 21,
         level: 5,
         levelStageNum: "1 of 5",
+        title: "Trophic Levels: Producers & Consumers",
+        subtitle: "Level 5: Ecosystems • 🎯 Drag & Sort",
+        prompt: "Sort organisms into 'Producers 🌱 (Make Food)' vs 'Consumers 🦁 (Eat Others)':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "producer", title: "Producers 🌱 (Photosynthesis)", icon: "🌱", color: "#16A34A" },
+          { id: "consumer", title: "Consumers 🦁 (Heterotrophs)", icon: "🦁", color: "#EF4444" }
+        ],
+        items: [
+          { id: "e1", label: "Green Grass", icon: "🌾", correctZoneId: "producer" },
+          { id: "e2", label: "Oak Tree", icon: "🌳", correctZoneId: "producer" },
+          { id: "e3", label: "Lion", icon: "🦁", correctZoneId: "consumer" },
+          { id: "e4", label: "Hawk", icon: "🦅", correctZoneId: "consumer" }
+        ],
+        hint: "Plants (grass, trees) produce food via sunlight. Animals (lions, hawks) consume other organisms!",
+        review: "Grass & Trees are Producers (🌱). Lions & Hawks are Consumers (🦁)!"
+      },
+      {
+        stageNum: 22,
+        level: 5,
+        levelStageNum: "2 of 5",
+        title: "Match Human Organs to Functions",
+        subtitle: "Level 5: Human Body • 🔗 Match Pairs",
+        prompt: "Connect each vital human organ on the left to its biological function on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Heart 🫀", leftIcon: "🫀", rightText: "Pumps oxygen-rich blood throughout the body", rightIcon: "🩸" },
+          { id: "p2", leftText: "Lungs 🫁", leftIcon: "🫁", rightText: "Inhales oxygen and exhales carbon dioxide", rightIcon: "💨" },
+          { id: "p3", leftText: "Brain 🧠", leftIcon: "🧠", rightText: "Controls thoughts, memories, and body movements", rightIcon: "💡" },
+          { id: "p4", leftText: "Stomach 🫄", leftIcon: "🫄", rightText: "Breaks down and digests food nutrients", rightIcon: "🥗" }
+        ],
+        hint: "Heart pumps blood, Lungs breathe air, Brain controls the nervous system, Stomach digests food!",
+        review: "Heart ➔ Blood circulation, Lungs ➔ Respiration, Brain ➔ Nervous control, Stomach ➔ Digestion!"
+      },
+      {
+        stageNum: 23,
+        level: 5,
+        levelStageNum: "3 of 5",
         title: "Food Chain Apex Predator",
         subtitle: "Level 5: Ecosystems • 🎴 Card Grid",
-        prompt: "Sun ☀️ ➔ Grass 🌾 ➔ Grasshopper 🦗 ➔ Frog 🐸 ➔ ❓. What apex predator tops this chain?",
+        prompt: "Sun ☀️ ➔ Grass 🌾 ➔ Grasshopper 🦗 ➔ Frog 🐸 ➔ ❓. What apex predator tops this food chain?",
         type: "cards-grid",
         layout: "2x2",
         cards: [
@@ -915,62 +1003,28 @@ export const GAMES_CATALOG = [
         review: "Eagles and hawks are apex predators atop the vertebrate food chain!"
       },
       {
-        stageNum: 22,
-        level: 5,
-        levelStageNum: "2 of 5",
-        title: "Conservation of Mass Balance",
-        subtitle: "Level 5: Ecosystems • ⚖️ Balance Scale",
-        prompt: "Left pan has 54 g reactant mass. Right pan has 24 g + 18 g (42 g). Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [54],
-        rightWeights: [24, 18],
-        availableWeights: [8, 10, 12, 16],
-        requiredRightTotal: 54,
-        correctWeightToDrop: 12,
-        hint: "Right pan currently has 24 + 18 = 42 g. Law of Conservation of Mass: 54 - 42 = 12 g!",
-        review: "By Conservation of Mass: 54 g reactants = 24 g + 18 g + 12 g products!"
-      },
-      {
-        stageNum: 23,
-        level: 5,
-        levelStageNum: "3 of 5",
-        title: "Photosynthesis Energy Equation",
-        subtitle: "Level 5: Ecosystems • 🔢 Rebus Keypad",
-        prompt: "Find the Glucose Energy units 🍯 produced in photosynthesis:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["☀️", "+", "☀️"], right: 14 },
-          { left: ["💧", "+", "💧"], right: 6 },
-          { left: ["☀️", "+", "💧", "+", "🍯"], right: 20 }
-        ],
-        targetSymbol: "🍯",
-        correctAnswer: 10,
-        hint: "1. ☀️ = 7. 2. 💧 = 3. 3. 7 + 3 + 🍯 = 20 ➔ 10 + 🍯 = 20 ➔ 🍯 = 10!",
-        review: "☀️ = 7, 💧 = 3. 7 + 3 + 🍯 = 20 ➔ 🍯 = 10 units of bio-energy!"
-      },
-      {
         stageNum: 24,
         level: 5,
         levelStageNum: "4 of 5",
-        title: "Solar Energy Concentrator 3D Model",
-        subtitle: "Level 5: Ecosystems • 📦 3D Spatial",
-        prompt: "Count all 3D solar collector cubes in this renewable energy tower:",
-        type: "spatial-3d",
-        heightMap: [
-          [2, 3, 2],
-          [3, 4, 3],
-          [2, 0, 2]
+        title: "Match Simple Machines to Everyday Tools",
+        subtitle: "Level 5: Physics & Machines • 🔗 Match Pairs",
+        prompt: "Connect each simple physics machine on the left to its real-world example on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Lever ⚖️", leftIcon: "⚖️", rightText: "Playground Seesaw", rightIcon: "🎠" },
+          { id: "p2", leftText: "Pulley 🪢", leftIcon: "🪢", rightText: "Flagpole hoisting rope", rightIcon: "🚩" },
+          { id: "p3", leftText: "Inclined Plane 📐", leftIcon: "📐", rightText: "Wheelchair accessibility ramp", rightIcon: "♿" },
+          { id: "p4", leftText: "Wheel & Axle 🎡", leftIcon: "🎡", rightText: "Bicycle steering wheels", rightIcon: "🚲" }
         ],
-        totalCubes: 21,
-        hint: "Sum row heights: (2+3+2) + (3+4+3) + (2+0+2) = 7 + 10 + 4 = ?",
-        review: "The renewable solar collector tower contains 21 unit cubes in total!"
+        hint: "Seesaw = Lever, Flagpole rope = Pulley, Ramp = Inclined Plane, Bicycle = Wheel & Axle!",
+        review: "Lever ➔ Seesaw, Pulley ➔ Flagpole, Inclined Plane ➔ Ramp, Wheel & Axle ➔ Bicycle!"
       },
       {
         stageNum: 25,
         level: 5,
         levelStageNum: "5 of 5",
         title: "4x4 Science Laboratory Matrix",
-        subtitle: "Level 5: Ecosystems • 🧩 Sudoku Matrix",
+        subtitle: "Level 5: Science Tools • 🧩 Sudoku Matrix",
         prompt: "Place Microscope 🔬, Magnet 🧲, Beaker 🧪, and Telescope 🔭 without duplicate:",
         type: "sudoku-matrix",
         gridSize: 4,
@@ -995,23 +1049,23 @@ export const GAMES_CATALOG = [
   },
 
   /* ==========================================================================
-     COURSE 3: 💡 APTITUDE & LOGIC
+     COURSE 3: 💡 APTITUDE & LOGIC (Cognitive Reasoning)
      ========================================================================== */
   {
     id: "aptitude-course",
     name: "Aptitude & Logic",
     category: "aptitude-course",
     icon: "💡",
-    description: "Sharpen cognitive reasoning step-by-step: Visual Patterns ➔ 90° Rotations ➔ Multi-Attribute Venn ➔ Mirror Projections ➔ Deductive Syllogisms!",
+    description: "Sharpen cognitive reasoning step-by-step: Visual Patterns ➔ Directional Logic ➔ Multi-Attribute Venn ➔ Mirror Projections ➔ Deductive Syllogisms!",
     levelThemes: [
-      { level: 1, name: "Visual Patterns & Color Matching", icon: "🎨", desc: "Recognize color sets, shape attributes, and basic odd-one-out rules" },
-      { level: 2, name: "Directional Logic & 90° Rotations", icon: "🔄", desc: "Master clockwise rotations, directional arrows, and compass orientations" },
-      { level: 3, name: "Multi-Attribute & Venn Logic", icon: "🎯", desc: "Evaluate dual-condition rules (Color AND Shape) and multi-tier grids" },
-      { level: 4, name: "Mirror Symmetry & 3D Projections", icon: "🪞", desc: "Invert horizontal/vertical mirror planes, analyze unfolded nets, and tunnels" },
-      { level: 5, name: "Formal Deductive Syllogisms", icon: "🧠", desc: "Deduce transitive logic (If A=B, B=C -> A=C) and master 4x4 Latin squares" }
+      { level: 1, name: "Visual Patterns & Shapes", icon: "🎨", desc: "Recognize color sets, classify 3-sided vs 4-sided shapes, and match 2D shapes to real objects" },
+      { level: 2, name: "Directional Logic & Opposites", icon: "🔄", desc: "Master 90° clockwise turns, directional sorting, and logical opposites" },
+      { level: 3, name: "Multi-Attribute & Venn Logic", icon: "🎯", desc: "Evaluate dual-condition rules (Color AND Shape) and match profession tools" },
+      { level: 4, name: "Mirror Symmetry & 3D Projections", icon: "🪞", desc: "Reflect mirror planes, sort symmetrical items, and match 3D objects to 2D shadows" },
+      { level: 5, name: "Formal Deductive Syllogisms & Logic", icon: "🧠", desc: "Master transitive logic (A->B->C), match cause to effect, and solve Latin squares" }
     ],
     stages: [
-      /* --- Level 1: Visual Patterns & Color Matching --- */
+      /* --- Level 1: Visual Patterns & Shapes --- */
       {
         stageNum: 1,
         level: 1,
@@ -1034,34 +1088,39 @@ export const GAMES_CATALOG = [
         stageNum: 2,
         level: 1,
         levelStageNum: "2 of 5",
-        title: "Direct Shape Mass Balance",
-        subtitle: "Level 1: Visual Patterns • ⚖️ Balance Scale",
-        prompt: "Left pan has an 8 kg red block. Right pan has 3 kg. Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [8],
-        rightWeights: [3],
-        availableWeights: [2, 4, 5, 6],
-        requiredRightTotal: 8,
-        correctWeightToDrop: 5,
-        hint: "8 kg on the left pan. 8 - 3 = 5 kg needed on the right!",
-        review: "8 kg on the left balances with 3 kg + 5 kg on the right pan!"
+        title: "Sort Shapes by Number of Sides",
+        subtitle: "Level 1: Visual Patterns • 🎯 Drag & Sort",
+        prompt: "Sort shapes into '3 Sides (Triangles 🔺)' vs '4 Sides (Squares/Rectangles 🟥)':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "sides3", title: "3 Sides (Triangles 🔺)", icon: "🔺", color: "#EF4444" },
+          { id: "sides4", title: "4 Sides (Quadrilaterals 🟥)", icon: "🟥", color: "#3B82F6" }
+        ],
+        items: [
+          { id: "sh1", label: "Red Triangle", icon: "🔺", correctZoneId: "sides3" },
+          { id: "sh2", label: "Right Triangle", icon: "📐", correctZoneId: "sides3" },
+          { id: "sh3", label: "Blue Square", icon: "🟦", correctZoneId: "sides4" },
+          { id: "sh4", label: "Gold Rectangle", icon: "💳", correctZoneId: "sides4" }
+        ],
+        hint: "Triangles have 3 straight edges/sides. Squares and rectangles have 4 straight sides!",
+        review: "Triangles = 3 sides. Squares & Rectangles = 4 sides!"
       },
       {
         stageNum: 3,
         level: 1,
         levelStageNum: "3 of 5",
-        title: "Shape Value Arithmetic",
-        subtitle: "Level 1: Visual Patterns • 🔢 Rebus Keypad",
-        prompt: "Find the numeric value of Triangle 🔺:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["🔴", "+", "🔴"], right: 6 },
-          { left: ["🔴", "+", "🔺"], right: 7 }
+        title: "Match 2D Shapes to Everyday Objects",
+        subtitle: "Level 1: Visual Patterns • 🔗 Match Pairs",
+        prompt: "Connect each geometric shape on the left to its matching everyday object on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Circle ⚪", leftIcon: "⚪", rightText: "Wall Clock ⏰", rightIcon: "⏰" },
+          { id: "p2", leftText: "Triangle 🔺", leftIcon: "🔺", rightText: "Pizza Slice 🍕", rightIcon: "🍕" },
+          { id: "p3", leftText: "Rectangle ▬", leftIcon: "▬", rightText: "Room Door 🚪", rightIcon: "🚪" },
+          { id: "p4", leftText: "Square ⬛", leftIcon: "⬛", rightText: "Game Dice 🎲", rightIcon: "🎲" }
         ],
-        targetSymbol: "🔺",
-        correctAnswer: 4,
-        hint: "1. 🔴 + 🔴 = 6 ➔ 🔴 = 3. 2. 3 + 🔺 = 7 ➔ 🔺 = 7 - 3!",
-        review: "🔴 = 3. In equation 2: 3 + 🔺 = 7 ➔ 🔺 = 4!"
+        hint: "A clock is circular, a pizza slice is triangular, a door is rectangular, and dice faces are square!",
+        review: "Circle ➔ Clock, Triangle ➔ Pizza Slice, Rectangle ➔ Door, Square ➔ Dice!"
       },
       {
         stageNum: 4,
@@ -1104,7 +1163,7 @@ export const GAMES_CATALOG = [
         review: "Each row and column contains Red, Blue, and Yellow primary colors uniquely!"
       },
 
-      /* --- Level 2: Directional Logic & 90° Rotations --- */
+      /* --- Level 2: Directional Logic & Opposites --- */
       {
         stageNum: 6,
         level: 2,
@@ -1128,34 +1187,39 @@ export const GAMES_CATALOG = [
         stageNum: 7,
         level: 2,
         levelStageNum: "2 of 5",
-        title: "Directional Force Balance",
-        subtitle: "Level 2: Directional Logic • ⚖️ Balance Scale",
-        prompt: "Left pan has 14 kg. Right pan has 6 kg. Add the missing weight to balance!",
-        type: "balance-scale",
-        leftWeights: [14],
-        rightWeights: [6],
-        availableWeights: [6, 8, 10, 12],
-        requiredRightTotal: 14,
-        correctWeightToDrop: 8,
-        hint: "14 kg on left. 14 - 6 = 8 kg needed on the right!",
-        review: "14 kg on the left equals 6 kg + 8 kg on the right pan!"
+        title: "Sort Directional Arrows",
+        subtitle: "Level 2: Directional Logic • 🎯 Drag & Sort",
+        prompt: "Sort arrows into 'Pointing Left / Down ↙️' vs 'Pointing Right / Up ↗️':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "leftdown", title: "Pointing Left / Down ↙️", icon: "↙️", color: "#3B82F6" },
+          { id: "rightup", title: "Pointing Right / Up ↗️", icon: "↗️", color: "#10B981" }
+        ],
+        items: [
+          { id: "d1", label: "Left Arrow", icon: "⬅️", correctZoneId: "leftdown" },
+          { id: "d2", label: "Down Arrow", icon: "⬇️", correctZoneId: "leftdown" },
+          { id: "d3", label: "Right Arrow", icon: "➡️", correctZoneId: "rightup" },
+          { id: "d4", label: "Up Arrow", icon: "⬆️", correctZoneId: "rightup" }
+        ],
+        hint: "Left (⬅️) and Down (⬇️) go into the left/down zone. Right (➡️) and Up (⬆️) go into the right/up zone!",
+        review: "Left/Down = ⬅️ ⬇️. Right/Up = ➡️ ⬆️!"
       },
       {
         stageNum: 8,
         level: 2,
         levelStageNum: "3 of 5",
-        title: "Arrow Value Rebus Equation",
-        subtitle: "Level 2: Directional Logic • 🔢 Rebus Keypad",
-        prompt: "Find the numeric value of Right Arrow ➡️:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["⬆️", "+", "⬆️"], right: 10 },
-          { left: ["⬆️", "+", "➡️"], right: 12 }
+        title: "Match Logical Opposites (Antonyms)",
+        subtitle: "Level 2: Directional Logic • 🔗 Match Pairs",
+        prompt: "Connect each concept on the left to its direct logical opposite on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Hot 🔥", leftIcon: "🔥", rightText: "Cold 🧊", rightIcon: "🧊" },
+          { id: "p2", leftText: "Fast 🏎️", leftIcon: "🏎️", rightText: "Slow 🐢", rightIcon: "🐢" },
+          { id: "p3", leftText: "Day / Sun ☀️", leftIcon: "☀️", rightText: "Night / Moon 🌙", rightIcon: "🌙" },
+          { id: "p4", leftText: "Heavy 🐘", leftIcon: "🐘", rightText: "Light 🪶", rightIcon: "🪶" }
         ],
-        targetSymbol: "➡️",
-        correctAnswer: 7,
-        hint: "1. ⬆️ + ⬆️ = 10 ➔ ⬆️ = 5. 2. 5 + ➡️ = 12 ➔ ➡️ = 12 - 5!",
-        review: "⬆️ = 5. In equation 2: 5 + ➡️ = 12 ➔ ➡️ = 7!"
+        hint: "Opposite of Hot is Cold, Fast is Slow, Day is Night, Heavy is Light!",
+        review: "Hot ↔ Cold, Fast ↔ Slow, Day ↔ Night, Heavy ↔ Light!"
       },
       {
         stageNum: 9,
@@ -1221,34 +1285,39 @@ export const GAMES_CATALOG = [
         stageNum: 12,
         level: 3,
         levelStageNum: "2 of 5",
-        title: "Multi-Weight Dual Balance",
-        subtitle: "Level 3: Multi-Attribute • ⚖️ Balance Scale",
-        prompt: "Left pan has 22 kg. Right pan has 8 kg + 5 kg (13 kg). Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [22],
-        rightWeights: [8, 5],
-        availableWeights: [6, 7, 9, 11],
-        requiredRightTotal: 22,
-        correctWeightToDrop: 9,
-        hint: "Right pan currently has 8 + 5 = 13 kg. 22 - 13 = 9 kg needed!",
-        review: "22 kg on the left balances with 8 kg + 5 kg + 9 kg on the right pan!"
+        title: "Venn Sorting: Red & Fruit",
+        subtitle: "Level 3: Multi-Attribute • 🎯 Drag & Sort",
+        prompt: "Sort items into 'Red Fruits 🍎' vs 'Other Items':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "redfruit", title: "Red Fruits 🍎 (Red + Fruit)", icon: "🍓", color: "#DC2626" },
+          { id: "other", title: "Other Objects 📦", icon: "📦", color: "#64748B" }
+        ],
+        items: [
+          { id: "v1", label: "Red Strawberry", icon: "🍓", correctZoneId: "redfruit" },
+          { id: "v2", label: "Red Cherry", icon: "🍒", correctZoneId: "redfruit" },
+          { id: "v3", label: "Red Firetruck (Not a fruit)", icon: "🚒", correctZoneId: "other" },
+          { id: "v4", label: "Yellow Banana (Not red)", icon: "🍌", correctZoneId: "other" }
+        ],
+        hint: "Strawberries and Cherries are both RED AND FRUITS. Firetrucks and Bananas miss one attribute!",
+        review: "Strawberries & Cherries are Red Fruits. Firetrucks & Bananas go into Other!"
       },
       {
         stageNum: 13,
         level: 3,
         levelStageNum: "3 of 5",
-        title: "Multi-Shape Algebra Rebus",
-        subtitle: "Level 3: Multi-Attribute • 🔢 Rebus Keypad",
-        prompt: "Find the value of Gold Diamond 🔶:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["🔷", "×", "🔷"], right: 25 },
-          { left: ["🔷", "+", "🔶"], right: 14 }
+        title: "Match Professions to Tools",
+        subtitle: "Level 3: Multi-Attribute • 🔗 Match Pairs",
+        prompt: "Connect each community profession on the left to their specialized equipment tool on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Doctor 👨‍⚕️", leftIcon: "👨‍⚕️", rightText: "Stethoscope 🩺", rightIcon: "🩺" },
+          { id: "p2", leftText: "Chef 👨‍🍳", leftIcon: "👨‍🍳", rightText: "Cooking Pan & Spatula 🍳", rightIcon: "🍳" },
+          { id: "p3", leftText: "Artist 🎨", leftIcon: "👩‍🎨", rightText: "Paint Palette & Brush 🖌️", rightIcon: "🖌️" },
+          { id: "p4", leftText: "Firefighter 👨‍🚒", leftIcon: "👨‍🚒", rightText: "Fire Extinguisher & Hose 🧯", rightIcon: "🧯" }
         ],
-        targetSymbol: "🔶",
-        correctAnswer: 9,
-        hint: "1. 🔷 × 🔷 = 25 ➔ 🔷 = 5. 2. 5 + 🔶 = 14 ➔ 🔶 = 14 - 5!",
-        review: "🔷 = 5. In equation 2: 5 + 🔶 = 14 ➔ 🔶 = 9!"
+        hint: "Doctor ➔ Stethoscope, Chef ➔ Pan, Artist ➔ Paint Brush, Firefighter ➔ Fire Extinguisher!",
+        review: "Doctor ➔ Stethoscope, Chef ➔ Pan, Artist ➔ Paintbrush, Firefighter ➔ Extinguisher!"
       },
       {
         stageNum: 14,
@@ -1317,34 +1386,39 @@ export const GAMES_CATALOG = [
         stageNum: 17,
         level: 4,
         levelStageNum: "2 of 5",
-        title: "Symmetrical Pan Balance",
-        subtitle: "Level 4: Mirror Symmetry • ⚖️ Balance Scale",
-        prompt: "Left pan has 36 kg. Right pan has 14 kg + 8 kg (22 kg). Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [36],
-        rightWeights: [14, 8],
-        availableWeights: [10, 12, 14, 18],
-        requiredRightTotal: 36,
-        correctWeightToDrop: 14,
-        hint: "Right pan currently has 14 + 8 = 22 kg. 36 - 22 = 14 kg needed!",
-        review: "36 kg on the left equals 14 kg + 8 kg + 14 kg on the right pan!"
+        title: "Sort Symmetrical vs Asymmetrical",
+        subtitle: "Level 4: Mirror Symmetry • 🎯 Drag & Sort",
+        prompt: "Sort shapes into 'Symmetrical 🦋 (Mirror Line)' vs 'Asymmetrical ✋ (No Mirror Line)':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "symm", title: "Symmetrical 🦋 (Equal Halves)", icon: "🦋", color: "#10B981" },
+          { id: "asymm", title: "Asymmetrical ✋ (Unequal)", icon: "✋", color: "#F59E0B" }
+        ],
+        items: [
+          { id: "sy1", label: "Butterfly", icon: "🦋", correctZoneId: "symm" },
+          { id: "sy2", label: "Heart Shape", icon: "❤️", correctZoneId: "symm" },
+          { id: "asy1", label: "Letter F", icon: "🔤", correctZoneId: "asymm" },
+          { id: "asy2", label: "Human Hand", icon: "✋", correctZoneId: "asymm" }
+        ],
+        hint: "Butterflies and Hearts can be folded down the center into identical mirror halves. Letter F and Hands cannot!",
+        review: "Butterfly & Heart are Symmetrical. Letter F & Hand are Asymmetrical!"
       },
       {
         stageNum: 18,
         level: 4,
         levelStageNum: "3 of 5",
-        title: "Symmetrical Key & Lock Rebus",
-        subtitle: "Level 4: Mirror Symmetry • 🔢 Rebus Keypad",
-        prompt: "Find the value of Door 🚪 in this symmetrical equation:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["🔑", "+", "🔑"], right: 16 },
-          { left: ["🔑", "×", "🚪"], right: 48 }
+        title: "Match 3D Solids to 2D Shadows",
+        subtitle: "Level 4: Mirror Symmetry • 🔗 Match Pairs",
+        prompt: "Connect each 3D solid geometry object to the 2D shadow shape it casts directly from top:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Sphere Ball ⚽", leftIcon: "⚽", rightText: "Circle Shadow ⚪", rightIcon: "⚪" },
+          { id: "p2", leftText: "Cube Dice 🎲", leftIcon: "🎲", rightText: "Square Shadow ⬛", rightIcon: "⬛" },
+          { id: "p3", leftText: "Cone / Party Hat 🍦", leftIcon: "🍦", rightText: "Triangle Side Shadow 🔺", rightIcon: "🔺" },
+          { id: "p4", leftText: "Cylinder Tube 🧪", leftIcon: "🧪", rightText: "Rectangle Side Shadow ▬", rightIcon: "▬" }
         ],
-        targetSymbol: "🚪",
-        correctAnswer: 6,
-        hint: "1. 🔑 + 🔑 = 16 ➔ 🔑 = 8. 2. 8 × 🚪 = 48 ➔ 🚪 = 48 ÷ 8!",
-        review: "🔑 = 8. In equation 2: 8 × 🚪 = 48 ➔ 🚪 = 6!"
+        hint: "A sphere casts a circle, a cube casts a square, a cone side casts a triangle, and a cylinder side casts a rectangle!",
+        review: "Sphere ➔ Circle, Cube ➔ Square, Cone ➔ Triangle, Cylinder ➔ Rectangle!"
       },
       {
         stageNum: 19,
@@ -1390,7 +1464,7 @@ export const GAMES_CATALOG = [
         review: "Each row and column uniquely contains Red, Blue, Yellow, and Green shapes!"
       },
 
-      /* --- Level 5: Formal Deductive Syllogisms --- */
+      /* --- Level 5: Formal Deductive Syllogisms & Logic Master --- */
       {
         stageNum: 21,
         level: 5,
@@ -1413,35 +1487,39 @@ export const GAMES_CATALOG = [
         stageNum: 22,
         level: 5,
         levelStageNum: "2 of 5",
-        title: "Master Dynamic Equilibrium",
-        subtitle: "Level 5: Syllogisms • ⚖️ Balance Scale",
-        prompt: "Left pan has 60 kg. Right pan has 24 kg + 16 kg (40 kg). Balance the scale!",
-        type: "balance-scale",
-        leftWeights: [60],
-        rightWeights: [24, 16],
-        availableWeights: [14, 16, 20, 24],
-        requiredRightTotal: 60,
-        correctWeightToDrop: 20,
-        hint: "Right pan currently has 24 + 16 = 40 kg. 60 - 40 = 20 kg needed!",
-        review: "60 kg on the left equals 24 kg + 16 kg + 20 kg on the right pan (60 kg balance)!"
+        title: "Sort Statements: Always vs Never True",
+        subtitle: "Level 5: Syllogisms • 🎯 Drag & Sort",
+        prompt: "Sort logical statements into 'Always True 🟢' vs 'Never True 🔴':",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "always", title: "Always True 🟢 (Logical Fact)", icon: "🟢", color: "#16A34A" },
+          { id: "never", title: "Never True 🔴 (Logical Impossibility)", icon: "🔴", color: "#EF4444" }
+        ],
+        items: [
+          { id: "st1", label: "A square has 4 sides", icon: "🟩", correctZoneId: "always" },
+          { id: "st2", label: "Fish live in water", icon: "🐟", correctZoneId: "always" },
+          { id: "st3", label: "Triangles have 5 corners", icon: "🔺", correctZoneId: "never" },
+          { id: "st4", label: "The Sun rises in the North", icon: "☀️", correctZoneId: "never" }
+        ],
+        hint: "Squares always have 4 sides and fish need water (Always True). Triangles have 3 corners, not 5 (Never True)!",
+        review: "Squares have 4 sides & fish need water = Always True. Triangles have 5 corners = Never True!"
       },
       {
         stageNum: 23,
         level: 5,
         levelStageNum: "3 of 5",
-        title: "Three-Tier Master Logic Rebus",
-        subtitle: "Level 5: Syllogisms • 🔢 Rebus Keypad",
-        prompt: "Find the value of Diamond 💎 in this multi-stage system:",
-        type: "rebus-keypad",
-        equations: [
-          { left: ["⚡", "+", "⚡"], right: 18 },
-          { left: ["⚡", "×", "🔥"], right: 36 },
-          { left: ["🔥", "+", "💎"], right: 15 }
+        title: "Match Cause to Logical Effect",
+        subtitle: "Level 5: Syllogisms • 🔗 Match Pairs",
+        prompt: "Connect each logical CAUSE on the left to its direct EFFECT on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Heavy Rain Pours 🌧️", leftIcon: "🌧️", rightText: "Ground gets wet and puddles form 🌊", rightIcon: "🌊" },
+          { id: "p2", leftText: "Sun shines on Ice ☀️", leftIcon: "☀️", rightText: "Ice absorbs heat and melts into water 💧", rightIcon: "💧" },
+          { id: "p3", leftText: "Plant gets water & sun 🌱", leftIcon: "🌱", rightText: "Plant grows healthy flowers 🌻", rightIcon: "🌻" },
+          { id: "p4", leftText: "Drop a glass on stone 🪨", leftIcon: "🪨", rightText: "Glass shatters and breaks 💥", rightIcon: "💥" }
         ],
-        targetSymbol: "💎",
-        correctAnswer: 11,
-        hint: "1. ⚡ = 9. 2. 9 × 🔥 = 36 ➔ 🔥 = 4. 3. 4 + 💎 = 15 ➔ 💎 = 15 - 4!",
-        review: "⚡ = 9, 🔥 = 4, and 4 + 💎 = 15 ➔ 💎 = 11!"
+        hint: "Rain ➔ Wet ground, Sun on ice ➔ Melting, Water & sun on plant ➔ Growth, Glass on stone ➔ Breaks!",
+        review: "Rain ➔ Wet puddles, Sun ➔ Melting, Sun & water ➔ Growth, Stone drop ➔ Breakage!"
       },
       {
         stageNum: 24,

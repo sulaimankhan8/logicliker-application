@@ -1,15 +1,24 @@
 /**
- * LogicLike Application Controller & 5 Game Mechanics Engine
+ * LogicLike Application Controller & Multi-Engine Educational Platform
  * Features:
  * - 3 Comprehensive Courses for Kids: Mathematics 📐, Science & Nature 🔬, Aptitude & Logic 💡
  * - 5-Level Structured Progression with Milestone Headers & Badges
- * - Dynamic Mix of 5 Game Engines (Cards Grid, Balance Scale, Rebus Keypad, 3D Spatial, Sudoku Matrix)
+ * - Dynamic Mix of 7 Game Engines:
+ *   1. 🎴 cards-grid (Selection & Odd-One-Out)
+ *   2. 🎯 drag-drop-zones (Habitat & Category Sorting)
+ *   3. 🔗 matching-pairs (Two-column Connecting Cords)
+ *   4. ⚖️ balance-scale (Mass & Physics Balance)
+ *   5. 🔢 rebus-keypad (Picture Arithmetic & Equations)
+ *   6. 📦 spatial-3d (3D Isometric Spatial Projection)
+ *   7. 🧩 sudoku-matrix (Deductive Constraint Grids)
  * - Gamification Economy (Stars, 7-Day Streaks, Level Titles, Badges, Analytics, Official Diploma)
  */
 
 import { sound } from './audio.js';
 import { GAMES_CATALOG } from './games.js';
 import { CardGridEngine } from './engines/card_grid_engine.js';
+import { DragDropZonesEngine } from './engines/drag_drop_zones_engine.js';
+import { MatchingPairsEngine } from './engines/matching_pairs_engine.js';
 import { BalanceScaleEngine } from './engines/balance_scale_engine.js';
 import { RebusKeypadEngine } from './engines/rebus_keypad_engine.js';
 import { Spatial3DEngine } from './engines/spatial_3d_engine.js';
@@ -21,13 +30,15 @@ const BADGES_CATALOG = [
   { id: 'science_hero', icon: '🔬', name: 'Science Explorer', desc: 'Complete 10+ Science stages', check: (state) => Object.keys(state.completedStages['science-course'] || {}).length >= 10 },
   { id: 'aptitude_ace', icon: '💡', name: 'Aptitude Ace', desc: 'Complete 10+ Aptitude stages', check: (state) => Object.keys(state.completedStages['aptitude-course'] || {}).length >= 10 },
   { id: 'level_master', icon: '🚀', name: 'Level Conqueror', desc: 'Unlock Level 3 in any course', check: (state) => Object.values(state.completedStages).some(map => Object.keys(map).length >= 8) },
-  { id: 'engine_expert', icon: '🎛️', name: 'All-Engine Master', desc: 'Solve 20+ puzzles across all 5 engines', check: (state, totalSolved) => totalSolved >= 20 },
+  { id: 'engine_expert', icon: '🎛️', name: 'All-Engine Master', desc: 'Solve 20+ puzzles across the engines', check: (state, totalSolved) => totalSolved >= 20 },
   { id: 'streak_champ', icon: '🔥', name: 'Streak Champion', desc: 'Reach a 5-day daily streak', check: (state) => state.streak >= 5 },
   { id: 'grandmaster', icon: '👑', name: 'Logic Grandmaster', desc: 'Earn 100+ stars across courses', check: (state) => state.stars >= 100 }
 ];
 
 const ENGINE_META = {
   'cards-grid': { icon: '🎴', label: 'Card Grid' },
+  'drag-drop-zones': { icon: '🎯', label: 'Drag & Sort' },
+  'matching-pairs': { icon: '🔗', label: 'Match Pairs' },
   'balance-scale': { icon: '⚖️', label: 'Balance Scale' },
   'rebus-keypad': { icon: '🔢', label: 'Rebus Math' },
   'spatial-3d': { icon: '📦', label: '3D Spatial' },
@@ -43,6 +54,8 @@ class AppController {
 
     // Sub-engines
     this.cardGridEngine = new CardGridEngine(this);
+    this.dragDropZonesEngine = new DragDropZonesEngine(this);
+    this.matchingPairsEngine = new MatchingPairsEngine(this);
     this.balanceScaleEngine = new BalanceScaleEngine(this);
     this.rebusKeypadEngine = new RebusKeypadEngine(this);
     this.spatial3DEngine = new Spatial3DEngine(this);
@@ -184,19 +197,33 @@ class AppController {
     });
 
     this.elHintBtn.addEventListener('click', () => {
-      if (this.currentStageData && this.currentStageData.type === 'cards-grid') {
-        this.cardGridEngine.executeHint(this.elGameArena);
-      } else if (this.currentStageData && this.currentStageData.type === 'balance-scale') {
-        this.balanceScaleEngine.executeHint(this.elGameArena);
-      } else if (this.currentStageData && this.currentStageData.type === 'rebus-keypad') {
-        this.rebusKeypadEngine.executeHint(this.elGameArena);
-      } else if (this.currentStageData && this.currentStageData.type === 'spatial-3d') {
-        this.spatial3DEngine.executeHint(this.elGameArena);
-      } else if (this.currentStageData && this.currentStageData.type === 'sudoku-matrix') {
-        this.sudokuMatrixEngine.executeHint(this.elGameArena);
-      } else if (this.currentStageData) {
-        alert("💡 HINT: " + this.currentStageData.hint);
-        sound.playTap();
+      if (!this.currentStageData) return;
+      
+      switch (this.currentStageData.type) {
+        case 'cards-grid':
+          this.cardGridEngine.executeHint(this.elGameArena);
+          break;
+        case 'drag-drop-zones':
+          this.dragDropZonesEngine.executeHint(this.elGameArena);
+          break;
+        case 'matching-pairs':
+          this.matchingPairsEngine.executeHint(this.elGameArena);
+          break;
+        case 'balance-scale':
+          this.balanceScaleEngine.executeHint(this.elGameArena);
+          break;
+        case 'rebus-keypad':
+          this.rebusKeypadEngine.executeHint(this.elGameArena);
+          break;
+        case 'spatial-3d':
+          this.spatial3DEngine.executeHint(this.elGameArena);
+          break;
+        case 'sudoku-matrix':
+          this.sudokuMatrixEngine.executeHint(this.elGameArena);
+          break;
+        default:
+          alert("💡 HINT: " + this.currentStageData.hint);
+          sound.playTap();
       }
     });
 
@@ -299,9 +326,6 @@ class AppController {
 
   renderRoadmap() {
     const game = this.activeGame;
-    const completedCount = Object.keys(this.playerState.completedStages[game.id] || {}).length;
-    const totalCount = game.stages.length;
-
     this.elBannerTitle.textContent = `${game.icon} ${game.name}`;
     this.elBannerDesc.textContent = game.description;
 
@@ -427,6 +451,12 @@ class AppController {
     switch (stage.type) {
       case 'cards-grid':
         this.renderCardsGrid(stage);
+        break;
+      case 'drag-drop-zones':
+        this.renderDragDropZones(stage);
+        break;
+      case 'matching-pairs':
+        this.renderMatchingPairs(stage);
         break;
       case 'balance-scale':
         this.renderBalanceScale(stage);
@@ -577,6 +607,14 @@ class AppController {
      ========================================================================== */
   renderCardsGrid(stage) {
     this.cardGridEngine.render(stage, this.elGameArena);
+  }
+
+  renderDragDropZones(stage) {
+    this.dragDropZonesEngine.render(stage, this.elGameArena);
+  }
+
+  renderMatchingPairs(stage) {
+    this.matchingPairsEngine.render(stage, this.elGameArena);
   }
 
   renderBalanceScale(stage) {
