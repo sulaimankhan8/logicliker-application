@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#2C1D94">
   <title>LogicLike - Interactive Educational Brain Games</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -28,9 +32,9 @@
         <span class="stat-icon">🏆</span>
         <span id="stat-rank">Lvl 1</span>
       </div>
-      <button class="btn-shell-action" id="btn-open-badges" title="View Badges">🏆 Badges</button>
-      <button class="btn-shell-action" id="btn-open-analytics" title="Parent Analytics">📊 Analytics</button>
-      <button class="btn-shell-action btn-certificate" id="btn-open-certificate" title="Logic Diploma">📜 Certificate</button>
+      <button class="btn-shell-action desktop-only" id="btn-open-badges" title="View Badges">🏆 Badges</button>
+      <button class="btn-shell-action desktop-only" id="btn-open-analytics" title="Parent Analytics">📊 Analytics</button>
+      <button class="btn-shell-action desktop-only btn-certificate" id="btn-open-certificate" title="Logic Diploma">📜 Certificate</button>
       <button class="btn-header-audio" id="btn-audio-toggle" title="Toggle Sound">🔊</button>
     </div>
   </header>
@@ -44,6 +48,30 @@
   <main class="main-container" id="main-container-root">
     <!-- Rendered dynamically by app.js: Course Banner, Level Selector Tabs, 5-Stage Mission Deck & Level Navigation -->
   </main>
+
+  <!-- Mobile Bottom Navigation Dock (Thumb-Friendly on Phones & Tablets) -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <button class="mobile-nav-item active" id="mob-nav-home">
+      <span class="mob-nav-icon">🗺️</span>
+      <span class="mob-nav-label">Learn</span>
+    </button>
+    <button class="mobile-nav-item" id="mob-nav-badges">
+      <span class="mob-nav-icon">🏆</span>
+      <span class="mob-nav-label">Badges</span>
+    </button>
+    <button class="mobile-nav-item" id="mob-nav-streak">
+      <span class="mob-nav-icon">🔥</span>
+      <span class="mob-nav-label">Streak</span>
+    </button>
+    <button class="mobile-nav-item" id="mob-nav-analytics">
+      <span class="mob-nav-icon">📊</span>
+      <span class="mob-nav-label">Stats</span>
+    </button>
+    <button class="mobile-nav-item" id="mob-nav-certificate">
+      <span class="mob-nav-icon">📜</span>
+      <span class="mob-nav-label">Diploma</span>
+    </button>
+  </nav>
 
   <!-- Interactive Game Modal Canvas -->
   <div class="modal-overlay" id="game-modal">

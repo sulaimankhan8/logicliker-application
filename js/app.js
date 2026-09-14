@@ -348,6 +348,24 @@ class AppController {
       window.print();
     });
 
+    // Mobile Bottom Navigation Bar Wireup
+    const mobHome = document.getElementById('mob-nav-home');
+    const mobBadges = document.getElementById('mob-nav-badges');
+    const mobStreak = document.getElementById('mob-nav-streak');
+    const mobAnalytics = document.getElementById('mob-nav-analytics');
+    const mobCert = document.getElementById('mob-nav-certificate');
+
+    const setActiveMobNav = (btn) => {
+      document.querySelectorAll('.mobile-nav-item').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    };
+
+    if (mobHome) mobHome.addEventListener('click', () => { sound.playTap(); this.closeAllModals(); setActiveMobNav(mobHome); });
+    if (mobBadges) mobBadges.addEventListener('click', () => { setActiveMobNav(mobBadges); this.openBadgesModal(); });
+    if (mobStreak) mobStreak.addEventListener('click', () => { setActiveMobNav(mobStreak); this.openStreakModal(); });
+    if (mobAnalytics) mobAnalytics.addEventListener('click', () => { setActiveMobNav(mobAnalytics); this.openAnalyticsModal(); });
+    if (mobCert) mobCert.addEventListener('click', () => { setActiveMobNav(mobCert); this.openCertificateModal(); });
+
     this.elBtnResetProgress.addEventListener('click', () => {
       if (confirm("Are you sure you want to reset all game progress and stars?")) {
         localStorage.removeItem('logiclike_demo_player');
