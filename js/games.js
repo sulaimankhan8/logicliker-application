@@ -17,6 +17,205 @@
 
 export const GAMES_CATALOG = [
   /* ==========================================================================
+     DEMO COURSE: 🎮 ALL-ENGINES SHOWCASE (Fully Unlocked Sandbox for Testing)
+     ========================================================================== */
+  {
+    id: "demo-course",
+    name: "Demo Showcase",
+    category: "demo-course",
+    icon: "🎮",
+    allUnlocked: true,
+    description: "Instant testing sandbox featuring all 10 interactive game engines — fully unlocked!",
+    levelThemes: [
+      { level: 1, name: "Visual & Spoken Interaction (Engines 1–5)", icon: "✨", desc: "Cards Grid, Outline Trace, Memory Cards, Spoken Word & Category Sorting" },
+      { level: 2, name: "Logic, Deduction & Physics (Engines 6–10)", icon: "🧠", desc: "Matching Cords, Balance Scale, Rebus Math, 3D Spatial & Sudoku Matrix" }
+    ],
+    stages: [
+      /* --- Level 1: Visual & Spoken Engines --- */
+      {
+        stageNum: 1,
+        level: 1,
+        levelStageNum: "1 of 5",
+        title: "Engine 1: Odd One Out",
+        subtitle: "Demo • 🎴 Card Grid Selection",
+        prompt: "Which fruit does NOT belong with the green vegetables?",
+        type: "cards-grid",
+        layout: "2x2",
+        cards: [
+          { id: "c1", icon: "🥦", label: "Broccoli", isCorrect: false },
+          { id: "c2", icon: "🥒", label: "Cucumber", isCorrect: false },
+          { id: "c3", icon: "🥬", label: "Lettuce", isCorrect: false },
+          { id: "c4", icon: "🍓", label: "Strawberry (Fruit)", isCorrect: true }
+        ],
+        hint: "Three items are green vegetables. One is a sweet red berry fruit!",
+        review: "The Strawberry is a fruit, while the others are green vegetables!"
+      },
+      {
+        stageNum: 2,
+        level: 1,
+        levelStageNum: "2 of 5",
+        title: "Engine 2: Outline Tracing",
+        subtitle: "Demo • ✏️ Outline Tracing Canvas",
+        prompt: "Trace along the dashed outline of the golden five-point star:",
+        type: "outline-trace",
+        shape: "star",
+        shapeName: "Five-Point Star",
+        brushColor: "#F59E0B",
+        hint: "Drag your finger or cursor along the dashed star outline to fill it with color!",
+        review: "Awesome! You traced all 5 vertices of the star."
+      },
+      {
+        stageNum: 3,
+        level: 1,
+        levelStageNum: "3 of 5",
+        title: "Engine 3: 3D Memory Card Match",
+        subtitle: "Demo • 🎴 Memory Flip & Shuffle",
+        prompt: "Memorize card pairs before they flip, then find and match each animal:",
+        type: "memory-cards",
+        pairs: [
+          { id: "p1", icon: "🐶", label: "Puppy", color: "#3B82F6" },
+          { id: "p2", icon: "🐱", label: "Kitten", color: "#EC4899" },
+          { id: "p3", icon: "🐰", label: "Bunny", color: "#10B981" }
+        ],
+        hint: "Watch during the 3-second preview: Puppy, Kitten, and Bunny positions!",
+        review: "You successfully matched all 3 memory pairs!"
+      },
+      {
+        stageNum: 4,
+        level: 1,
+        levelStageNum: "4 of 5",
+        title: "Engine 4: Spoken Word & Image Select",
+        subtitle: "Demo • 🔊 Voiceover Narration",
+        prompt: "Listen to the spoken animal name and choose the matching picture:",
+        type: "listen-and-choose",
+        spokenWord: "Elephant",
+        phonetic: "El • e • phant",
+        options: [
+          { id: "opt1", icon: "🐘", label: "Elephant", isCorrect: true },
+          { id: "opt2", icon: "🦁", label: "Lion", isCorrect: false },
+          { id: "opt3", icon: "🦒", label: "Giraffe", isCorrect: false },
+          { id: "opt4", icon: "🦓", label: "Zebra", isCorrect: false }
+        ],
+        hint: "The voice spoke 'Elephant'. Select the gentle giant with a long trunk!",
+        review: "The Elephant is the largest living land mammal with a flexible trunk!"
+      },
+      {
+        stageNum: 5,
+        level: 1,
+        levelStageNum: "5 of 5",
+        title: "Engine 5: Category Drag & Drop",
+        subtitle: "Demo • 🎯 Drag & Sort Zones",
+        prompt: "Sort animals into Ocean 🌊 vs Jungle 🌴 habitats:",
+        type: "drag-drop-zones",
+        zones: [
+          { id: "ocean", title: "Ocean Habitat 🌊", icon: "🌊", color: "#0EA5E9" },
+          { id: "jungle", title: "Jungle Habitat 🌴", icon: "🌴", color: "#16A34A" }
+        ],
+        items: [
+          { id: "a1", label: "Dolphin", icon: "🐬", correctZoneId: "ocean" },
+          { id: "a2", label: "Shark", icon: "🦈", correctZoneId: "ocean" },
+          { id: "a3", label: "Tiger", icon: "🐯", correctZoneId: "jungle" },
+          { id: "a4", label: "Monkey", icon: "🐒", correctZoneId: "jungle" }
+        ],
+        hint: "Dolphins and Sharks swim in oceans. Tigers and Monkeys live in jungle forests!",
+        review: "Dolphins & Sharks in the Ocean, Tigers & Monkeys in the Jungle!"
+      },
+
+      /* --- Level 2: Deduction & STEM Engines --- */
+      {
+        stageNum: 6,
+        level: 2,
+        levelStageNum: "1 of 5",
+        title: "Engine 6: Connecting Cords",
+        subtitle: "Demo • 🔗 Matching Pairs",
+        prompt: "Connect each number on the left to its matching star count on the right:",
+        type: "matching-pairs",
+        pairs: [
+          { id: "p1", leftText: "Two", leftIcon: "2️⃣", rightText: "⭐⭐", rightIcon: "2 Stars" },
+          { id: "p2", leftText: "Three", leftIcon: "3️⃣", rightText: "⭐⭐⭐", rightIcon: "3 Stars" },
+          { id: "p3", leftText: "Four", leftIcon: "4️⃣", rightText: "⭐⭐⭐⭐", rightIcon: "4 Stars" },
+          { id: "p4", leftText: "Five", leftIcon: "5️⃣", rightText: "⭐⭐⭐⭐⭐", rightIcon: "5 Stars" }
+        ],
+        hint: "Connect 2 ➔ 2 Stars, 3 ➔ 3 Stars, 4 ➔ 4 Stars, 5 ➔ 5 Stars!",
+        review: "Two = 2, Three = 3, Four = 4, and Five = 5!"
+      },
+      {
+        stageNum: 7,
+        level: 2,
+        levelStageNum: "2 of 5",
+        title: "Engine 7: Balance Scale Physics",
+        subtitle: "Demo • ⚖️ Balance Scale Physics",
+        prompt: "Left pan has 10 kg. Right pan has 4 kg. Add the missing weight to balance:",
+        type: "balance-scale",
+        leftWeights: [10],
+        rightWeights: [4],
+        availableWeights: [3, 5, 6, 8],
+        requiredRightTotal: 10,
+        correctWeightToDrop: 6,
+        hint: "4 + ? = 10. You need a 6 kg weight on the right pan!",
+        review: "4 kg + 6 kg = 10 kg balances the scale!"
+      },
+      {
+        stageNum: 8,
+        level: 2,
+        levelStageNum: "3 of 5",
+        title: "Engine 8: Rebus Math Keypad",
+        subtitle: "Demo • 🔢 Picture Equations",
+        prompt: "Find the value of Banana 🍌 in this picture equation:",
+        type: "rebus-keypad",
+        equations: [
+          { left: ["🍓", "+", "🍓"], right: 8 },
+          { left: ["🍓", "+", "🍌"], right: 10 }
+        ],
+        targetSymbol: "🍌",
+        correctAnswer: 6,
+        hint: "1. 🍓 + 🍓 = 8 ➔ 🍓 = 4. 2. 4 + 🍌 = 10 ➔ 🍌 = 6!",
+        review: "🍓 = 4, so 4 + 🍌 = 10 gives 🍌 = 6!"
+      },
+      {
+        stageNum: 9,
+        level: 2,
+        levelStageNum: "4 of 5",
+        title: "Engine 9: 3D Isometric Projection",
+        subtitle: "Demo • 📦 3D Spatial Geometry",
+        prompt: "Rotate and count all unit cubes in this 3D structure:",
+        type: "spatial-3d",
+        heightMap: [
+          [2, 1],
+          [1, 2]
+        ],
+        totalCubes: 6,
+        hint: "Count the columns: (2 + 1) + (1 + 2) = 6 cubes!",
+        review: "There are 6 unit cubes in this 3D block arrangement!"
+      },
+      {
+        stageNum: 10,
+        level: 2,
+        levelStageNum: "5 of 5",
+        title: "Engine 10: Deductive Sudoku Matrix",
+        subtitle: "Demo • 🧩 Deductive Grid",
+        prompt: "Place 🔴, 🟦, and 🟡 so none repeat in any row or column:",
+        type: "sudoku-matrix",
+        gridSize: 3,
+        symbols: ["🔴", "🟦", "🟡"],
+        initialGrid: [
+          ["🔴", "🟦", "🟡"],
+          ["🟦", "🟡", null],
+          ["🟡", null, "🟦"]
+        ],
+        solutionGrid: [
+          ["🔴", "🟦", "🟡"],
+          ["🟦", "🟡", "🔴"],
+          ["🟡", "🔴", "🟦"]
+        ],
+        targetCell: { r: 1, c: 2, answer: "🔴", explanation: "Row 2 has Blue and Yellow, so the missing color is Red 🔴!" },
+        hint: "Row 2 contains 🟦 and 🟡. The missing primary color is Red 🔴!",
+        review: "Each row and column uniquely contains Red, Blue, and Yellow!"
+      }
+    ]
+  },
+
+  /* ==========================================================================
      COURSE 1: 📐 MATHEMATICS
      ========================================================================== */
   {
@@ -56,54 +255,50 @@ export const GAMES_CATALOG = [
         stageNum: 2,
         level: 1,
         levelStageNum: "2 of 5",
-        title: "Sort Numbers: Small vs Large",
-        subtitle: "Level 1: Counting • 🎯 Drag & Sort",
-        prompt: "Sort numbers into 'Less than 5' vs '5 or More':",
-        type: "drag-drop-zones",
-        zones: [
-          { id: "less5", title: "Less than 5 (< 5)", icon: "🔹", color: "#3B82F6" },
-          { id: "more5", title: "5 or More (≥ 5)", icon: "🔸", color: "#F59E0B" }
-        ],
-        items: [
-          { id: "n2", label: "Number 2", icon: "2️⃣", correctZoneId: "less5" },
-          { id: "n3", label: "Number 3", icon: "3️⃣", correctZoneId: "less5" },
-          { id: "n7", label: "Number 7", icon: "7️⃣", correctZoneId: "more5" },
-          { id: "n9", label: "Number 9", icon: "9️⃣", correctZoneId: "more5" }
-        ],
-        hint: "Numbers 2 and 3 are smaller than 5. Numbers 7 and 9 are 5 or greater!",
-        review: "2 and 3 are < 5. 7 and 9 are ≥ 5!"
+        title: "Trace the Triangle",
+        subtitle: "Level 1: Geometry • ✏️ Outline Trace",
+        prompt: "Trace along the dashed outline of the 3-sided triangle:",
+        type: "outline-trace",
+        shape: "triangle",
+        shapeName: "Equilateral Triangle",
+        brushColor: "#3B82F6",
+        hint: "Follow the 3 straight sides from the top vertex down to the base!",
+        review: "Great job! A triangle has 3 vertices and 3 straight sides."
       },
       {
         stageNum: 3,
         level: 1,
         levelStageNum: "3 of 5",
-        title: "Match Words to Quantities",
-        subtitle: "Level 1: Counting • 🔗 Match Pairs",
-        prompt: "Connect each number word on the left to its matching visual count on the right:",
-        type: "matching-pairs",
+        title: "Memory Match: Counting Pairs",
+        subtitle: "Level 1: Counting • 🎴 Memory Cards",
+        prompt: "Memorize card pairs before they flip, then find and match each pair:",
+        type: "memory-cards",
         pairs: [
-          { id: "p1", leftText: "Two", leftIcon: "2️⃣", rightText: "⭐⭐", rightIcon: "2 Stars" },
-          { id: "p2", leftText: "Three", leftIcon: "3️⃣", rightText: "🍎🍎🍎", rightIcon: "3 Apples" },
-          { id: "p3", leftText: "Four", leftIcon: "4️⃣", rightText: "🚗🚗🚗🚗", rightIcon: "4 Cars" },
-          { id: "p4", leftText: "Five", leftIcon: "5️⃣", rightText: "🎈🎈🎈🎈🎈", rightIcon: "5 Balloons" }
+          { id: "p1", icon: "🍎🍎🍎", label: "3 Apples", color: "#EF4444" },
+          { id: "p2", icon: "⭐⭐⭐⭐", label: "4 Stars", color: "#F59E0B" },
+          { id: "p3", icon: "🎈🎈🎈🎈🎈", label: "5 Balloons", color: "#8B5CF6" }
         ],
-        hint: "Count the items on the right and connect to the word: Two ➔ 2, Three ➔ 3, Four ➔ 4, Five ➔ 5!",
-        review: "Two = 2, Three = 3, Four = 4, and Five = 5!"
+        hint: "Remember the positions during the 3-second preview: 3 Apples, 4 Stars, 5 Balloons!",
+        review: "You matched all counting quantity pairs!"
       },
       {
         stageNum: 4,
         level: 1,
         levelStageNum: "4 of 5",
-        title: "Count 3D Block Row",
-        subtitle: "Level 1: Counting • 📦 3D Spatial",
-        prompt: "Count the total number of unit cubes in this straight row:",
-        type: "spatial-3d",
-        heightMap: [
-          [1, 1, 1, 1]
+        title: "Listen & Select: Five Apples",
+        subtitle: "Level 1: Counting • 🔊 Spoken Word",
+        prompt: "Listen to the spoken quantity and select the matching picture:",
+        type: "listen-and-choose",
+        spokenWord: "Five Apples",
+        phonetic: "Five • Ap-ples",
+        options: [
+          { id: "opt1", icon: "🍎🍎🍎🍎🍎", label: "5 Apples", isCorrect: true },
+          { id: "opt2", icon: "🍎🍎", label: "2 Apples", isCorrect: false },
+          { id: "opt3", icon: "⭐⭐⭐", label: "3 Stars", isCorrect: false },
+          { id: "opt4", icon: "🚗", label: "1 Car", isCorrect: false }
         ],
-        totalCubes: 4,
-        hint: "Count the blocks from left to right: 1, 2, 3, 4!",
-        review: "There are 4 wooden unit blocks placed in a single row (1 + 1 + 1 + 1 = 4)!"
+        hint: "The voice spoke 'Five Apples'. Tap the group containing 5 red apples!",
+        review: "5 Apples is the correct quantity matching the spoken audio!"
       },
       {
         stageNum: 5,
@@ -174,34 +369,31 @@ export const GAMES_CATALOG = [
         stageNum: 8,
         level: 2,
         levelStageNum: "3 of 5",
-        title: "Match Equations to Sums",
-        subtitle: "Level 2: Addition • 🔗 Match Pairs",
-        prompt: "Connect each addition problem to its correct sum answer:",
-        type: "matching-pairs",
-        pairs: [
-          { id: "p1", leftText: "3 + 4", leftIcon: "➕", rightText: "7", rightIcon: "7️⃣" },
-          { id: "p2", leftText: "5 + 5", leftIcon: "➕", rightText: "10", rightIcon: "🔟" },
-          { id: "p3", leftText: "6 + 2", leftIcon: "➕", rightText: "8", rightIcon: "8️⃣" },
-          { id: "p4", leftText: "4 + 5", leftIcon: "➕", rightText: "9", rightIcon: "9️⃣" }
-        ],
-        hint: "3+4=7, 5+5=10, 6+2=8, 4+5=9!",
-        review: "3+4=7, 5+5=10, 6+2=8, and 4+5=9!"
+        title: "Trace Number 8",
+        subtitle: "Level 2: Numbers • ✏️ Outline Trace",
+        prompt: "Trace along the double-loop outline of the number 8:",
+        type: "outline-trace",
+        shape: "number-8",
+        shapeName: "Number 8",
+        brushColor: "#8B5CF6",
+        hint: "Start at the top loop and curve around through the center cross into the lower loop!",
+        review: "Superb! Number 8 is shaped with two connected symmetrical loops."
       },
       {
         stageNum: 9,
         level: 2,
         levelStageNum: "4 of 5",
-        title: "Complete Addition Balance",
-        subtitle: "Level 2: Addition • ⚖️ Balance Scale",
-        prompt: "Left pan has 10 kg. Right pan has 4 kg. Add the missing weight to make 10 kg!",
-        type: "balance-scale",
-        leftWeights: [10],
-        rightWeights: [4],
-        availableWeights: [3, 5, 6, 8],
-        requiredRightTotal: 10,
-        correctWeightToDrop: 6,
-        hint: "4 + ? = 10. What number added to 4 makes 10? (10 - 4 = 6)!",
-        review: "10 kg on the left equals 4 kg + 6 kg on the right pan (4 + 6 = 10)!"
+        title: "Memory Match: Addition Doubles",
+        subtitle: "Level 2: Addition • 🎴 Memory Cards",
+        prompt: "Memorize and match the addition equations with their total sums:",
+        type: "memory-cards",
+        pairs: [
+          { id: "p1", icon: "2 + 2", label: "2 + 2 = 4", color: "#3B82F6" },
+          { id: "p2", icon: "5 + 5", label: "5 + 5 = 10", color: "#10B981" },
+          { id: "p3", icon: "3 + 3", label: "3 + 3 = 6", color: "#F59E0B" }
+        ],
+        hint: "Remember the doubles: 2+2 makes 4, 3+3 makes 6, and 5+5 makes 10!",
+        review: "You matched all addition doubles pairs!"
       },
       {
         stageNum: 10,
@@ -282,17 +474,20 @@ export const GAMES_CATALOG = [
         stageNum: 14,
         level: 3,
         levelStageNum: "4 of 5",
-        title: "Subtraction Counterbalance",
-        subtitle: "Level 3: Subtraction • ⚖️ Balance Scale",
-        prompt: "Left pan has 25 kg. Right pan has 18 kg. What difference weight balances the scale?",
-        type: "balance-scale",
-        leftWeights: [25],
-        rightWeights: [18],
-        availableWeights: [5, 6, 7, 9],
-        requiredRightTotal: 25,
-        correctWeightToDrop: 7,
-        hint: "Find the difference: 25 - 18 = 7 kg needed on the right pan!",
-        review: "25 kg minus 18 kg = 7 kg. Adding 7 kg balances the scale at 25 kg!"
+        title: "Listen & Select: Minus Sign",
+        subtitle: "Level 3: Subtraction • 🔊 Spoken Word",
+        prompt: "Listen to the spoken mathematical operation and select the correct symbol:",
+        type: "listen-and-choose",
+        spokenWord: "Minus Sign",
+        phonetic: "Mi-nus • Sign",
+        options: [
+          { id: "opt1", icon: "➖", label: "Minus (Subtraction)", isCorrect: true },
+          { id: "opt2", icon: "➕", label: "Plus (Addition)", isCorrect: false },
+          { id: "opt3", icon: "✖️", label: "Times (Multiply)", isCorrect: false },
+          { id: "opt4", icon: "➗", label: "Divide (Division)", isCorrect: false }
+        ],
+        hint: "The spoken word is 'Minus Sign'. Minus represents subtraction!",
+        review: "The minus sign '➖' is used to subtract or find the difference between numbers."
       },
       {
         stageNum: 15,
@@ -363,18 +558,15 @@ export const GAMES_CATALOG = [
         stageNum: 18,
         level: 4,
         levelStageNum: "3 of 5",
-        title: "Match Multiplication Equations",
-        subtitle: "Level 4: Multiplication • 🔗 Match Pairs",
-        prompt: "Connect each multiplication problem to its correct product on the right:",
-        type: "matching-pairs",
-        pairs: [
-          { id: "p1", leftText: "3 × 4", leftIcon: "✖️", rightText: "12", rightIcon: "1️⃣2️⃣" },
-          { id: "p2", leftText: "5 × 5", leftIcon: "✖️", rightText: "25", rightIcon: "2️⃣5️⃣" },
-          { id: "p3", leftText: "6 × 2", leftIcon: "✖️", rightText: "12", rightIcon: "1️⃣2️⃣" },
-          { id: "p4", leftText: "4 × 5", leftIcon: "✖️", rightText: "20", rightIcon: "2️⃣0️⃣" }
-        ],
-        hint: "3×4=12, 5×5=25, 6×2=12, 4×5=20!",
-        review: "3×4=12, 5×5=25, 6×2=12, and 4×5=20!"
+        title: "Trace the Diamond",
+        subtitle: "Level 4: Geometry • ✏️ Outline Trace",
+        prompt: "Trace along the 4 straight symmetrical sides of the diamond:",
+        type: "outline-trace",
+        shape: "diamond",
+        shapeName: "Sparkling Diamond",
+        brushColor: "#06B6D4",
+        hint: "Trace from the top point down to the sides and join at the bottom tip!",
+        review: "Brilliant! A diamond shape (rhombus) has 4 congruent sides and 2 lines of symmetry."
       },
       {
         stageNum: 19,
@@ -584,64 +776,50 @@ export const GAMES_CATALOG = [
         stageNum: 3,
         level: 1,
         levelStageNum: "3 of 5",
-        title: "Mammal Classification Rule",
-        subtitle: "Level 1: Animals • 🎴 Card Grid",
-        prompt: "Which animal is a MAMMAL that gives birth to live babies and breathes air?",
-        type: "cards-grid",
-        layout: "2x2",
-        cards: [
-          { id: "c1", icon: "🐬", label: "Dolphin (Mammal)", isCorrect: true },
-          { id: "c2", icon: "🦅", label: "Eagle (Bird - Lays eggs)", isCorrect: false },
-          { id: "c3", icon: "🦎", label: "Lizard (Reptile - Lays eggs)", isCorrect: false },
-          { id: "c4", icon: "🐸", label: "Frog (Amphibian - Lays eggs)", isCorrect: false }
+        title: "Memory Match: Animal Kingdom",
+        subtitle: "Level 1: Animals • 🎴 Memory Cards",
+        prompt: "Memorize the animals during preview, then find and match the animal pairs:",
+        type: "memory-cards",
+        pairs: [
+          { id: "p1", icon: "🐬", label: "Dolphin", color: "#0EA5E9" },
+          { id: "p2", icon: "🦁", label: "Lion", color: "#F59E0B" },
+          { id: "p3", icon: "🦜", label: "Parrot", color: "#10B981" }
         ],
-        hint: "Eagles, lizards, and frogs lay eggs. Dolphins are marine mammals with live births and lungs!",
-        review: "Dolphins are warm-blooded mammals that breathe air using lungs and nurse their calves!"
+        hint: "Memorize the positions of the Dolphin, Lion, and Parrot!",
+        review: "You matched all the animal pairs successfully!"
       },
       {
         stageNum: 4,
         level: 1,
         levelStageNum: "4 of 5",
-        title: "Sort Flyers vs Non-Flyers",
-        subtitle: "Level 1: Animals • 🎯 Drag & Sort",
-        prompt: "Sort animals into 'Can Fly in Air 🪽' vs 'Cannot Fly 🐾':",
-        type: "drag-drop-zones",
-        zones: [
-          { id: "fly", title: "Can Fly 🪽", icon: "🪽", color: "#6366F1" },
-          { id: "nofly", title: "Cannot Fly 🐾", icon: "🐾", color: "#D97706" }
+        title: "Listen & Select: The Elephant",
+        subtitle: "Level 1: Animals • 🔊 Spoken Word",
+        prompt: "Listen to the spoken animal name and select the matching picture:",
+        type: "listen-and-choose",
+        spokenWord: "Elephant",
+        phonetic: "El • e • phant",
+        options: [
+          { id: "opt1", icon: "🐘", label: "Elephant", isCorrect: true },
+          { id: "opt2", icon: "🦒", label: "Giraffe", isCorrect: false },
+          { id: "opt3", icon: "🦁", label: "Lion", isCorrect: false },
+          { id: "opt4", icon: "🦓", label: "Zebra", isCorrect: false }
         ],
-        items: [
-          { id: "f1", label: "Eagle", icon: "🦅", correctZoneId: "fly" },
-          { id: "f2", label: "Owl", icon: "🦉", correctZoneId: "fly" },
-          { id: "f3", label: "Elephant", icon: "🐘", correctZoneId: "nofly" },
-          { id: "f4", label: "Lion", icon: "🦁", correctZoneId: "nofly" }
-        ],
-        hint: "Eagles and owls have wings and feathers for flight. Elephants and lions are land mammals!",
-        review: "Eagles and Owls fly in the air. Elephants and Lions live on land!"
+        hint: "The voice spoke 'Elephant'. Select the gentle giant with a long trunk!",
+        review: "The Elephant is the largest living land mammal with a flexible trunk!"
       },
       {
         stageNum: 5,
         level: 1,
         levelStageNum: "5 of 5",
-        title: "3x3 Animal Classification Grid",
-        subtitle: "Level 1: Animals • 🧩 Sudoku Matrix",
-        prompt: "Place Dog 🐶, Cat 🐱, and Rabbit 🐰 so none repeat per row or column:",
-        type: "sudoku-matrix",
-        gridSize: 3,
-        symbols: ["🐶", "🐱", "🐰"],
-        initialGrid: [
-          ["🐶", "🐱", "🐰"],
-          ["🐱", "🐰", null],
-          ["🐰", null, "🐱"]
-        ],
-        solutionGrid: [
-          ["🐶", "🐱", "🐰"],
-          ["🐱", "🐰", "🐶"],
-          ["🐰", "🐶", "🐱"]
-        ],
-        targetCell: { r: 1, c: 2, answer: "🐶", explanation: "Row 2 has Cat and Rabbit, so the missing animal is Dog 🐶!" },
-        hint: "Row 2 contains 🐱 and 🐰. What is the missing pet from [🐶, 🐱, 🐰]?",
-        review: "Each row and column contains Dog, Cat, and Rabbit uniquely!"
+        title: "Trace the Butterfly",
+        subtitle: "Level 1: Animals • ✏️ Outline Trace",
+        prompt: "Trace along the symmetrical wings of the butterfly:",
+        type: "outline-trace",
+        shape: "butterfly",
+        shapeName: "Butterfly Wings",
+        brushColor: "#A855F7",
+        hint: "Follow the curved wings on both sides from top to bottom!",
+        review: "Marvelous! Butterflies have bilateral symmetry with identical left and right wings."
       },
 
       /* --- Level 2: Living vs Non-Living & Plant Life --- */
@@ -705,18 +883,15 @@ export const GAMES_CATALOG = [
         stageNum: 9,
         level: 2,
         levelStageNum: "4 of 5",
-        title: "Match Baby Animals to Adults",
-        subtitle: "Level 2: Living Things • 🔗 Match Pairs",
-        prompt: "Connect each baby animal on the left to its adult parent on the right:",
-        type: "matching-pairs",
-        pairs: [
-          { id: "p1", leftText: "Puppy 🐶", leftIcon: "🐶", rightText: "Adult Dog 🐕", rightIcon: "🐕" },
-          { id: "p2", leftText: "Kitten 🐱", leftIcon: "🐱", rightText: "Adult Cat 🐈", rightIcon: "🐈" },
-          { id: "p3", leftText: "Calf 🐮", leftIcon: "🐮", rightText: "Adult Cow 🐄", rightIcon: "🐄" },
-          { id: "p4", leftText: "Tadpole 🐸", leftIcon: "🫧", rightText: "Adult Frog 🐸", rightIcon: "🐸" }
-        ],
-        hint: "Puppy ➔ Dog, Kitten ➔ Cat, Calf ➔ Cow, Tadpole ➔ Frog!",
-        review: "Puppies grow into Dogs, Kittens into Cats, Calves into Cows, and Tadpoles into Frogs!"
+        title: "Trace the Living Heart",
+        subtitle: "Level 2: Living Things • ✏️ Outline Trace",
+        prompt: "Trace along the curved lobes and pointed base of the heart:",
+        type: "outline-trace",
+        shape: "heart",
+        shapeName: "Living Organism Heart",
+        brushColor: "#EC4899",
+        hint: "Start at the center notch, curve around the left and right lobes, and meet at the bottom point!",
+        review: "Great job! The heart is a muscular organ that pumps oxygen-rich blood through living bodies."
       },
       {
         stageNum: 10,
@@ -804,18 +979,20 @@ export const GAMES_CATALOG = [
         stageNum: 14,
         level: 3,
         levelStageNum: "4 of 5",
-        title: "Solid Crystal Lattice 3D Model",
-        subtitle: "Level 3: States of Matter • 📦 3D Spatial",
-        prompt: "Count all unit cubes in this solid crystalline lattice structure:",
-        type: "spatial-3d",
-        heightMap: [
-          [2, 1, 2],
-          [1, 2, 1],
-          [0, 1, 0]
+        title: "Listen & Select: Solid Ice",
+        subtitle: "Level 3: States of Matter • 🔊 Spoken Word",
+        prompt: "Listen to the spoken state of matter and choose the matching solid object:",
+        type: "listen-and-choose",
+        spokenWord: "Ice Cube",
+        phonetic: "Ice • Cube",
+        options: [
+          { id: "opt1", icon: "🧊", label: "Ice Cube (Solid)", isCorrect: true },
+          { id: "opt2", icon: "💧", label: "Water Drop (Liquid)", isCorrect: false },
+          { id: "opt3", icon: "💨", label: "Steam Vapor (Gas)", isCorrect: false },
+          { id: "opt4", icon: "⚡", label: "Plasma Lightning", isCorrect: false }
         ],
-        totalCubes: 10,
-        hint: "Row 1: 2+1+2=5. Row 2: 1+2+1=4. Row 3: 0+1+0=1. 5 + 4 + 1 = ?",
-        review: "The solid crystal lattice contains 10 unit cubes tightly bound together!"
+        hint: "The spoken word is 'Ice Cube'. Ice is the solid state of water with a fixed crystal shape!",
+        review: "Ice cubes are solid water with fixed volume and shape at temperatures below 0°C (32°F)."
       },
       {
         stageNum: 15,
@@ -905,44 +1082,32 @@ export const GAMES_CATALOG = [
         stageNum: 19,
         level: 4,
         levelStageNum: "4 of 5",
-        title: "Match Earth Seasons to Weather",
-        subtitle: "Level 4: Solar System • 🔗 Match Pairs",
-        prompt: "Connect each Earth season to its weather caused by Earth's orbital axial tilt:",
-        type: "matching-pairs",
-        pairs: [
-          { id: "p1", leftText: "Summer 🏖️", leftIcon: "🏖️", rightText: "Hot temperatures & longest daylight hours", rightIcon: "☀️" },
-          { id: "p2", leftText: "Winter ⛄", leftIcon: "⛄", rightText: "Cold temperatures, frost, snow & shorter days", rightIcon: "❄️" },
-          { id: "p3", leftText: "Autumn 🍂", leftIcon: "🍂", rightText: "Leaves turn golden-brown & cool breezes blow", rightIcon: "🍁" },
-          { id: "p4", leftText: "Spring 🌷", leftIcon: "🌷", rightText: "Flowers bloom & baby animals are born", rightIcon: "🌸" }
-        ],
-        hint: "Summer is hot, Winter brings snow, Autumn has falling leaves, and Spring brings fresh flowers!",
-        review: "Summer ➔ Hot/Long days, Winter ➔ Snow/Cold, Autumn ➔ Leaves fall, Spring ➔ Flowers bloom!"
+        title: "Trace the Space Rocket",
+        subtitle: "Level 4: Space • ✏️ Outline Trace",
+        prompt: "Trace along the nose cone, aerodynamic fuselage, and fins of the rocket:",
+        type: "outline-trace",
+        shape: "rocket",
+        shapeName: "Space Rocket",
+        brushColor: "#EF4444",
+        hint: "Start at the tip of the nose cone, trace down both sides, and outline the rocket fins!",
+        review: "Awesome! Rockets use thrust from burning propulsion fuels to escape Earth's gravity."
       },
       {
         stageNum: 20,
         level: 4,
         levelStageNum: "5 of 5",
-        title: "4x4 Celestial Constellation Matrix",
-        subtitle: "Level 4: Solar System • 🧩 Sudoku Matrix",
-        prompt: "Place Sun ☀️, Moon 🌙, Star ⭐, and Comet ☄️ without duplicate per row/column:",
-        type: "sudoku-matrix",
-        gridSize: 4,
-        symbols: ["☀️", "🌙", "⭐", "☄️"],
-        initialGrid: [
-          ["☀️", "🌙", "⭐", "☄️"],
-          ["⭐", "☄️", "☀️", "🌙"],
-          ["🌙", "☀️", "☄️", null],
-          ["☄️", "⭐", "🌙", "☀️"]
+        title: "Memory Match: Solar System",
+        subtitle: "Level 4: Space • 🎴 Memory Cards",
+        prompt: "Memorize the celestial bodies during preview, then find and match each pair:",
+        type: "memory-cards",
+        pairs: [
+          { id: "p1", icon: "☀️", label: "Sun (Star)", color: "#F59E0B" },
+          { id: "p2", icon: "🌍", label: "Earth", color: "#3B82F6" },
+          { id: "p3", icon: "🌙", label: "Moon", color: "#FBBF24" },
+          { id: "p4", icon: "🪐", label: "Saturn", color: "#8B5CF6" }
         ],
-        solutionGrid: [
-          ["☀️", "🌙", "⭐", "☄️"],
-          ["⭐", "☄️", "☀️", "🌙"],
-          ["🌙", "☀️", "☄️", "⭐"],
-          ["☄️", "⭐", "🌙", "☀️"]
-        ],
-        targetCell: { r: 2, c: 3, answer: "⭐", explanation: "Row 3 has 🌙, ☀️, ☄️, so the missing symbol is Star ⭐!" },
-        hint: "Row 3 contains 🌙, ☀️, and ☄️. The missing celestial symbol is Star ⭐!",
-        review: "Each row and column holds Sun, Moon, Star, and Comet in perfect symmetry!"
+        hint: "Memorize the positions of Sun, Earth, Moon, and Saturn during the 3-second preview!",
+        review: "You successfully matched all the celestial planet pairs in our solar system!"
       },
 
       /* --- Level 5: Human Body & Ecosystem Food Chains --- */
@@ -1109,58 +1274,50 @@ export const GAMES_CATALOG = [
         stageNum: 3,
         level: 1,
         levelStageNum: "3 of 5",
-        title: "Match 2D Shapes to Everyday Objects",
-        subtitle: "Level 1: Visual Patterns • 🔗 Match Pairs",
-        prompt: "Connect each geometric shape on the left to its matching everyday object on the right:",
-        type: "matching-pairs",
-        pairs: [
-          { id: "p1", leftText: "Circle ⚪", leftIcon: "⚪", rightText: "Wall Clock ⏰", rightIcon: "⏰" },
-          { id: "p2", leftText: "Triangle 🔺", leftIcon: "🔺", rightText: "Pizza Slice 🍕", rightIcon: "🍕" },
-          { id: "p3", leftText: "Rectangle ▬", leftIcon: "▬", rightText: "Room Door 🚪", rightIcon: "🚪" },
-          { id: "p4", leftText: "Square ⬛", leftIcon: "⬛", rightText: "Game Dice 🎲", rightIcon: "🎲" }
-        ],
-        hint: "A clock is circular, a pizza slice is triangular, a door is rectangular, and dice faces are square!",
-        review: "Circle ➔ Clock, Triangle ➔ Pizza Slice, Rectangle ➔ Door, Square ➔ Dice!"
+        title: "Trace the Five-Point Star",
+        subtitle: "Level 1: Visuals • ✏️ Outline Trace",
+        prompt: "Trace along the 5 glowing vertices of the star:",
+        type: "outline-trace",
+        shape: "star",
+        shapeName: "Five-Point Star",
+        brushColor: "#F59E0B",
+        hint: "Follow the continuous star path from the top point down and across to each vertex!",
+        review: "Awesome! A five-point star has 10 sides and 5 pointed vertices."
       },
       {
         stageNum: 4,
         level: 1,
         levelStageNum: "4 of 5",
-        title: "2x2 Unit Block Base",
-        subtitle: "Level 1: Visual Patterns • 📦 3D Spatial",
-        prompt: "Count the total cubes in this 2x2 flat base:",
-        type: "spatial-3d",
-        heightMap: [
-          [1, 1],
-          [1, 1]
+        title: "Memory Match: Visual Shapes",
+        subtitle: "Level 1: Visuals • 🎴 Memory Cards",
+        prompt: "Memorize card pairs before they flip, then find and match each colored shape:",
+        type: "memory-cards",
+        pairs: [
+          { id: "p1", icon: "🔴", label: "Red Circle", color: "#EF4444" },
+          { id: "p2", icon: "🔷", label: "Blue Diamond", color: "#3B82F6" },
+          { id: "p3", icon: "🟩", label: "Green Square", color: "#10B981" }
         ],
-        totalCubes: 4,
-        hint: "A 2x2 grid with 1 cube at each position: 1 + 1 + 1 + 1 = ?",
-        review: "There are 4 unit cubes arranged in a 2x2 square pattern!"
+        hint: "Remember the positions: Red Circle, Blue Diamond, and Green Square!",
+        review: "You matched all the colored shape pairs successfully!"
       },
       {
         stageNum: 5,
         level: 1,
         levelStageNum: "5 of 5",
-        title: "3x3 Primary Color Grid",
-        subtitle: "Level 1: Visual Patterns • 🧩 Sudoku Matrix",
-        prompt: "Place Red 🔴, Blue 🟦, and Yellow 🟡 with no duplicates in any row/column:",
-        type: "sudoku-matrix",
-        gridSize: 3,
-        symbols: ["🔴", "🟦", "🟡"],
-        initialGrid: [
-          ["🔴", "🟦", "🟡"],
-          ["🟦", "🟡", null],
-          ["🟡", null, "🟦"]
+        title: "Listen & Select: The Hexagon",
+        subtitle: "Level 1: Shapes • 🔊 Spoken Word",
+        prompt: "Listen to the spoken polygon name and select the 6-sided geometric shape:",
+        type: "listen-and-choose",
+        spokenWord: "Hexagon",
+        phonetic: "Hex • a • gon",
+        options: [
+          { id: "opt1", icon: "🛑", label: "Hexagon (6 Sides)", isCorrect: true },
+          { id: "opt2", icon: "🔺", label: "Triangle (3 Sides)", isCorrect: false },
+          { id: "opt3", icon: "🟦", label: "Square (4 Sides)", isCorrect: false },
+          { id: "opt4", icon: "⭐", label: "Star (10 Sides)", isCorrect: false }
         ],
-        solutionGrid: [
-          ["🔴", "🟦", "🟡"],
-          ["🟦", "🟡", "🔴"],
-          ["🟡", "🔴", "🟦"]
-        ],
-        targetCell: { r: 1, c: 2, answer: "🔴", explanation: "Row 2 has Blue and Yellow, so the missing color is Red 🔴!" },
-        hint: "Row 2 contains 🟦 and 🟡. Which primary color is missing?",
-        review: "Each row and column contains Red, Blue, and Yellow primary colors uniquely!"
+        hint: "The voice spoke 'Hexagon'. A hexagon has exactly 6 straight sides and 6 vertices!",
+        review: "A hexagon '🛑' is a polygon with 6 equal sides and 6 internal angles."
       },
 
       /* --- Level 2: Directional Logic & Opposites --- */
@@ -1225,17 +1382,15 @@ export const GAMES_CATALOG = [
         stageNum: 9,
         level: 2,
         levelStageNum: "4 of 5",
-        title: "Rotated 3D L-Shape Block",
-        subtitle: "Level 2: Directional Logic • 📦 3D Spatial",
-        prompt: "Count the cubes in this 3D L-shape turned 90 degrees:",
-        type: "spatial-3d",
-        heightMap: [
-          [2, 0],
-          [1, 1]
-        ],
-        totalCubes: 4,
-        hint: "One vertical pillar has 2 cubes, and two horizontal spots have 1 cube: 2 + 1 + 1 = ?",
-        review: "The 3D L-shaped block has 4 cubes in total (2 + 1 + 1 = 4)!"
+        title: "Trace the Crescent Moon",
+        subtitle: "Level 2: Symbols • ✏️ Outline Trace",
+        prompt: "Trace along the curved outer and inner arcs of the crescent moon:",
+        type: "outline-trace",
+        shape: "moon",
+        shapeName: "Crescent Moon",
+        brushColor: "#FBBF24",
+        hint: "Start at the top tip, follow the outer arc, and curve back along the inner crescent!",
+        review: "Splendid! The crescent moon is formed when sunlight illuminates only a sliver of the lunar sphere."
       },
       {
         stageNum: 10,
@@ -1323,18 +1478,20 @@ export const GAMES_CATALOG = [
         stageNum: 14,
         level: 3,
         levelStageNum: "4 of 5",
-        title: "Multi-Tier Stepped Terrace 3D",
-        subtitle: "Level 3: Multi-Attribute • 📦 3D Spatial",
-        prompt: "Count all unit cubes across these 3 stepped attribute layers:",
-        type: "spatial-3d",
-        heightMap: [
-          [3, 2, 1],
-          [2, 2, 1],
-          [1, 1, 1]
+        title: "Listen & Select: The Telescope",
+        subtitle: "Level 3: Multi-Attribute • 🔊 Spoken Word",
+        prompt: "Listen to the spoken equipment name and select the optical astronomy instrument:",
+        type: "listen-and-choose",
+        spokenWord: "Telescope",
+        phonetic: "Tel • e • scope",
+        options: [
+          { id: "opt1", icon: "🔭", label: "Telescope", isCorrect: true },
+          { id: "opt2", icon: "🧭", label: "Compass", isCorrect: false },
+          { id: "opt3", icon: "⏳", label: "Hourglass", isCorrect: false },
+          { id: "opt4", icon: "🔍", label: "Magnifying Glass", isCorrect: false }
         ],
-        totalCubes: 14,
-        hint: "Sum by rows: (3+2+1) + (2+2+1) + (1+1+1) = 6 + 5 + 3 = ?",
-        review: "Row 1 (6 cubes) + Row 2 (5 cubes) + Row 3 (3 cubes) = 14 cubes in total!"
+        hint: "The voice spoke 'Telescope'. It is used by astronomers to view distant stars and planets!",
+        review: "A telescope '🔭' is an optical instrument that magnifies distant celestial objects in space."
       },
       {
         stageNum: 15,
@@ -1424,18 +1581,18 @@ export const GAMES_CATALOG = [
         stageNum: 19,
         level: 4,
         levelStageNum: "4 of 5",
-        title: "Symmetrical 3D Bridge Arch",
-        subtitle: "Level 4: Mirror Symmetry • 📦 3D Spatial",
-        prompt: "Count all cubes forming this symmetrical tunnel archway:",
-        type: "spatial-3d",
-        heightMap: [
-          [3, 3, 3],
-          [3, 0, 3],
-          [1, 0, 1]
+        title: "Memory Match: Aptitude Icons",
+        subtitle: "Level 4: Mirror Symmetry • 🎴 Memory Cards",
+        prompt: "Memorize the logic symbols during preview, then find and match each pair:",
+        type: "memory-cards",
+        pairs: [
+          { id: "p1", icon: "💡", label: "Idea Bulb", color: "#F59E0B" },
+          { id: "p2", icon: "🧩", label: "Puzzle Piece", color: "#3B82F6" },
+          { id: "p3", icon: "🎯", label: "Target Bullseye", color: "#EF4444" },
+          { id: "p4", icon: "🏆", label: "Trophy Award", color: "#10B981" }
         ],
-        totalCubes: 17,
-        hint: "Row 1 has 3+3+3 = 9. Row 2 has 3+0+3 = 6. Row 3 has 1+0+1 = 2. 9 + 6 + 2 = ?",
-        review: "There are 17 unit cubes forming the symmetrical bridge arch!"
+        hint: "Remember the locations: Idea Bulb, Puzzle Piece, Target, and Trophy!",
+        review: "You successfully identified and paired all the logic badge icons!"
       },
       {
         stageNum: 20,
@@ -1508,18 +1665,15 @@ export const GAMES_CATALOG = [
         stageNum: 23,
         level: 5,
         levelStageNum: "3 of 5",
-        title: "Match Cause to Logical Effect",
-        subtitle: "Level 5: Syllogisms • 🔗 Match Pairs",
-        prompt: "Connect each logical CAUSE on the left to its direct EFFECT on the right:",
-        type: "matching-pairs",
-        pairs: [
-          { id: "p1", leftText: "Heavy Rain Pours 🌧️", leftIcon: "🌧️", rightText: "Ground gets wet and puddles form 🌊", rightIcon: "🌊" },
-          { id: "p2", leftText: "Sun shines on Ice ☀️", leftIcon: "☀️", rightText: "Ice absorbs heat and melts into water 💧", rightIcon: "💧" },
-          { id: "p3", leftText: "Plant gets water & sun 🌱", leftIcon: "🌱", rightText: "Plant grows healthy flowers 🌻", rightIcon: "🌻" },
-          { id: "p4", leftText: "Drop a glass on stone 🪨", leftIcon: "🪨", rightText: "Glass shatters and breaks 💥", rightIcon: "💥" }
-        ],
-        hint: "Rain ➔ Wet ground, Sun on ice ➔ Melting, Water & sun on plant ➔ Growth, Glass on stone ➔ Breaks!",
-        review: "Rain ➔ Wet puddles, Sun ➔ Melting, Sun & water ➔ Growth, Stone drop ➔ Breakage!"
+        title: "Trace the Letter A",
+        subtitle: "Level 5: Syllogisms • ✏️ Outline Trace",
+        prompt: "Trace along the diagonal legs and horizontal bridge of the letter A:",
+        type: "outline-trace",
+        shape: "letter-a",
+        shapeName: "Capital Letter A",
+        brushColor: "#10B981",
+        hint: "Start at the bottom-left leg, go up to the apex, trace down the right leg, and cross the middle bar!",
+        review: "Awesome! Letter A is the first letter of the alphabet with two slanted diagonals and a crossbar."
       },
       {
         stageNum: 24,

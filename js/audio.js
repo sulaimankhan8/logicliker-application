@@ -8,6 +8,7 @@ class AudioEngine {
     this.ctx = null;
     this.muted = false;
     this.speechSynth = window.speechSynthesis || null;
+    this.isSpeaking = false;
   }
 
   init() {
@@ -24,6 +25,10 @@ class AudioEngine {
 
   toggleMute() {
     this.muted = !this.muted;
+    if (this.muted && this.speechSynth) {
+      this.speechSynth.cancel();
+      this.isSpeaking = false;
+    }
     return this.muted;
   }
 
@@ -47,6 +52,72 @@ class AudioEngine {
 
     osc.start();
     osc.stop(this.ctx.currentTime + 0.05);
+  }
+
+  playFlip() {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(300, this.ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(600, this.ctx.currentTime + 0.07);
+
+    gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.07);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start();
+    osc.stop(this.ctx.currentTime + 0.07);
+  }
+
+  playShuffle() {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    // Crisp multi-card riffle shuffle audio synthesis
+    const count = 6;
+    for (let i = 0; i < count; i++) {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      const startTime = this.ctx.currentTime + i * 0.045;
+      osc.frequency.setValueAtTime(260 + (i * 35), startTime);
+      osc.frequency.exponentialRampToValueAtTime(130, startTime + 0.04);
+      gain.gain.setValueAtTime(0.12, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.04);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + 0.04);
+    }
+  }
+
+  playSparkle() {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const freqs = [659.25, 830.61, 987.77, 1318.51];
+    freqs.forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const startTime = this.ctx.currentTime + idx * 0.04;
+      gain.gain.setValueAtTime(0.15, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.15);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + 0.15);
+    });
   }
 
   playSuccess() {
@@ -143,13 +214,47 @@ class AudioEngine {
     });
   }
 
-  speak(text) {
-    if (this.muted || !this.speechSynth) return;
-    this.speechSynth.cancel(); // Stop any active speech
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.95;
-    utterance.pitch = 1.1;
+  speak(text, onStart = null, onEnd = null) {
+    if (this.muted || !this.speechSynth) {
+      if (onEnd) onEnd();
+      return;
+    }
+    this.speechSynth.cancel(); // Stop any previous speech
+
+    const cleanText = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim();
+    if (!cleanText) {
+      if (onEnd) onEnd();
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 0.92;
+    utterance.pitch = 1.15;
+    utterance.volume = 1.0;
+
+    utterance.onstart = () => {
+      this.isSpeaking = true;
+      if (onStart) onStart();
+    };
+
+    utterance.onend = () => {
+      this.isSpeaking = false;
+      if (onEnd) onEnd();
+    };
+
+    utterance.onerror = () => {
+      this.isSpeaking = false;
+      if (onEnd) onEnd();
+    };
+
     this.speechSynth.speak(utterance);
+  }
+
+  stopSpeech() {
+    if (this.speechSynth) {
+      this.speechSynth.cancel();
+      this.isSpeaking = false;
+    }
   }
 }
 

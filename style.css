@@ -2223,3 +2223,613 @@ canvas.isometric-canvas:active {
   outline: none;
 }
 
+/* ==========================================================================
+   Universal Spoken Question Button & Voiceover Indicator
+   ========================================================================== */
+.question-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #EEF2FF;
+  border: 1.5px solid #C7D2FE;
+  border-radius: 16px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--primary-indigo);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+}
+
+.btn-audio-speak {
+  position: relative;
+  background: white;
+  border: 2px solid #818CF8;
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(99, 102, 241, 0.2);
+  transition: var(--transition-bounce);
+}
+
+.btn-audio-speak:hover {
+  transform: scale(1.1);
+  background: #F5F3FF;
+  border-color: #6366F1;
+}
+
+.btn-audio-speak.is-speaking {
+  background: #4F46E5;
+  color: white;
+  border-color: #4338CA;
+  animation: speak-pulse 1s infinite alternate ease-in-out;
+}
+
+.speak-pulse-dot {
+  display: none;
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 10px;
+  height: 10px;
+  background: #10B981;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.btn-audio-speak.is-speaking .speak-pulse-dot {
+  display: block;
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes speak-pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.5); }
+  100% { transform: scale(1.12); box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Engine 1: ✏️ Outline Tracing Engine
+   ========================================================================== */
+.outline-trace-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.trace-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 4px 8px;
+}
+
+.trace-target-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 6px 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.trace-target-icon {
+  font-size: 20px;
+}
+
+.trace-target-name {
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+
+.trace-progress-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ECFDF5;
+  border: 1.5px solid #A7F3D0;
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+
+.trace-progress-ring {
+  width: 26px;
+  height: 26px;
+}
+
+.circular-chart {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #D1FAE5;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 3.8;
+  stroke-linecap: round;
+  stroke: #10B981;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.trace-progress-text {
+  font-weight: 900;
+  font-size: 13px;
+  color: #065F46;
+}
+
+.trace-stage-board {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  background: #FFFFFF;
+  border: 3px dashed #CBD5E1;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.04), 0 6px 20px rgba(0,0,0,0.06);
+  touch-action: none;
+}
+
+.trace-guide-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.guide-track-bg {
+  fill: none;
+  stroke: #F1F5F9;
+  stroke-width: 32;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.guide-track-dash {
+  fill: none;
+  stroke-width: 8;
+  stroke-dasharray: 10, 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: dash-move 30s linear infinite;
+  opacity: 0.85;
+}
+
+@keyframes dash-move {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+.guide-tracer-dot {
+  filter: drop-shadow(0 0 6px rgba(0,0,0,0.3));
+  transition: all 0.05s linear;
+}
+
+.trace-draw-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  cursor: crosshair;
+}
+
+.trace-sparkle-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.trace-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   Engine 2: 🎴 Memory Card Match Engine (3D Flip & Shuffle)
+   ========================================================================== */
+.memory-engine-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.memory-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 4px;
+}
+
+.memory-phase-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #FDF2F8;
+  border: 1.5px solid #FBCFE8;
+  border-radius: 14px;
+  padding: 5px 12px;
+  font-weight: 800;
+  font-size: 13px;
+  color: #BE185D;
+}
+
+.memory-score-pill {
+  display: flex;
+  align-items: center;
+  background: #F0FDF4;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 14px;
+  padding: 5px 12px;
+  font-weight: 800;
+  font-size: 13px;
+  color: #15803D;
+}
+
+.memory-preview-bar {
+  width: 100%;
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.memory-preview-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #EC4899, #8B5CF6);
+  border-radius: 4px;
+}
+
+.memory-cards-grid {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  perspective: 1000px;
+  padding: 4px;
+}
+
+.memory-cards-grid.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.memory-cards-grid.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.memory-cards-grid.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.memory-card {
+  height: 110px;
+  cursor: pointer;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.memory-card:hover {
+  transform: translateY(-3px);
+}
+
+.memory-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  border-radius: 16px;
+}
+
+.memory-card.is-flipped .memory-card-inner {
+  transform: rotateY(180deg);
+}
+
+.memory-card-front,
+.memory-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* Card Front (Face Down pattern) */
+.memory-card-front {
+  background: linear-gradient(135deg, #4F46E5, #3730A3);
+  border: 3px solid #818CF8;
+  color: white;
+}
+
+.card-pattern-symbol {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.card-back-sparkle {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+/* Card Back (Face Up item) */
+.memory-card-back {
+  background: #FFFFFF;
+  border: 3px solid #6366F1;
+  color: var(--text-dark);
+  transform: rotateY(180deg);
+}
+
+.memory-card-icon {
+  font-size: 38px;
+  line-height: 1;
+}
+
+.memory-card-label {
+  font-weight: 800;
+  font-size: 12px;
+  color: #475569;
+  margin-top: 4px;
+}
+
+.memory-match-badge {
+  display: none;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #10B981;
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 900;
+  align-items: center;
+  justify-content: center;
+}
+
+.memory-card.is-matched .memory-card-back {
+  border-color: #10B981 !important;
+  background: #F0FDF4;
+}
+
+.memory-card.is-matched .memory-match-badge {
+  display: flex;
+}
+
+.memory-card.is-shuffling {
+  box-shadow: 0 14px 28px rgba(30, 27, 75, 0.35), 0 0 15px rgba(99, 102, 241, 0.4) !important;
+  pointer-events: none;
+}
+
+.memory-card.card-land-pop {
+  animation: card-deal-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes card-deal-pop {
+  0% { transform: scale(0.85) translateY(-10px); }
+  60% { transform: scale(1.08) translateY(2px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+.shuffle-bounce {
+  animation: card-shuffle 0.4s ease;
+}
+
+@keyframes card-shuffle {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(0.92) rotate(-6deg) translateY(-8px); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.victory-pulse {
+  animation: victory-wave 0.8s ease infinite alternate;
+}
+
+@keyframes victory-wave {
+  from { transform: scale(1); }
+  to { transform: scale(1.02); }
+}
+
+/* ==========================================================================
+   Engine 3: 🔊 Listen & Choose Engine (Speech + Visual Image Selection)
+   ========================================================================== */
+.listen-engine-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.listen-speaker-station {
+  width: 100%;
+}
+
+.listen-speaker-card {
+  background: linear-gradient(135deg, #4338CA 0%, #312E81 100%);
+  border: 2px solid #6366F1;
+  border-radius: 18px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: white;
+  box-shadow: 0 8px 24px rgba(49, 46, 129, 0.25);
+}
+
+.btn-main-speaker {
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  transition: var(--transition-bounce);
+  position: relative;
+}
+
+.btn-main-speaker:hover {
+  transform: scale(1.1);
+  background: #FDF4FF;
+}
+
+.btn-main-speaker.is-active-speaker {
+  background: #FDE047;
+  animation: speaker-bounce 0.4s infinite alternate ease-in-out;
+}
+
+@keyframes speaker-bounce {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
+.sound-wave-bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 12px;
+  margin-top: 2px;
+}
+
+.wave-bar {
+  width: 3px;
+  height: 4px;
+  background: #6366F1;
+  border-radius: 2px;
+  transition: height 0.1s ease;
+}
+
+.sound-wave-bars.playing .wave-bar:nth-child(1) { animation: wave 0.4s infinite ease-in-out alternate; }
+.sound-wave-bars.playing .wave-bar:nth-child(2) { animation: wave 0.4s 0.1s infinite ease-in-out alternate; }
+.sound-wave-bars.playing .wave-bar:nth-child(3) { animation: wave 0.4s 0.2s infinite ease-in-out alternate; }
+.sound-wave-bars.playing .wave-bar:nth-child(4) { animation: wave 0.4s 0.15s infinite ease-in-out alternate; }
+.sound-wave-bars.playing .wave-bar:nth-child(5) { animation: wave 0.4s 0.05s infinite ease-in-out alternate; }
+
+@keyframes wave {
+  0% { height: 3px; }
+  100% { height: 12px; }
+}
+
+.listen-info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.listen-tag {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #A5B4FC;
+}
+
+.listen-instruction-text {
+  font-size: 16px;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.phonetic-pill {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: #FDE047;
+  margin-top: 4px;
+  display: inline-flex;
+}
+
+.listen-options-grid {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.listen-options-grid.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.listen-options-grid.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.listen-options-grid.grid-cols-4 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.listen-choice-card {
+  min-height: 100px;
+  padding: 14px 10px;
+}
+
+.listen-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+

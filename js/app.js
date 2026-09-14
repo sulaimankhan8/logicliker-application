@@ -23,6 +23,9 @@ import { BalanceScaleEngine } from './engines/balance_scale_engine.js';
 import { RebusKeypadEngine } from './engines/rebus_keypad_engine.js';
 import { Spatial3DEngine } from './engines/spatial_3d_engine.js';
 import { SudokuMatrixEngine } from './engines/sudoku_matrix_engine.js';
+import { OutlineTraceEngine } from './engines/outline_trace_engine.js';
+import { MemoryCardsEngine } from './engines/memory_cards_engine.js';
+import { ListenAndChooseEngine } from './engines/listen_and_choose_engine.js';
 
 const BADGES_CATALOG = [
   { id: 'first_step', icon: '🌟', name: 'First Steps', desc: 'Solve your first logic puzzle', check: (state, totalSolved) => totalSolved >= 1 },
@@ -42,12 +45,15 @@ const ENGINE_META = {
   'balance-scale': { icon: '⚖️', label: 'Balance Scale' },
   'rebus-keypad': { icon: '🔢', label: 'Rebus Math' },
   'spatial-3d': { icon: '📦', label: '3D Spatial' },
-  'sudoku-matrix': { icon: '🧩', label: 'Sudoku Matrix' }
+  'sudoku-matrix': { icon: '🧩', label: 'Sudoku Matrix' },
+  'outline-trace': { icon: '✏️', label: 'Outline Trace' },
+  'memory-cards': { icon: '🎴', label: 'Memory Cards' },
+  'listen-and-choose': { icon: '🔊', label: 'Listen & Choose' }
 };
 
 class AppController {
   constructor() {
-    this.activeCategory = "math-course";
+    this.activeCategory = GAMES_CATALOG[0].category;
     this.activeGame = GAMES_CATALOG[0];
     this.activeLevel = 1;
     this.activeStageIndex = 0;
@@ -61,6 +67,9 @@ class AppController {
     this.rebusKeypadEngine = new RebusKeypadEngine(this);
     this.spatial3DEngine = new Spatial3DEngine(this);
     this.sudokuMatrixEngine = new SudokuMatrixEngine(this);
+    this.outlineTraceEngine = new OutlineTraceEngine(this);
+    this.memoryCardsEngine = new MemoryCardsEngine(this);
+    this.listenAndChooseEngine = new ListenAndChooseEngine(this);
 
     // Player Progress State
     this.playerState = this.loadState();
@@ -77,9 +86,10 @@ class AppController {
   syncActiveLevel() {
     const game = this.activeGame;
     const gameProgress = this.playerState.completedStages[game.id] || {};
+    const maxLevel = game.levelThemes ? game.levelThemes.length : Math.max(1, ...game.stages.map(s => s.level || 1));
     
     // Find earliest level with uncompleted stages
-    for (let lvl = 1; lvl <= 5; lvl++) {
+    for (let lvl = 1; lvl <= maxLevel; lvl++) {
       const lvlStages = game.stages.filter(s => s.level === lvl);
       const isLvlDone = lvlStages.length > 0 && lvlStages.every(s => gameProgress[s.stageNum] !== undefined);
       if (!isLvlDone) {
@@ -383,6 +393,27 @@ class AppController {
   }
 
   getStageHeroGraphic(stage) {
+    if (stage.type === 'outline-trace') {
+      const shapeIcons = {
+        'star': '⭐ ✏️',
+        'heart': '❤️ ✏️',
+        'triangle': '🔺 ✏️',
+        'diamond': '💎 ✏️',
+        'number-8': '8️⃣ ✏️',
+        'letter-a': '🔤 ✏️',
+        'moon': '🌙 ✏️',
+        'rocket': '🚀 ✏️',
+        'butterfly': '🦋 ✏️'
+      };
+      return shapeIcons[stage.shape] || '✏️ 🎨';
+    }
+    if (stage.type === 'memory-cards' && stage.pairs) {
+      if (stage.pairs.length >= 2) return `${stage.pairs[0].icon} 🎴 ${stage.pairs[1].icon}`;
+      return '🎴 ✨';
+    }
+    if (stage.type === 'listen-and-choose') {
+      return '🔊 👂 ⭐';
+    }
     if (stage.cards && stage.cards.length > 0) {
       const correctCard = stage.cards.find(c => c.isCorrect) || stage.cards[0];
       if (correctCard.icon) return correctCard.icon;
@@ -431,24 +462,27 @@ class AppController {
     const levelSolvedCount = currentLevelStages.filter(s => gameProgress[s.stageNum] !== undefined).length;
     const isLevelComplete = levelSolvedCount === currentLevelStages.length;
 
+    const maxLevel = game.levelThemes ? game.levelThemes.length : Math.max(1, ...game.stages.map(s => s.level || 1));
+
     // Level unlock condition
     const isLevelUnlocked = (lvlNum) => {
-      if (lvlNum === 1) return true;
+      if (game.allUnlocked || game.id === 'demo-course' || lvlNum === 1) return true;
       const prevLvlStages = game.stages.filter(s => s.level === lvlNum - 1);
       return prevLvlStages.every(s => gameProgress[s.stageNum] !== undefined);
     };
 
-    // Build 5 Level World Selector Pills
+    // Build Level World Selector Pills
     let levelTabsHTML = '';
-    for (let lvl = 1; lvl <= 5; lvl++) {
-      const lDef = (game.levelThemes && game.levelThemes.find(l => l.level === lvl)) || { name: `Level ${lvl}`, icon: '⭐' };
+    const levelList = game.levelThemes || Array.from({ length: maxLevel }, (_, i) => ({ level: i + 1, name: `Level ${i + 1}`, icon: '⭐' }));
+    levelList.forEach(lDef => {
+      const lvl = lDef.level;
       const lStages = game.stages.filter(s => s.level === lvl);
       const lSolved = lStages.filter(s => gameProgress[s.stageNum] !== undefined).length;
-      const isLvlDone = lSolved === lStages.length;
+      const isLvlDone = lStages.length > 0 && lSolved === lStages.length;
       const isUnlocked = isLevelUnlocked(lvl);
       const isActive = lvl === this.activeLevel;
 
-      let badgeIcon = `${lSolved}/5`;
+      let badgeIcon = `${lSolved}/${lStages.length}`;
       if (isLvlDone) badgeIcon = '✓';
       else if (!isUnlocked) badgeIcon = '🔒';
 
@@ -459,16 +493,16 @@ class AppController {
           <span class="world-pill-status">${badgeIcon}</span>
         </button>
       `;
-    }
+    });
 
-    // Build 5 Stage Mission Cards
+    // Build Stage Mission Cards
     let stageCardsHTML = '';
     currentLevelStages.forEach(stage => {
       const stageGlobalIdx = game.stages.findIndex(s => s.stageNum === stage.stageNum);
       const isCompleted = gameProgress[stage.stageNum] !== undefined;
       const starsEarned = gameProgress[stage.stageNum] || 0;
       
-      const isUnlocked = stageGlobalIdx === 0 || gameProgress[game.stages[stageGlobalIdx - 1].stageNum] !== undefined;
+      const isUnlocked = game.allUnlocked || game.id === 'demo-course' || stageGlobalIdx === 0 || gameProgress[game.stages[stageGlobalIdx - 1].stageNum] !== undefined;
       const isActive = isUnlocked && !isCompleted;
 
       let statusClass = 'locked';
@@ -513,7 +547,7 @@ class AppController {
     });
 
     const isPrevAvailable = this.activeLevel > 1;
-    const isNextAvailable = this.activeLevel < 5 && isLevelUnlocked(this.activeLevel + 1);
+    const isNextAvailable = this.activeLevel < maxLevel && isLevelUnlocked(this.activeLevel + 1);
 
     this.elMainContainerRoot.innerHTML = `
       <!-- Single-Screen Hub Container -->
@@ -525,7 +559,7 @@ class AppController {
             <div class="hero-level-info">
               <div class="hero-title-badge-row">
                 <span class="hero-course-tag">${game.icon} ${game.name}</span>
-                <span class="hero-mastery-tag ${isLevelComplete ? 'mastered' : ''}">${isLevelComplete ? '🏆 Level Mastered!' : `${levelSolvedCount}/5 Solved`}</span>
+                <span class="hero-mastery-tag ${isLevelComplete ? 'mastered' : ''}">${isLevelComplete ? '🏆 Level Mastered!' : `${levelSolvedCount}/${currentLevelStages.length} Solved`}</span>
               </div>
               <h2 class="hero-level-heading">Level ${this.activeLevel}: ${levelDef.name}</h2>
               <p class="hero-level-sub">${levelDef.desc}</p>
@@ -550,12 +584,12 @@ class AppController {
           </button>
           <div class="hub-footer-center">
             <div class="hub-level-dots">
-              ${[1, 2, 3, 4, 5].map(lvl => `<span class="hub-dot ${lvl === this.activeLevel ? 'active' : ''} ${game.stages.filter(s => s.level === lvl).every(s => gameProgress[s.stageNum] !== undefined) ? 'done' : ''}"></span>`).join('')}
+              ${levelList.map(l => `<span class="hub-dot ${l.level === this.activeLevel ? 'active' : ''} ${game.stages.filter(s => s.level === l.level).every(s => gameProgress[s.stageNum] !== undefined) ? 'done' : ''}"></span>`).join('')}
             </div>
-            <span class="hub-motivation-text">💡 Complete all 5 puzzles to master this level!</span>
+            <span class="hub-motivation-text">💡 Complete all puzzles to master this course!</span>
           </div>
           <button class="btn-world-nav" id="btn-next-level" ${!isNextAvailable ? 'disabled' : ''}>
-            Level ${Math.min(5, this.activeLevel + 1)} ▶
+            Level ${Math.min(maxLevel, this.activeLevel + 1)} ▶
           </button>
         </div>
       </section>
@@ -612,22 +646,50 @@ class AppController {
 
     this.renderStageContent();
     this.elGameModal.classList.add('open');
+
+    // Automatically speak every question aloud when launched!
+    setTimeout(() => {
+      this.speakCurrentQuestion();
+    }, 250);
+  }
+
+  speakCurrentQuestion() {
+    if (!this.currentStageData) return;
+    const btnSpeak = document.getElementById('btn-audio-speak');
+    if (btnSpeak) btnSpeak.classList.add('is-speaking');
+
+    sound.speak(
+      this.currentStageData.prompt,
+      () => {
+        const btn = document.getElementById('btn-audio-speak');
+        if (btn) btn.classList.add('is-speaking');
+      },
+      () => {
+        const btn = document.getElementById('btn-audio-speak');
+        if (btn) btn.classList.remove('is-speaking');
+      }
+    );
   }
 
   closeGameModal() {
     this.elGameModal.classList.remove('open');
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    sound.stopSpeech();
+    const btnSpeak = document.getElementById('btn-audio-speak');
+    if (btnSpeak) btnSpeak.classList.remove('is-speaking');
   }
 
   renderStageContent() {
     const stage = this.currentStageData;
     this.elQuestionPrompt.innerHTML = `
       <span>${stage.prompt}</span>
-      <button class="btn-audio-speak" id="btn-audio-speak" title="Listen Question">🔊</button>
+      <button class="btn-audio-speak" id="btn-audio-speak" title="Listen Question">
+        <span class="speak-btn-icon">🔊</span>
+        <span class="speak-pulse-dot"></span>
+      </button>
     `;
     
     document.getElementById('btn-audio-speak').addEventListener('click', () => {
-      sound.speak(stage.prompt);
+      this.speakCurrentQuestion();
     });
 
     this.elGameArena.innerHTML = '';
@@ -653,6 +715,15 @@ class AppController {
         break;
       case 'sudoku-matrix':
         this.renderSudokuGrid(stage);
+        break;
+      case 'outline-trace':
+        this.renderOutlineTrace(stage);
+        break;
+      case 'memory-cards':
+        this.renderMemoryCards(stage);
+        break;
+      case 'listen-and-choose':
+        this.renderListenAndChoose(stage);
         break;
       default:
         this.renderCardsGrid(stage);
@@ -852,6 +923,18 @@ class AppController {
 
   renderSudokuGrid(stage) {
     this.sudokuMatrixEngine.render(stage, this.elGameArena);
+  }
+
+  renderOutlineTrace(stage) {
+    this.outlineTraceEngine.render(stage, this.elGameArena);
+  }
+
+  renderMemoryCards(stage) {
+    this.memoryCardsEngine.render(stage, this.elGameArena);
+  }
+
+  renderListenAndChoose(stage) {
+    this.listenAndChooseEngine.render(stage, this.elGameArena);
   }
 
   advanceToNextProblem() {
