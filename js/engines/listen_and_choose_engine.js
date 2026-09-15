@@ -1,14 +1,9 @@
 /**
- * LogicLike Listen & Choose (Spoken Word & Select Image) Engine
- * Features:
- * - Automatically speaks the target word/question on stage load.
- * - Pulsing animated speaker box with dynamic sound wave bars.
- * - Tap speaker to replay pronunciation with phonetic syllable display.
- * - Visual option cards with icons, labels, and rewarding tactile animations.
- * - 3-step hint engine (Slow pronunciation -> Eliminate 1 wrong choice -> Highlight correct choice).
+ * Kiddy Learn - Listen & Choose Engine
  */
 
 import { sound } from '../audio.js';
+import { getSvgIcon } from '../icons.js';
 
 export class ListenAndChooseEngine {
   constructor(appController) {
@@ -38,8 +33,8 @@ export class ListenAndChooseEngine {
     speakerStation.className = 'listen-speaker-station';
     speakerStation.innerHTML = `
       <div class="listen-speaker-card" id="listen-speaker-card">
-        <button class="btn-main-speaker" id="btn-main-speaker" title="Click to hear word">
-          <span class="speaker-icon">🔊</span>
+        <button class="btn-main-speaker" id="btn-main-speaker" title="Tap to listen">
+          <span class="speaker-icon">${getSvgIcon('speaker', 'icon-md')}</span>
           <div class="sound-wave-bars" id="sound-wave-bars">
             <span class="wave-bar"></span>
             <span class="wave-bar"></span>
@@ -49,8 +44,8 @@ export class ListenAndChooseEngine {
           </div>
         </button>
         <div class="listen-info-group">
-          <span class="listen-tag">👂 LISTEN & IDENTIFY</span>
-          <h3 class="listen-instruction-text">Tap speaker to hear the word again</h3>
+          <span class="listen-tag">${getSvgIcon('listen-and-choose', 'icon-xs')} Listen & Tap</span>
+          <h3 class="listen-instruction-text">Tap speaker to listen again</h3>
           <div class="phonetic-pill" id="phonetic-pill" style="display:none;">
             <span>Phonics: <strong>${phonetic}</strong></span>
           </div>
@@ -62,10 +57,10 @@ export class ListenAndChooseEngine {
 
     // Options Grid
     const options = stage.options || [
-      { id: 'opt1', icon: '⭐', label: 'Star', isCorrect: true },
-      { id: 'opt2', icon: '🌙', label: 'Moon', isCorrect: false },
-      { id: 'opt3', icon: '☀️', label: 'Sun', isCorrect: false },
-      { id: 'opt4', icon: '🪐', label: 'Planet', isCorrect: false }
+      { id: 'opt1', icon: 'star', label: 'Star', isCorrect: true },
+      { id: 'opt2', icon: 'shape-moon', label: 'Moon', isCorrect: false },
+      { id: 'opt3', icon: 'star-filled', label: 'Sun', isCorrect: false },
+      { id: 'opt4', icon: 'spatial-3d', label: 'Planet', isCorrect: false }
     ];
 
     const gridEl = document.createElement('div');
@@ -81,10 +76,10 @@ export class ListenAndChooseEngine {
 
       card.innerHTML = `
         <div class="card-inner-content">
-          <div class="card-visual-icon">${opt.icon}</div>
+          <div class="card-visual-icon">${getSvgIcon(opt.icon, 'icon-lg')}</div>
           <div class="card-visual-label">${opt.label}</div>
         </div>
-        <div class="card-selection-indicator">✓</div>
+        <div class="card-selection-indicator">${getSvgIcon('check', 'icon-xs')}</div>
       `;
 
       card.addEventListener('click', () => {
@@ -97,12 +92,12 @@ export class ListenAndChooseEngine {
 
     wrapper.appendChild(gridEl);
 
-    // Toolbar (Hint & Replay)
+    // Toolbar
     const toolbar = document.createElement('div');
     toolbar.className = 'engine-toolbar listen-toolbar';
     toolbar.innerHTML = `
-      <button class="btn-secondary" id="btn-listen-slow">🐢 Slow Voice</button>
-      <button class="btn-engine-hint" id="btn-listen-hint">💡 Hint</button>
+      <button class="btn-secondary" id="btn-listen-slow">${getSvgIcon('speaker', 'icon-xs')} <span>Slow</span></button>
+      <button class="btn-engine-hint" id="btn-listen-hint">${getSvgIcon('hint', 'icon-xs')} <span>Hint</span></button>
     `;
 
     toolbar.querySelector('#btn-listen-slow').addEventListener('click', () => {
@@ -122,7 +117,6 @@ export class ListenAndChooseEngine {
       this.playWordAudio(targetWord);
     });
 
-    // Auto speak word upon stage start
     setTimeout(() => {
       this.playWordAudio(targetWord);
     }, 350);
@@ -171,10 +165,10 @@ export class ListenAndChooseEngine {
   handleOptionClick(opt, cardEl, targetWord) {
     if (opt.isCorrect) {
       sound.playSuccess();
-      sound.playSparkle();
+      sound.playStar();
       cardEl.classList.add('correct-glow');
 
-      sound.speak(`Awesome! That is ${opt.label}!`);
+      sound.speak(`Awesome! ${opt.label}!`);
 
       setTimeout(() => {
         this.app.handleCorrectAnswer();
@@ -187,7 +181,7 @@ export class ListenAndChooseEngine {
 
       setTimeout(() => {
         cardEl.classList.remove('wrong-wobble');
-        this.app.handleWrongAnswer(`You selected "${opt.label}", but the spoken word was "${targetWord}". Listen closely to the sound!`);
+        this.app.handleWrongAnswer(`You chose "${opt.label}". Listen closely for "${targetWord}"!`);
       }, 600);
     }
   }
@@ -199,11 +193,11 @@ export class ListenAndChooseEngine {
     const phoneticPill = wrapperEl.querySelector('#phonetic-pill');
 
     if (this.hintStep === 1) {
-      btnHint.textContent = '💡 Hint: Step 2/3 (Eliminate Option)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (2/3)</span>`;
       if (phoneticPill) phoneticPill.style.display = 'inline-flex';
       this.playWordAudio(targetWord, true);
     } else if (this.hintStep === 2) {
-      btnHint.textContent = '💡 Hint: Step 3/3 (Show Answer)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (3/3)</span>`;
       const wrongOptions = options.filter(o => !o.isCorrect && !this.eliminatedOptionIds.has(o.id));
       if (wrongOptions.length > 0) {
         const toElim = wrongOptions[0];
@@ -213,7 +207,7 @@ export class ListenAndChooseEngine {
       }
       this.playWordAudio(targetWord);
     } else {
-      btnHint.textContent = '💡 Hint Used (Reset)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint Used</span>`;
       const correctOpt = options.find(o => o.isCorrect);
       if (correctOpt) {
         const cardEl = wrapperEl.querySelector(`[data-option-id="${correctOpt.id}"]`);
@@ -222,7 +216,6 @@ export class ListenAndChooseEngine {
           setTimeout(() => cardEl.classList.remove('hint-clue-pulse'), 2500);
         }
       }
-      alert(`💡 LISTENING HINT:\n\n${this.currentStage.hint || `The target word is "${targetWord}". Choose the image that shows ${correctOpt ? correctOpt.label : 'it'}!`}`);
     }
   }
 }

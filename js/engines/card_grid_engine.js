@@ -1,17 +1,10 @@
 /**
- * LogicLike Stage 1: Card Grid Selection Engine
- * Full-fledged engine for Odd One Out, Sequence Completion, Pattern Matching, and Classification.
- * Supports:
- * - 2x2, 3x3, 4x4 grids & horizontal sequence rows
- * - Magnetic card selection with visual/audio feedback
- * - Non-punitive error wobble animation
- * - 3-Step Guided Hint System:
- *   Step 1: Glow highlight on key visual clue
- *   Step 2: Eliminate 1 incorrect card from grid
- *   Step 3: Step-by-step guided deduction rule modal
+ * Kiddy Learn - Card Grid Selection Engine
+ * Engine for Odd One Out, Sequence Completion, Pattern Matching, and Classification.
  */
 
 import { sound } from '../audio.js';
+import { getSvgIcon } from '../icons.js';
 
 export class CardGridEngine {
   constructor(appController) {
@@ -36,9 +29,9 @@ export class CardGridEngine {
       const seqBanner = document.createElement('div');
       seqBanner.className = 'sequence-display-banner';
       seqBanner.innerHTML = `
-        <span class="seq-label">Sequence:</span>
+        <span class="seq-label">Pattern:</span>
         <div class="seq-items-row">
-          ${stage.sequenceDisplay.map(item => `<span class="seq-item-chip">${item}</span>`).join('')}
+          ${stage.sequenceDisplay.map(item => `<span class="seq-item-chip">${getSvgIcon(item, 'icon-sm')}</span>`).join('')}
         </div>
       `;
       wrapper.appendChild(seqBanner);
@@ -62,10 +55,10 @@ export class CardGridEngine {
 
       cardEl.innerHTML = `
         <div class="card-inner-content">
-          <div class="card-visual-icon">${card.icon}</div>
+          <div class="card-visual-icon">${getSvgIcon(card.icon || card.id, 'icon-lg')}</div>
           ${card.label ? `<div class="card-visual-label">${card.label}</div>` : ''}
         </div>
-        <div class="card-selection-indicator">✓</div>
+        <div class="card-selection-indicator">${getSvgIcon('check', 'icon-xs')}</div>
       `;
 
       cardEl.addEventListener('click', () => {
@@ -78,11 +71,11 @@ export class CardGridEngine {
 
     wrapper.appendChild(gridEl);
 
-    // Engine Control Toolbar (Hint counter & Audio read out)
+    // Engine Control Toolbar
     const toolbar = document.createElement('div');
     toolbar.className = 'engine-toolbar';
     toolbar.innerHTML = `
-      <button class="btn-engine-hint" id="btn-trigger-hint">💡 Use Hint (Step 1/3)</button>
+      <button class="btn-engine-hint" id="btn-trigger-hint">${getSvgIcon('hint', 'icon-xs')} <span>Hint (1/3)</span></button>
     `;
 
     toolbar.querySelector('#btn-trigger-hint').addEventListener('click', () => {
@@ -110,17 +103,13 @@ export class CardGridEngine {
     }
   }
 
-  /**
-   * 3-Step Guided Hint Engine
-   */
   executeHint(wrapperEl) {
     sound.playTap();
     this.hintStep = (this.hintStep % 3) + 1;
     const btnHint = wrapperEl.querySelector('#btn-trigger-hint');
 
     if (this.hintStep === 1) {
-      // Step 1: Highlight visual clue
-      btnHint.textContent = '💡 Hint: Step 2/3 (Eliminate Option)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (2/3)</span>`;
       const correctCard = this.currentStage.cards.find(c => c.isCorrect);
       if (correctCard) {
         const correctEl = wrapperEl.querySelector(`[data-card-id="${correctCard.id}"]`);
@@ -130,8 +119,7 @@ export class CardGridEngine {
         }
       }
     } else if (this.hintStep === 2) {
-      // Step 2: Eliminate 1 wrong option
-      btnHint.textContent = '💡 Hint: Step 3/3 (Show Reasoning)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (3/3)</span>`;
       const wrongCards = this.currentStage.cards.filter(c => !c.isCorrect && !this.eliminatedCards.has(c.id));
       if (wrongCards.length > 0) {
         const targetElim = wrongCards[0];
@@ -142,9 +130,8 @@ export class CardGridEngine {
         }
       }
     } else if (this.hintStep === 3) {
-      // Step 3: Step-by-step guided deduction
-      btnHint.textContent = '💡 Hint Used (Reset)';
-      alert(`💡 GUIDED LOGIC REASONING:\n\n${this.currentStage.hint}`);
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint Used</span>`;
+      alert(`Clue: ${this.currentStage.hint}`);
     }
   }
 }

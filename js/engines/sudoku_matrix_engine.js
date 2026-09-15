@@ -1,18 +1,9 @@
 /**
- * LogicLike Stage 5: Sudoku & Matrix Grid Engine
- * Full-fledged engine for 3x3 and 4x4 matrix logic & Sudoku puzzles.
- * Supports:
- * - 3x3 & 4x4 matrix grids with 2x2 subgrid constraint checks
- * - Locked initial cells vs interactive target cells
- * - Real-time duplicate constraint conflict highlighting (Red glow + shake)
- * - Touch-optimized Symbol / Number palette tray & Erase mode
- * - 3-Step Guided Hint System:
- *   Step 1: Highlight target cell with highest logical constraint
- *   Step 2: Highlight conflicting row/col/box and filter available choices
- *   Step 3: Auto-fill target cell with step-by-step logical deduction text
+ * Kiddy Learn - Sudoku & Matrix Grid Engine
  */
 
 import { sound } from '../audio.js';
+import { getSvgIcon } from '../icons.js';
 
 export class SudokuMatrixEngine {
   constructor(appController) {
@@ -28,7 +19,6 @@ export class SudokuMatrixEngine {
     this.hintStep = 0;
     this.selectedCell = null;
     
-    // Deep clone initial grid state
     const size = stage.gridSize;
     this.currentGrid = Array.from({ length: size }, (_, r) =>
       Array.from({ length: size }, (_, c) => stage.initialGrid[r][c])
@@ -39,12 +29,12 @@ export class SudokuMatrixEngine {
     const wrapper = document.createElement('div');
     wrapper.className = 'sudoku-engine-wrapper';
 
-    // Toolbar Header (Reset + Hint)
+    // Toolbar Header
     const topBar = document.createElement('div');
     topBar.className = 'sudoku-topbar';
     topBar.innerHTML = `
-      <button class="btn-sudoku-action btn-sudoku-reset" id="btn-sudoku-reset">🔄 Reset Grid</button>
-      <button class="btn-engine-hint" id="btn-trigger-hint">💡 Use Hint (Step 1/3)</button>
+      <button class="btn-sudoku-action btn-sudoku-reset" id="btn-sudoku-reset">${getSvgIcon('replay', 'icon-xs')} <span>Reset</span></button>
+      <button class="btn-engine-hint" id="btn-trigger-hint">${getSvgIcon('hint', 'icon-xs')} <span>Hint (1/3)</span></button>
     `;
 
     topBar.querySelector('#btn-sudoku-reset').addEventListener('click', () => {
@@ -77,7 +67,6 @@ export class SudokuMatrixEngine {
 
     containerEl.appendChild(wrapper);
 
-    // Render Grid & Palette
     this.renderGrid(wrapper);
     this.renderPalette(wrapper);
     this.validateGrid(wrapper);
@@ -111,8 +100,8 @@ export class SudokuMatrixEngine {
         }
 
         cellEl.innerHTML = `
-          <span class="cell-symbol">${val || ''}</span>
-          ${isInitial ? '<span class="cell-lock-icon">🔒</span>' : ''}
+          <span class="cell-symbol">${val ? getSvgIcon(val, 'icon-sm') : ''}</span>
+          ${isInitial ? `<span class="cell-lock-icon">${getSvgIcon('lock', 'icon-xs')}</span>` : ''}
         `;
 
         if (!isInitial) {
@@ -145,15 +134,13 @@ export class SudokuMatrixEngine {
     const paletteEl = wrapperEl.querySelector('#sudoku-palette-container');
     paletteEl.innerHTML = '';
 
-    // Symbol buttons
     this.currentStage.symbols.forEach(symbol => {
       const btn = document.createElement('button');
       btn.className = 'sudoku-palette-item';
-      btn.innerHTML = `<span class="palette-icon">${symbol}</span>`;
+      btn.innerHTML = `<span class="palette-icon">${getSvgIcon(symbol, 'icon-sm')}</span>`;
 
       btn.addEventListener('click', () => {
         if (!this.selectedCell) {
-          // If no cell selected, select the first empty editable cell automatically
           const emptyCell = this.findFirstEmptyCell();
           if (emptyCell) {
             this.selectedCell = emptyCell;
@@ -166,15 +153,13 @@ export class SudokuMatrixEngine {
         const { r, c } = this.selectedCell;
         this.currentGrid[r][c] = symbol;
 
-        // Update cell text
         const cellEl = wrapperEl.querySelector(`.sudoku-cell-node[data-row="${r}"][data-col="${c}"]`);
         if (cellEl) {
-          cellEl.querySelector('.cell-symbol').textContent = symbol;
+          cellEl.querySelector('.cell-symbol').innerHTML = getSvgIcon(symbol, 'icon-sm');
           cellEl.classList.add('cell-pop');
           setTimeout(() => cellEl.classList.remove('cell-pop'), 300);
         }
 
-        // Validate duplicates & check completion
         const conflicts = this.validateGrid(wrapperEl);
         this.checkGridCompletion(wrapperEl, conflicts);
       });
@@ -185,7 +170,7 @@ export class SudokuMatrixEngine {
     // Erase Button
     const eraseBtn = document.createElement('button');
     eraseBtn.className = 'sudoku-palette-item palette-erase';
-    eraseBtn.innerHTML = `<span class="palette-icon">🗑️</span><span class="palette-label">Erase</span>`;
+    eraseBtn.innerHTML = `<span class="palette-icon">${getSvgIcon('trash', 'icon-xs')}</span><span class="palette-label">Erase</span>`;
 
     eraseBtn.addEventListener('click', () => {
       if (this.selectedCell) {
@@ -194,7 +179,7 @@ export class SudokuMatrixEngine {
         this.currentGrid[r][c] = null;
         const cellEl = wrapperEl.querySelector(`.sudoku-cell-node[data-row="${r}"][data-col="${c}"]`);
         if (cellEl) {
-          cellEl.querySelector('.cell-symbol').textContent = '';
+          cellEl.querySelector('.cell-symbol').innerHTML = '';
         }
         this.validateGrid(wrapperEl);
       }
@@ -215,10 +200,6 @@ export class SudokuMatrixEngine {
     return null;
   }
 
-  /**
-   * Constraint Validator: Checks duplicates in rows, columns, and 2x2 subgrids (for 4x4)
-   * Returns set of conflicting cell keys ("r,c")
-   */
   validateGrid(wrapperEl) {
     const size = this.currentStage.gridSize;
     const conflicts = new Set();
@@ -280,7 +261,6 @@ export class SudokuMatrixEngine {
       }
     }
 
-    // Apply visual conflict styles
     const cellNodes = wrapperEl.querySelectorAll('.sudoku-cell-node');
     cellNodes.forEach(cell => {
       const r = parseInt(cell.getAttribute('data-row'), 10);
@@ -316,21 +296,17 @@ export class SudokuMatrixEngine {
         }, 500);
       } else {
         sound.playError();
-        this.app.handleWrongAnswer("Some symbols are duplicated in the same row, column, or 2x2 box! Clear red highlighted conflicts and try again.");
+        this.app.handleWrongAnswer("Duplicate symbols in row, col, or box! Clear highlighted conflicts.");
       }
     }
   }
 
-  /**
-   * 3-Step Guided Hint System
-   */
   executeHint(wrapperEl) {
     sound.playTap();
     this.hintStep = (this.hintStep % 3) + 1;
     const btnHint = wrapperEl.querySelector('#btn-trigger-hint');
     const size = this.currentStage.gridSize;
 
-    // Find target cell to hint (first empty cell or one with missing solution)
     let target = null;
     for (let r = 0; r < size; r++) {
       for (let c = 0; c < size; c++) {
@@ -342,17 +318,13 @@ export class SudokuMatrixEngine {
       if (target) break;
     }
 
-    if (!target) {
-      alert("💡 Grid is already solved or fully filled!");
-      return;
-    }
+    if (!target) return;
 
     const { r, c } = target;
     const targetCellEl = wrapperEl.querySelector(`.sudoku-cell-node[data-row="${r}"][data-col="${c}"]`);
 
     if (this.hintStep === 1) {
-      // Step 1: Highlight target cell
-      btnHint.textContent = '💡 Hint: Step 2/3 (Show Constraints)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (2/3)</span>`;
       this.selectedCell = { r, c };
       this.updateSelectionStyles(wrapperEl);
       if (targetCellEl) {
@@ -360,8 +332,7 @@ export class SudokuMatrixEngine {
         setTimeout(() => targetCellEl.classList.remove('hint-clue-pulse'), 2500);
       }
     } else if (this.hintStep === 2) {
-      // Step 2: Highlight conflicting row & column
-      btnHint.textContent = '💡 Hint: Step 3/3 (Auto-Fill & Explain)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (3/3)</span>`;
       const allCells = wrapperEl.querySelectorAll('.sudoku-cell-node');
       allCells.forEach(cell => {
         const cr = parseInt(cell.getAttribute('data-row'), 10);
@@ -372,17 +343,15 @@ export class SudokuMatrixEngine {
         }
       });
     } else if (this.hintStep === 3) {
-      // Step 3: Auto fill target cell & show step-by-step reasoning
-      btnHint.textContent = '💡 Hint Used (Reset)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint Used</span>`;
       const correctVal = this.currentStage.solution[r][c];
       this.currentGrid[r][c] = correctVal;
       if (targetCellEl) {
-        targetCellEl.querySelector('.cell-symbol').textContent = correctVal;
+        targetCellEl.querySelector('.cell-symbol').innerHTML = getSvgIcon(correctVal, 'icon-sm');
         targetCellEl.classList.add('cell-pop');
       }
       const conflicts = this.validateGrid(wrapperEl);
       this.checkGridCompletion(wrapperEl, conflicts);
-      alert(`💡 GUIDED LOGIC DEDUCTION:\n\nIn Row ${r + 1}, Column ${c + 1}, the only valid symbol that doesn't duplicate is "${correctVal}"!\n\n${this.currentStage.hint}`);
     }
   }
 }

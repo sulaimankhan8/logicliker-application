@@ -1,5 +1,5 @@
 /**
- * LogicLike Memory Card Match & Shuffle Engine
+ * Kiddy Learn - Memory Card Match & Shuffle Engine
  * Features:
  * - Phase 1 (Preview): Cards are shown face-up for 3 seconds with a countdown timer ("Memorize card positions!").
  * - Phase 2 (Flip & Shuffle): Cards smoothly flip face-down with 3D shuffle animation.
@@ -8,6 +8,7 @@
  */
 
 import { sound } from '../audio.js';
+import { getSvgIcon } from '../icons.js';
 
 export class MemoryCardsEngine {
   constructor(appController) {
@@ -38,9 +39,9 @@ export class MemoryCardsEngine {
 
     // Generate Cards deck (2 instances per pair)
     const rawPairs = stage.pairs || [
-      { id: 'p1', icon: '🐶', label: 'Puppy' },
-      { id: 'p2', icon: '🐱', label: 'Kitten' },
-      { id: 'p3', icon: '🐰', label: 'Bunny' }
+      { id: 'p1', icon: 'puppy', label: 'Puppy' },
+      { id: 'p2', icon: 'kitten', label: 'Kitten' },
+      { id: 'p3', icon: 'bunny', label: 'Bunny' }
     ];
 
     this.totalPairs = rawPairs.length;
@@ -71,12 +72,12 @@ export class MemoryCardsEngine {
     const wrapper = document.createElement('div');
     wrapper.className = 'memory-engine-wrapper';
 
-    // Top status banner (Countdown / Pair Counter)
+    // Top status banner
     const topBar = document.createElement('div');
     topBar.className = 'memory-top-bar';
     topBar.innerHTML = `
       <div class="memory-phase-pill" id="memory-phase-pill">
-        <span class="phase-icon" id="memory-phase-icon">👀</span>
+        <span class="phase-icon" id="memory-phase-icon">${getSvgIcon('memory-cards', 'icon-xs')}</span>
         <span class="phase-text" id="memory-phase-text">Memorize cards! <strong id="memory-timer-sec">3</strong>s</span>
       </div>
       <div class="memory-score-pill">
@@ -99,20 +100,19 @@ export class MemoryCardsEngine {
 
     this.cards.forEach((card) => {
       const cardEl = document.createElement('div');
-      cardEl.className = 'memory-card is-flipped is-preview'; // Initially face up for preview!
+      cardEl.className = 'memory-card is-flipped is-preview';
       cardEl.setAttribute('data-card-uid', card.uid);
       cardEl.setAttribute('data-pair-id', card.pairId);
 
       cardEl.innerHTML = `
         <div class="memory-card-inner">
           <div class="memory-card-front">
-            <div class="card-pattern-symbol">💡</div>
-            <div class="card-back-sparkle">✨</div>
+            <div class="card-pattern-symbol">${getSvgIcon('star-filled', 'icon-md')}</div>
           </div>
           <div class="memory-card-back" style="border-color:${card.color};">
-            <div class="memory-card-icon">${card.icon}</div>
+            <div class="memory-card-icon">${getSvgIcon(card.icon, 'icon-lg')}</div>
             ${card.label ? `<div class="memory-card-label">${card.label}</div>` : ''}
-            <div class="memory-match-badge">✓</div>
+            <div class="memory-match-badge">${getSvgIcon('check', 'icon-xs')}</div>
           </div>
         </div>
       `;
@@ -131,9 +131,9 @@ export class MemoryCardsEngine {
     const toolbar = document.createElement('div');
     toolbar.className = 'engine-toolbar memory-toolbar';
     toolbar.innerHTML = `
-      <button class="btn-secondary" id="btn-memory-replay-preview">👀 Peek Cards</button>
-      <button class="btn-secondary" id="btn-memory-reshuffle">🔀 Reshuffle</button>
-      <button class="btn-engine-hint" id="btn-memory-hint">💡 Hint</button>
+      <button class="btn-secondary" id="btn-memory-replay-preview">${getSvgIcon('memory-cards', 'icon-xs')} <span>Peek</span></button>
+      <button class="btn-secondary" id="btn-memory-reshuffle">${getSvgIcon('replay', 'icon-xs')} <span>Reshuffle</span></button>
+      <button class="btn-engine-hint" id="btn-memory-hint">${getSvgIcon('hint', 'icon-xs')} <span>Hint</span></button>
     `;
 
     toolbar.querySelector('#btn-memory-replay-preview').addEventListener('click', () => {

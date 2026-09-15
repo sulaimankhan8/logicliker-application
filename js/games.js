@@ -1,18 +1,9 @@
 /**
- * LogicLike Games Catalog & Educational Curriculum Engine
+ * Kiddy Learn Games Catalog & Educational Curriculum Engine
  * 3 Coherent, Kid-Friendly Courses:
- * 1. 📐 Mathematics (Counting -> Addition -> Subtraction -> Multiplication -> Fractions & Algebra)
- * 2. 🔬 Science & Nature (Animal Habitats & Diets -> Plants & Living Things -> States of Matter -> Solar System -> Human Body & Ecosystems)
- * 3. 💡 Aptitude & Logic (Visual Shapes -> Directions & Opposites -> Multi-Attribute Venn -> 3D Projections -> Deductive Logic)
- *
- * Engines:
- * 🎴 cards-grid (Selection & Odd-One-Out)
- * 🎯 drag-drop-zones (Habitat & Category Sorting)
- * 🔗 matching-pairs (Two-column Connecting Cords)
- * ⚖️ balance-scale (Mass & Physics Balance)
- * 🔢 rebus-keypad (Picture Arithmetic & Equations)
- * 📦 spatial-3d (3D Isometric Spatial Projection)
- * 🧩 sudoku-matrix (Deductive Constraint Grids)
+ * 1. Mathematics (Counting -> Addition -> Subtraction -> Multiplication -> Fractions & Algebra)
+ * 2. Science & Nature (Animal Habitats & Diets -> Plants & Living Things -> States of Matter -> Solar System)
+ * 3. Aptitude & Logic (Visual Shapes -> Directions & Opposites -> Multi-Attribute Venn -> 3D Projections -> Deductive Logic)
  */
 
 export const GAMES_CATALOG = [

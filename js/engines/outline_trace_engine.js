@@ -1,70 +1,70 @@
 /**
- * LogicLike Outline Tracing Engine - Loader Bar Pull Mechanic
- * Kids pull an interactive glowing tracer knob along the shape outline.
- * The shape fills up smoothly like a glowing loader/progress bar.
+ * Kiddy Learn - Outline Tracing Engine - Refined Loader Bar Pull Mechanic
  * Features:
- * - Direct path-constrained slider/loader pulling along SVG geometry
- * - Glowing liquid progress stroke fill (stroke-dashoffset)
- * - Milestone checkpoints (25%, 50%, 75%, 100%) with audio chimes & sparkle burst
- * - Interactive draggable glowing handle with pulsing ring and direction hint
- * - Show Guide Demo animation and assist hint
+ * - Ultra-smooth path-constrained dragging with pointer capture
+ * - Tangent-aligned rotating tracer head (guides along curves & sharp corners)
+ * - Liquid shape silhouette fill that illuminates with progress
+ * - Dynamic audio pitch ticking and milestone starbursts
+ * - Directional motion cues & glowing neon trail
+ * - Zero-snag vertex interpolation for all shapes
  */
 
 import { sound } from '../audio.js';
+import { getSvgIcon } from '../icons.js';
 
 // Predefined shape paths in a 400x340 bounding box
 const SHAPE_DEFINITIONS = {
   'star': {
     name: 'Five-Point Star',
-    icon: '⭐',
+    iconKey: 'shape-star',
     d: 'M 200,35 L 245,130 L 355,135 L 270,205 L 300,310 L 200,245 L 100,310 L 130,205 L 45,135 L 155,130 Z',
     color: '#F59E0B'
   },
   'heart': {
     name: 'Love Heart',
-    icon: '❤️',
+    iconKey: 'shape-heart',
     d: 'M 200,105 C 200,75 170,45 130,45 C 80,45 50,90 50,135 C 50,215 140,265 200,305 C 260,265 350,215 350,135 C 350,90 320,45 270,45 C 230,45 200,75 200,105 Z',
     color: '#EC4899'
   },
   'triangle': {
     name: 'Equilateral Triangle',
-    icon: '🔺',
+    iconKey: 'shape-triangle',
     d: 'M 200,45 L 350,290 L 50,290 Z',
     color: '#3B82F6'
   },
   'diamond': {
     name: 'Sparkling Diamond',
-    icon: '💎',
+    iconKey: 'shape-diamond',
     d: 'M 200,35 L 340,170 L 200,305 L 60,170 Z',
     color: '#06B6D4'
   },
   'number-8': {
     name: 'Number 8',
-    icon: '8️⃣',
+    iconKey: 'rebus-keypad',
     d: 'M 200,175 C 245,175 275,140 275,95 C 275,50 240,30 200,30 C 160,30 125,50 125,95 C 125,140 155,175 200,175 C 250,175 285,210 285,260 C 285,310 245,330 200,330 C 155,330 115,310 115,260 C 115,210 150,175 200,175 Z',
     color: '#8B5CF6'
   },
   'letter-a': {
     name: 'Letter A',
-    icon: '🔤',
+    iconKey: 'cards-grid',
     d: 'M 90,295 L 200,45 L 310,295 L 265,205 L 135,205',
     color: '#10B981'
   },
   'moon': {
     name: 'Crescent Moon',
-    icon: '🌙',
+    iconKey: 'shape-moon',
     d: 'M 250,45 C 140,55 80,140 80,210 C 80,280 150,315 240,315 C 170,280 160,160 250,45 Z',
     color: '#FBBF24'
   },
   'rocket': {
     name: 'Space Rocket',
-    icon: '🚀',
+    iconKey: 'rocket',
     d: 'M 200,30 C 240,80 255,160 250,250 L 290,280 L 245,270 L 200,305 L 155,270 L 110,280 L 150,250 C 145,160 160,80 200,30 Z',
     color: '#EF4444'
   },
   'butterfly': {
     name: 'Butterfly Wings',
-    icon: '🦋',
+    iconKey: 'shape-butterfly',
     d: 'M 200,140 C 220,60 330,50 340,130 C 350,180 280,210 200,180 C 280,230 330,300 270,300 C 220,300 210,240 200,200 C 190,240 180,300 130,300 C 70,300 120,230 200,180 C 120,210 50,180 60,130 C 70,50 180,60 200,140 Z',
     color: '#A855F7'
   }
@@ -77,17 +77,19 @@ export class OutlineTraceEngine {
     this.svgEl = null;
     this.basePathEl = null;
     this.loaderPathEl = null;
+    this.shapeFillEl = null;
     this.handleEl = null;
     this.totalLength = 0;
     this.progress = 0; // 0.0 to 1.0
     this.isDragging = false;
     this.isCompleted = false;
-    this.samples = []; // Precomputed points { len, x, y }
+    this.samples = []; // High resolution points { len, x, y, ratio, angle }
     this.brushColor = '#22C55E';
     this.hintStep = 0;
     this.isGuideAnimating = false;
     this.guideAnimId = null;
     this.lastMilestone = 0;
+    this.lastSoundProgress = 0;
   }
 
   render(stage, containerEl) {
@@ -96,6 +98,7 @@ export class OutlineTraceEngine {
     this.progress = 0;
     this.hintStep = 0;
     this.lastMilestone = 0;
+    this.lastSoundProgress = 0;
     this.isGuideAnimating = false;
     if (this.guideAnimId) cancelAnimationFrame(this.guideAnimId);
 
@@ -114,7 +117,7 @@ export class OutlineTraceEngine {
     headerBar.className = 'trace-header-bar';
     headerBar.innerHTML = `
       <div class="trace-target-badge">
-        <span class="trace-target-icon">${shapeDef.icon}</span>
+        <span class="trace-target-icon">${getSvgIcon(shapeDef.iconKey, 'icon-sm')}</span>
         <span class="trace-target-name">${stage.shapeName || shapeDef.name}</span>
       </div>
       <div class="trace-progress-pill">
@@ -124,12 +127,12 @@ export class OutlineTraceEngine {
             <path class="circle" id="trace-circle-fill" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
           </svg>
         </div>
-        <span class="trace-progress-text" id="trace-pct-text">Pull handle to trace!</span>
+        <span class="trace-progress-text" id="trace-pct-text">Drag handle to trace!</span>
       </div>
     `;
     wrapper.appendChild(headerBar);
 
-    // Tracing Stage Board with SVG Loader Bar Track
+    // Tracing Stage Board
     const stageBoard = document.createElement('div');
     stageBoard.className = 'trace-stage-board loader-trace-board';
     stageBoard.id = 'trace-stage-board';
@@ -138,53 +141,25 @@ export class OutlineTraceEngine {
       <svg class="trace-guide-svg" id="trace-svg-elem" viewBox="0 0 400 340" preserveAspectRatio="xMidYMid meet">
         <defs>
           <filter id="trace-glow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1"/>
             <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
+              <feMergeNode in="blur1"/>
+              <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
-          <linearGradient id="trace-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="${this.brushColor}" />
-            <stop offset="100%" stop-color="#38BDF8" />
-          </linearGradient>
           <filter id="handle-shadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(0,0,0,0.35)"/>
+            <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="rgba(0,0,0,0.25)"/>
           </filter>
         </defs>
 
-        <!-- Wide background track -->
+        <path class="trace-shape-fill" id="trace-shape-fill" d="${pathD}" fill="${this.brushColor}" fill-opacity="0.04" />
         <path class="trace-track-bg" id="trace-track-bg" d="${pathD}" />
-
-        <!-- Dashed centerline guide -->
         <path class="trace-track-dash" id="trace-track-dash" d="${pathD}" />
-
-        <!-- Milestone Checkpoint markers -->
-        <g id="trace-milestones"></g>
-
-        <!-- Active Loader Bar Fill Path (Grows as user pulls) -->
         <path class="trace-loader-path" id="trace-loader-path" d="${pathD}" stroke="${this.brushColor}" />
 
-        <!-- Start Flag Indicator -->
-        <g id="trace-start-node" class="trace-start-node">
-          <circle cx="0" cy="0" r="14" fill="#22C55E" stroke="#FFFFFF" stroke-width="3" />
-          <text x="0" y="4" font-size="10" font-weight="900" fill="#FFF" text-anchor="middle">START</text>
-        </g>
-
-        <!-- Draggable Glowing Pull Knob / Handle -->
-        <g id="trace-pull-handle" class="trace-pull-handle" filter="url(#handle-shadow)" style="cursor: grab;">
-          <!-- Pulsing halo -->
-          <circle class="handle-halo" cx="0" cy="0" r="26" fill="${this.brushColor}" opacity="0.35"></circle>
-          <!-- Main knob circle -->
-          <circle class="handle-body" cx="0" cy="0" r="19" fill="#FFFFFF" stroke="${this.brushColor}" stroke-width="4"></circle>
-          <!-- Inner icon / chevron -->
-          <text class="handle-icon" id="handle-icon" x="0" y="6" font-size="14" font-weight="900" text-anchor="middle" fill="${this.brushColor}">${shapeDef.icon || '✨'}</text>
-          <!-- Tooltip badge -->
-          <g id="handle-tooltip" class="handle-tooltip">
-            <rect x="-35" y="-36" width="70" height="20" rx="10" fill="#1E293B" opacity="0.9"></rect>
-            <text x="0" y="-22" font-size="10" font-weight="800" fill="#FFF" text-anchor="middle">PULL ME ➡️</text>
-          </g>
+        <g id="trace-pull-handle" class="trace-pull-handle" filter="url(#handle-shadow)">
+          <circle class="handle-body" cx="0" cy="0" r="14" fill="#FFFFFF" stroke="${this.brushColor}" stroke-width="4"></circle>
+          <circle class="handle-core" cx="0" cy="0" r="5" fill="${this.brushColor}"></circle>
         </g>
       </svg>
       <div class="trace-sparkle-layer" id="trace-sparkle-layer"></div>
@@ -192,13 +167,13 @@ export class OutlineTraceEngine {
 
     wrapper.appendChild(stageBoard);
 
-    // Toolbar (Clear, Demo Guide, Hint)
+    // Toolbar
     const toolbar = document.createElement('div');
     toolbar.className = 'engine-toolbar trace-toolbar';
     toolbar.innerHTML = `
-      <button class="btn-secondary" id="btn-trace-clear">🔄 Reset</button>
-      <button class="btn-engine-hint" id="btn-trace-guide">✨ Watch Demo</button>
-      <button class="btn-engine-hint" id="btn-trace-hint">💡 Hint</button>
+      <button class="btn-secondary" id="btn-trace-clear">${getSvgIcon('replay', 'icon-xs')} <span>Reset</span></button>
+      <button class="btn-engine-hint" id="btn-trace-guide">${getSvgIcon('star', 'icon-xs')} <span>Demo</span></button>
+      <button class="btn-engine-hint" id="btn-trace-hint">${getSvgIcon('hint', 'icon-xs')} <span>Hint</span></button>
     `;
 
     toolbar.querySelector('#btn-trace-clear').addEventListener('click', () => {
@@ -228,6 +203,7 @@ export class OutlineTraceEngine {
     this.svgEl = stageBoard.querySelector('#trace-svg-elem');
     this.basePathEl = stageBoard.querySelector('#trace-track-bg');
     this.loaderPathEl = stageBoard.querySelector('#trace-loader-path');
+    this.shapeFillEl = stageBoard.querySelector('#trace-shape-fill');
     this.handleEl = stageBoard.querySelector('#trace-pull-handle');
 
     if (!this.svgEl || !this.basePathEl || !this.loaderPathEl || !this.handleEl) return;
@@ -238,45 +214,25 @@ export class OutlineTraceEngine {
     this.loaderPathEl.style.strokeDasharray = `${this.totalLength} ${this.totalLength}`;
     this.loaderPathEl.style.strokeDashoffset = `${this.totalLength}`;
 
-    // Sample path points at high density (300 points) for precise snap & pull
+    // Pre-sample 600 points for silky smooth drag interpolation & tangent orientation
     this.samples = [];
-    const sampleCount = 300;
+    const sampleCount = 600;
     for (let i = 0; i <= sampleCount; i++) {
       const len = (i / sampleCount) * this.totalLength;
       const pt = this.basePathEl.getPointAtLength(len);
-      this.samples.push({ len, x: pt.x, y: pt.y, ratio: i / sampleCount });
+      
+      // Compute tangent angle
+      const p1 = this.basePathEl.getPointAtLength(Math.max(0, len - 2));
+      const p2 = this.basePathEl.getPointAtLength(Math.min(this.totalLength, len + 2));
+      const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x) * (180 / Math.PI);
+
+      this.samples.push({ len, x: pt.x, y: pt.y, ratio: i / sampleCount, angle });
     }
 
-    // Set start node position
-    const startPt = this.basePathEl.getPointAtLength(0);
-    const startNode = stageBoard.querySelector('#trace-start-node');
-    if (startNode) {
-      startNode.setAttribute('transform', `translate(${startPt.x}, ${startPt.y})`);
-    }
-
-    // Render Milestone checkpoint dots (25%, 50%, 75%, 100%)
-    const milestonesG = stageBoard.querySelector('#trace-milestones');
-    if (milestonesG) {
-      milestonesG.innerHTML = '';
-      [0.25, 0.5, 0.75, 1.0].forEach((ratio) => {
-        const pt = this.basePathEl.getPointAtLength(ratio * this.totalLength);
-        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('cx', pt.x);
-        circle.setAttribute('cy', pt.y);
-        circle.setAttribute('r', '7');
-        circle.setAttribute('class', 'trace-milestone-dot');
-        circle.setAttribute('data-ratio', ratio);
-        circle.setAttribute('fill', '#FFFFFF');
-        circle.setAttribute('stroke', '#94A3B8');
-        circle.setAttribute('stroke-width', '3');
-        milestonesG.appendChild(circle);
-      });
-    }
-
-    // Position Handle at start (progress 0)
+    // Initial positioning at 0%
     this.updateLoaderVisuals(0);
 
-    // Bind touch / mouse dragging events
+    // Bind rock-solid Pointer Drag Events
     this.bindPullEvents(stageBoard);
   }
 
@@ -290,32 +246,16 @@ export class OutlineTraceEngine {
       this.loaderPathEl.style.strokeDashoffset = `${offset}`;
     }
 
-    // 2. Position Draggable Handle Knob
+    // 2. Dynamic Silhouette Fill illumination
+    if (this.shapeFillEl) {
+      this.shapeFillEl.setAttribute('fill-opacity', `${0.04 + this.progress * 0.22}`);
+    }
+
+    // 3. Position Handle Knob
     if (this.basePathEl && this.handleEl) {
       const pt = this.basePathEl.getPointAtLength(currentLen);
       this.handleEl.setAttribute('transform', `translate(${pt.x}, ${pt.y})`);
-
-      // Hide "PULL ME" tooltip once user has started pulling
-      const tooltip = document.getElementById('handle-tooltip');
-      if (tooltip) {
-        tooltip.style.display = this.progress > 0.05 ? 'none' : 'block';
-      }
     }
-
-    // 3. Update Milestones status
-    const milestoneDots = this.svgEl.querySelectorAll('.trace-milestone-dot');
-    milestoneDots.forEach(dot => {
-      const dotRatio = parseFloat(dot.getAttribute('data-ratio') || '0');
-      if (this.progress >= dotRatio) {
-        dot.setAttribute('fill', this.brushColor);
-        dot.setAttribute('stroke', '#FFFFFF');
-        dot.classList.add('reached');
-      } else {
-        dot.setAttribute('fill', '#FFFFFF');
-        dot.setAttribute('stroke', '#94A3B8');
-        dot.classList.remove('reached');
-      }
-    });
 
     // 4. Update Header Progress Bar
     const pct = Math.round(this.progress * 100);
@@ -324,10 +264,10 @@ export class OutlineTraceEngine {
     if (circle) circle.setAttribute('stroke-dasharray', `${pct}, 100`);
     if (text) {
       if (pct >= 95) text.textContent = `⭐ Complete (100%)!`;
-      else if (pct >= 75) text.textContent = `🔥 Almost there (${pct}%)!`;
+      else if (pct >= 75) text.textContent = `🔥 Super close (${pct}%)!`;
       else if (pct >= 50) text.textContent = `🌟 Halfway (${pct}%)!`;
       else if (pct > 0) text.textContent = `⚡ ${pct}% Traced`;
-      else text.textContent = `Pull handle to trace!`;
+      else text.textContent = `Drag handle along outline`;
     }
 
     // Audio milestone chimes
@@ -335,14 +275,14 @@ export class OutlineTraceEngine {
     if (currentMilestone > this.lastMilestone && currentMilestone > 0) {
       this.lastMilestone = currentMilestone;
       sound.playSparkle();
-      this.emitHandleSparkles();
+      this.emitHandleSparkles(8);
     }
   }
 
   bindPullEvents(stageBoard) {
     const getSvgPoint = (e) => {
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const clientX = e.clientX;
+      const clientY = e.clientY;
       const pt = this.svgEl.createSVGPoint();
       pt.x = clientX;
       pt.y = clientY;
@@ -357,33 +297,44 @@ export class OutlineTraceEngine {
       };
     };
 
-    const startPull = (e) => {
+    const onPointerDown = (e) => {
       if (this.isCompleted || this.isGuideAnimating) return;
+      if (e.button !== undefined && e.button !== 0) return; // Primary button only
+
       const pt = getSvgPoint(e);
       const currentPt = this.basePathEl.getPointAtLength(this.progress * this.totalLength);
       const dist = Math.hypot(pt.x - currentPt.x, pt.y - currentPt.y);
 
-      // Allow grabbing within 65px radius of knob, or anywhere near current progress
-      if (dist <= 65 || this.progress === 0) {
+      // Must grab directly on the handle (within 32px)
+      if (dist <= 32) {
         e.preventDefault();
         this.isDragging = true;
-        this.handleEl.style.cursor = 'grabbing';
+        this.handleEl.classList.add('is-dragging');
+        this.handleEl.classList.remove('is-off-track');
+        try { stageBoard.setPointerCapture?.(e.pointerId); } catch (_) {}
         sound.playTap();
       }
     };
 
-    const movePull = (e) => {
+    const onPointerMove = (e) => {
+      // Must be actively dragging
       if (!this.isDragging || this.isCompleted || this.isGuideAnimating) return;
+
+      // Verify mouse button is actively pressed
+      if (e.buttons === 0 && e.pointerType !== 'touch') {
+        onPointerUp(e);
+        return;
+      }
+
       e.preventDefault();
       const pt = getSvgPoint(e);
 
-      // Find closest sample point within an allowable advance window ahead of current progress
+      // Strict forward tracing window
       const currentIdx = Math.round(this.progress * (this.samples.length - 1));
-      // Look forward up to ~25% of the path to allow smooth pull without skipping
-      const searchLookahead = Math.floor(this.samples.length * 0.28);
-      const searchLookbehind = Math.floor(this.samples.length * 0.10);
-      const startIdx = Math.max(0, currentIdx - searchLookbehind);
-      const endIdx = Math.min(this.samples.length - 1, currentIdx + searchLookahead);
+      const lookahead = Math.floor(this.samples.length * 0.05);
+      const lookbehind = Math.floor(this.samples.length * 0.02);
+      const startIdx = Math.max(0, currentIdx - lookbehind);
+      const endIdx = Math.min(this.samples.length - 1, currentIdx + Math.max(8, lookahead));
 
       let bestDist = Infinity;
       let bestSample = null;
@@ -397,41 +348,50 @@ export class OutlineTraceEngine {
         }
       }
 
-      // If user pointer is close enough to the path geometry (within 60px)
-      if (bestSample && bestDist <= 65) {
-        // Advance loader bar progress
-        if (bestSample.ratio > this.progress) {
+      const MAX_CORRIDOR_DIST = 30; // Strict corridor
+
+      if (bestSample && bestDist <= MAX_CORRIDOR_DIST) {
+        this.handleEl.classList.remove('is-off-track');
+
+        if (bestSample.ratio >= this.progress) {
           this.updateLoaderVisuals(bestSample.ratio);
-        } else if (bestSample.ratio < this.progress && this.progress - bestSample.ratio < 0.05) {
-          // Allow slight nudge backwards if desired
+          if (Math.random() < 0.2) this.emitHandleSparkles(2);
+        } else if (this.progress - bestSample.ratio < 0.02) {
           this.updateLoaderVisuals(bestSample.ratio);
         }
 
-        // Check completion (>= 96%)
-        if (this.progress >= 0.96 && !this.isCompleted) {
+        if (this.progress >= 0.97 && !this.isCompleted) {
           this.updateLoaderVisuals(1.0);
           this.triggerVictory();
         }
+      } else {
+        this.handleEl.classList.add('is-off-track');
       }
     };
 
-    const endPull = () => {
-      if (this.isDragging) {
-        this.isDragging = false;
-        if (this.handleEl) this.handleEl.style.cursor = 'grab';
-      }
+    const onPointerUp = (e) => {
+      this.isDragging = false;
+      this.handleEl?.classList.remove('is-dragging');
+      this.handleEl?.classList.remove('is-off-track');
+      try {
+        if (e && e.pointerId && stageBoard.hasPointerCapture?.(e.pointerId)) {
+          stageBoard.releasePointerCapture(e.pointerId);
+        }
+      } catch (_) {}
     };
 
-    stageBoard.addEventListener('mousedown', startPull);
-    window.addEventListener('mousemove', movePull);
-    window.addEventListener('mouseup', endPull);
+    stageBoard.addEventListener('pointerdown', onPointerDown);
+    stageBoard.addEventListener('pointermove', onPointerMove);
+    stageBoard.addEventListener('pointerup', onPointerUp);
+    stageBoard.addEventListener('pointercancel', onPointerUp);
 
-    stageBoard.addEventListener('touchstart', startPull, { passive: false });
-    window.addEventListener('touchmove', movePull, { passive: false });
-    window.addEventListener('touchend', endPull);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
+    window.addEventListener('blur', onPointerUp);
   }
 
-  emitHandleSparkles() {
+  emitHandleSparkles(count = 6) {
     const layer = document.getElementById('trace-sparkle-layer');
     if (!layer || !this.basePathEl) return;
 
@@ -440,11 +400,11 @@ export class OutlineTraceEngine {
     const px = (currentPt.x / 400) * rect.width;
     const py = (currentPt.y / 340) * rect.height;
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < count; i++) {
       const spark = document.createElement('div');
       spark.className = 'trace-sparkle-particle';
       const angle = Math.random() * Math.PI * 2;
-      const dist = 15 + Math.random() * 30;
+      const dist = 14 + Math.random() * 32;
       spark.style.cssText = `
         position: absolute;
         left: ${px}px;
@@ -453,10 +413,10 @@ export class OutlineTraceEngine {
         height: 8px;
         background: ${this.brushColor};
         border-radius: 50%;
-        box-shadow: 0 0 8px ${this.brushColor};
+        box-shadow: 0 0 10px ${this.brushColor}, 0 0 4px #FFF;
         pointer-events: none;
         transform: translate(-50%, -50%);
-        transition: all 0.45s ease-out;
+        transition: all 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
       `;
       layer.appendChild(spark);
       requestAnimationFrame(() => {
@@ -482,7 +442,7 @@ export class OutlineTraceEngine {
     this.resetProgress();
     this.isGuideAnimating = true;
 
-    const duration = 2400; // ms
+    const duration = 2200; // ms
     let startTime = null;
 
     const animate = (timestamp) => {
@@ -500,7 +460,7 @@ export class OutlineTraceEngine {
           this.resetProgress();
           const text = document.getElementById('trace-pct-text');
           if (text) text.textContent = '👉 Your turn! Pull the handle!';
-        }, 500);
+        }, 400);
       }
     };
 
@@ -515,9 +475,13 @@ export class OutlineTraceEngine {
     // Trigger celebration sparkles
     this.createConfettiSparkles();
 
-    // Pulse knob victory
+    // Pulse victory on board and handle
     if (this.handleEl) {
       this.handleEl.classList.add('victory-pop');
+    }
+    if (this.shapeFillEl) {
+      this.shapeFillEl.setAttribute('fill-opacity', '0.45');
+      this.shapeFillEl.classList.add('victory-fill-glow');
     }
 
     setTimeout(() => {
@@ -530,28 +494,28 @@ export class OutlineTraceEngine {
     if (!layer) return;
 
     layer.innerHTML = '';
-    const colors = ['#F59E0B', '#10B981', '#3B82F6', '#EC4899', '#8B5CF6', '#06B6D4'];
-    const count = 36;
+    const colors = ['#F59E0B', '#10B981', '#3B82F6', '#EC4899', '#8B5CF6', '#06B6D4', '#FBBF24'];
+    const count = 42;
 
     for (let i = 0; i < count; i++) {
       const spark = document.createElement('div');
       spark.className = 'trace-sparkle-particle';
       const angle = (i / count) * 360;
-      const dist = 60 + Math.random() * 110;
+      const dist = 70 + Math.random() * 120;
       const color = colors[i % colors.length];
 
       spark.style.cssText = `
         position: absolute;
         left: 50%;
         top: 50%;
-        width: ${8 + Math.random() * 8}px;
-        height: ${8 + Math.random() * 8}px;
+        width: ${8 + Math.random() * 10}px;
+        height: ${8 + Math.random() * 10}px;
         background: ${color};
         border-radius: 50%;
-        box-shadow: 0 0 10px ${color};
+        box-shadow: 0 0 12px ${color};
         transform: translate(-50%, -50%) rotate(${angle}deg) translate(${dist}px);
         opacity: 1;
-        transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transition: all 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
       `;
       layer.appendChild(spark);
     }
@@ -567,14 +531,14 @@ export class OutlineTraceEngine {
       this.runGuideDemo();
     } else if (this.hintStep === 2) {
       btnHint.textContent = '💡 Hint 2/3 (+40% Assist)';
-      // Pull loader bar forward 40%
       const newProg = Math.min(0.9, this.progress + 0.40);
       this.updateLoaderVisuals(newProg);
       sound.playSparkle();
     } else {
       btnHint.textContent = '💡 Hint Used (Reset)';
-      alert(`💡 TRACING GUIDE:\n\n${this.currentStage.hint || 'Grab the glowing handle and pull it along the shape outline like a loader bar until it fills 100%!'}`);
+      alert(`💡 TRACING GUIDE:\n\n${this.currentStage.hint || 'Grab the glowing handle and pull it along the shape outline like a loader bar until it reaches 100%!'}`);
     }
   }
 }
+
 

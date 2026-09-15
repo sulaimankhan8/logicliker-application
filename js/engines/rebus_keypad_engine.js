@@ -1,14 +1,9 @@
 /**
- * LogicLike Stage 3: Numeric Keypad & Rebus Math Engine
- * Full-fledged engine for Rebus picture algebra equations and touch keypad entry.
- * Features:
- * - Multi-equation picture algebra rendering (Single, 2-var, 3-var, order of ops)
- * - Oversized touch-optimized keypad (0-9, Clear C, Backspace ⌫, Submit)
- * - Live equation solver & target symbol display screen
- * - 3-step hint engine for Rebus algebra deduction
+ * Kiddy Learn - Rebus Math & Number Keypad Engine
  */
 
 import { sound } from '../audio.js';
+import { getSvgIcon } from '../icons.js';
 
 export class RebusKeypadEngine {
   constructor(appController) {
@@ -36,7 +31,7 @@ export class RebusKeypadEngine {
         if (['+', '-', '×', '÷', '='].includes(token)) {
           eqHTML += `<span class="rebus-op">${token}</span>`;
         } else {
-          eqHTML += `<span class="rebus-symbol">${token}</span>`;
+          eqHTML += `<span class="rebus-symbol">${getSvgIcon(token, 'icon-sm')}</span>`;
         }
       });
       eqHTML += `<span class="rebus-op">=</span><span class="rebus-val">${eq.right}</span></div>`;
@@ -45,14 +40,13 @@ export class RebusKeypadEngine {
 
     eqHTML += `
       <div class="rebus-target-banner">
-        <span>Find the value of ${stage.targetSymbol} =</span>
+        <span>Value of ${getSvgIcon(stage.targetSymbol, 'icon-sm')} =</span>
         <div class="keypad-display-screen" id="rebus-input-screen">?</div>
       </div>
     `;
 
     wrapper.innerHTML = eqHTML;
 
-    // Keypad Component Grid
     const keypad = document.createElement('div');
     keypad.className = 'keypad-grid';
 
@@ -99,7 +93,7 @@ export class RebusKeypadEngine {
     // Backspace Button
     const btnBack = document.createElement('button');
     btnBack.className = 'keypad-btn action-btn';
-    btnBack.textContent = '⌫';
+    btnBack.innerHTML = `${getSvgIcon('close', 'icon-xs')}`;
     btnBack.addEventListener('click', () => {
       sound.playTap();
       this.inputVal = this.inputVal.slice(0, -1);
@@ -110,7 +104,7 @@ export class RebusKeypadEngine {
     // Submit Button
     const btnSubmit = document.createElement('button');
     btnSubmit.className = 'keypad-btn submit';
-    btnSubmit.textContent = 'SUBMIT ANSWER';
+    btnSubmit.innerHTML = `${getSvgIcon('check', 'icon-xs')} <span>SUBMIT</span>`;
     btnSubmit.addEventListener('click', () => {
       this.verifyAnswer();
     });
@@ -122,7 +116,7 @@ export class RebusKeypadEngine {
     const toolbar = document.createElement('div');
     toolbar.className = 'engine-toolbar';
     toolbar.innerHTML = `
-      <button class="btn-engine-hint" id="btn-trigger-hint">💡 Use Hint (Step 1/3)</button>
+      <button class="btn-engine-hint" id="btn-trigger-hint">${getSvgIcon('hint', 'icon-xs')} <span>Hint (1/3)</span></button>
     `;
 
     toolbar.querySelector('#btn-trigger-hint').addEventListener('click', () => {
@@ -150,18 +144,18 @@ export class RebusKeypadEngine {
     const btnHint = wrapperEl.querySelector('#btn-trigger-hint');
 
     if (this.hintStep === 1) {
-      btnHint.textContent = '💡 Hint: Step 2/3 (Equation Clue)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (2/3)</span>`;
       const eq0 = wrapperEl.querySelector('#rebus-eq-0');
       if (eq0) {
         eq0.classList.add('hint-clue-pulse');
         setTimeout(() => eq0.classList.remove('hint-clue-pulse'), 2500);
       }
     } else if (this.hintStep === 2) {
-      btnHint.textContent = '💡 Hint: Step 3/3 (Show Reasoning)';
-      alert(`💡 REBUS ALGEBRA HINT:\n\nTarget answer is between ${Math.max(1, this.currentStage.correctAnswer - 3)} and ${this.currentStage.correctAnswer + 3}.`);
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (3/3)</span>`;
+      alert(`Answer is around ${this.currentStage.correctAnswer}`);
     } else if (this.hintStep === 3) {
-      btnHint.textContent = '💡 Hint Used (Reset)';
-      alert(`💡 GUIDED REBUS REASONING:\n\n${this.currentStage.hint}`);
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint Used</span>`;
+      alert(`Reasoning: ${this.currentStage.hint}`);
     }
   }
 }

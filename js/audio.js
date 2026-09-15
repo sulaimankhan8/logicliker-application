@@ -1,5 +1,5 @@
 /**
- * LogicLike Audio Synthesizer Engine
+ * Kiddy Learn Audio Synthesizer Engine
  * Uses Web Audio API & SpeechSynthesis for high-performance sound FX & voiceovers.
  */
 

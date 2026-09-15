@@ -1,5 +1,5 @@
 /**
- * LogicLike Stage 4: 3D Isometric Cube Counter Engine
+ * Kiddy Learn - 3D Isometric Cube Counter Engine
  * Professional, mathematically correct 3D Axonometric/Isometric projection engine.
  * Features:
  * - True 3D polyhedral cube rendering with dynamic yaw/pitch rotation
@@ -14,6 +14,7 @@
  */
 
 import { sound } from '../audio.js';
+import { getSvgIcon } from '../icons.js';
 
 export class Spatial3DEngine {
   constructor(appController) {
@@ -52,25 +53,25 @@ export class Spatial3DEngine {
     wrapper.innerHTML = `
       <div class="canvas-3d-wrapper">
         <div class="canvas-3d-header-bar">
-          <span class="canvas-drag-hint">🖱️ Drag to rotate 3D view</span>
-          <button class="btn-rot-cam btn-reset-cam" id="btn-rot-reset" title="Reset Camera View">🔄 Reset</button>
+          <span class="canvas-drag-hint">${getSvgIcon('spatial-3d', 'icon-xs')} Drag to rotate 3D view</span>
+          <button class="btn-rot-cam btn-reset-cam" id="btn-rot-reset" title="Reset Camera View">${getSvgIcon('replay', 'icon-xs')} Reset</button>
         </div>
         <canvas id="iso-canvas" width="520" height="340" class="isometric-canvas"></canvas>
         <div class="canvas-3d-controls">
-          <button class="btn-rot-cam" id="btn-rot-left">◀ Rotate 45°</button>
+          <button class="btn-rot-cam" id="btn-rot-left">◀ 45°</button>
           <div class="cube-count-badge" id="count-tally-badge" title="Click to clear counted cubes">
             Counted: 0 / ${stage.totalCubes}
           </div>
-          <button class="btn-rot-cam" id="btn-rot-right">Rotate 45° ▶</button>
+          <button class="btn-rot-cam" id="btn-rot-right">45° ▶</button>
         </div>
       </div>
 
-      <p class="spatial-prompt-subtitle">Click cubes on canvas to count them, or pick the total below:</p>
+      <p class="spatial-prompt-subtitle">Tap cubes on canvas to count them, or pick the total:</p>
 
       <div class="answer-selector-row" id="answer-selector-row"></div>
 
       <div class="engine-toolbar">
-        <button class="btn-engine-hint" id="btn-trigger-hint">💡 Use Hint (Step 1/3)</button>
+        <button class="btn-engine-hint" id="btn-trigger-hint">${getSvgIcon('hint', 'icon-xs')} <span>Hint (1/3)</span></button>
       </div>
     `;
 
@@ -498,7 +499,7 @@ export class Spatial3DEngine {
     options.forEach(opt => {
       const btn = document.createElement('button');
       btn.className = 'keypad-btn spatial-opt-btn';
-      btn.textContent = `${opt} 📦`;
+      btn.innerHTML = `${opt} ${getSvgIcon('spatial-3d', 'icon-xs')}`;
       btn.addEventListener('click', () => {
         if (opt === stage.totalCubes) {
           sound.playSuccess();

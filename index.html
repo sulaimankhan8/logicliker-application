@@ -7,35 +7,66 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#2C1D94">
-  <title>LogicLike - Interactive Educational Brain Games</title>
+  <title>Kiddy Learn - Early Learning & Brain Puzzles for Kids</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- Top App Navigation Header -->
   <header class="app-header">
-    <div class="brand-container">
-      <div class="brand-logo">💡</div>
-      <div class="brand-title">Logic<span>Like</span></div>
+    <div class="brand-container" id="brand-home-btn" title="Kiddy Learn">
+      <div class="brand-logo">
+        <svg class="kiddy-icon" viewBox="0 0 36 36" fill="none">
+          <rect width="36" height="36" rx="10" fill="url(#grad-hdr-brand)"/>
+          <path d="M9 13.5L18 8L27 13.5L18 19L9 13.5Z" fill="#FFFFFF"/>
+          <path d="M12 17.5V23C12 25.5 14.7 27.5 18 27.5C21.3 27.5 24 25.5 24 23V17.5L18 21.2L12 17.5Z" fill="#FEF08A"/>
+          <path d="M27 14V22" stroke="#FEF08A" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="27" cy="23" r="1.5" fill="#FEF08A"/>
+          <defs>
+            <linearGradient id="grad-hdr-brand" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#3B82F6"/>
+              <stop offset="1" stop-color="#8B5CF6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="brand-title">Kiddy<span>Learn</span></div>
     </div>
     
     <div class="stats-bar">
-      <div class="stat-pill clickable" id="pill-stars" title="Stars Bank">
-        <span class="stat-icon">⭐</span>
+      <div class="stat-pill clickable" id="pill-stars" title="Stars Earned">
+        <span class="stat-icon icon-star">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FBBF24" stroke="#D97706" stroke-width="1.5"/></svg>
+        </span>
         <span id="stat-stars">0 ★</span>
       </div>
       <div class="stat-pill clickable" id="pill-streak" title="Daily Streak">
-        <span class="stat-icon">🔥</span>
+        <span class="stat-icon icon-flame">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#F97316"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
+        </span>
         <span id="stat-streak">0 Days</span>
       </div>
       <div class="stat-pill clickable" id="pill-rank" title="Player Rank">
-        <span class="stat-icon">🏆</span>
+        <span class="stat-icon icon-trophy">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M6 3H18V9C18 12.3 15.3 15 12 15C8.7 15 6 12.3 6 9V3Z" fill="#FBBF24" stroke="#D97706" stroke-width="1.5"/><path d="M12 15V18M8 21H16" stroke="#D97706" stroke-width="2" stroke-linecap="round"/></svg>
+        </span>
         <span id="stat-rank">Lvl 1</span>
       </div>
-      <button class="btn-shell-action desktop-only" id="btn-open-badges" title="View Badges">🏆 Badges</button>
-      <button class="btn-shell-action desktop-only" id="btn-open-analytics" title="Parent Analytics">📊 Analytics</button>
-      <button class="btn-shell-action desktop-only btn-certificate" id="btn-open-certificate" title="Logic Diploma">📜 Certificate</button>
-      <button class="btn-header-audio" id="btn-audio-toggle" title="Toggle Sound">🔊</button>
+      <button class="btn-shell-action desktop-only" id="btn-open-badges" title="Badges">
+        <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="14" r="7" fill="#FBBF24" stroke="#D97706" stroke-width="1.5"/><circle cx="12" cy="14" r="4.5" fill="#FCD34D"/><path d="M8 3L10.5 9M16 3L13.5 9" stroke="#3B82F6" stroke-width="3" stroke-linecap="round"/></svg>
+        <span>Badges</span>
+      </button>
+      <button class="btn-shell-action desktop-only" id="btn-open-analytics" title="Progress Stats">
+        <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1.5" fill="#3B82F6"/><rect x="10" y="8" width="4" height="13" rx="1.5" fill="#10B981"/><rect x="17" y="3" width="4" height="18" rx="1.5" fill="#F59E0B"/></svg>
+        <span>Stats</span>
+      </button>
+      <button class="btn-shell-action desktop-only btn-certificate" id="btn-open-certificate" title="Diploma">
+        <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="15" rx="2.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/><circle cx="17" cy="16" r="3.5" fill="#EF4444"/><path d="M15.5 19L14.5 22L17 21L19.5 22L18.5 19" fill="#DC2626"/></svg>
+        <span>Diploma</span>
+      </button>
+      <button class="btn-header-audio" id="btn-audio-toggle" title="Sound">
+        <svg class="kiddy-icon icon-sm" id="header-audio-icon" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H3C2.4 9 2 9.4 2 10V14C2 14.6 2.4 15 3 15H6L11 19V5Z" fill="#FFFFFF"/><path d="M15.5 8.5C16.5 9.4 17 10.7 17 12C17 13.3 16.5 14.6 15.5 15.5M19 5C20.9 6.8 22 9.3 22 12C22 14.7 20.9 17.2 19 19" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </header>
 
@@ -46,29 +77,39 @@
 
   <!-- Main Container -->
   <main class="main-container" id="main-container-root">
-    <!-- Rendered dynamically by app.js: Course Banner, Level Selector Tabs, 5-Stage Mission Deck & Level Navigation -->
+    <!-- Rendered dynamically by app.js: Course Hero Banner, Level Selector Tabs, Stage Deck & Navigation -->
   </main>
 
-  <!-- Mobile Bottom Navigation Dock (Thumb-Friendly on Phones & Tablets) -->
+  <!-- Mobile Bottom Navigation Dock -->
   <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
     <button class="mobile-nav-item active" id="mob-nav-home">
-      <span class="mob-nav-icon">🗺️</span>
+      <span class="mob-nav-icon">
+        <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><path d="M3 6L9 3L15 6L21 3V18L15 21L9 18L3 21V6Z" fill="#E0E7FF" stroke="#4F46E5" stroke-width="1.5"/><path d="M9 3V18M15 6V21" stroke="#6366F1" stroke-width="1.5"/></svg>
+      </span>
       <span class="mob-nav-label">Learn</span>
     </button>
     <button class="mobile-nav-item" id="mob-nav-badges">
-      <span class="mob-nav-icon">🏆</span>
+      <span class="mob-nav-icon">
+        <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="14" r="7" fill="#FBBF24" stroke="#D97706" stroke-width="1.5"/><circle cx="12" cy="14" r="4.5" fill="#FCD34D"/><path d="M8 3L10.5 9M16 3L13.5 9" stroke="#3B82F6" stroke-width="3" stroke-linecap="round"/></svg>
+      </span>
       <span class="mob-nav-label">Badges</span>
     </button>
     <button class="mobile-nav-item" id="mob-nav-streak">
-      <span class="mob-nav-icon">🔥</span>
+      <span class="mob-nav-icon">
+        <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#F97316"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
+      </span>
       <span class="mob-nav-label">Streak</span>
     </button>
     <button class="mobile-nav-item" id="mob-nav-analytics">
-      <span class="mob-nav-icon">📊</span>
+      <span class="mob-nav-icon">
+        <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1.5" fill="#3B82F6"/><rect x="10" y="8" width="4" height="13" rx="1.5" fill="#10B981"/><rect x="17" y="3" width="4" height="18" rx="1.5" fill="#F59E0B"/></svg>
+      </span>
       <span class="mob-nav-label">Stats</span>
     </button>
     <button class="mobile-nav-item" id="mob-nav-certificate">
-      <span class="mob-nav-icon">📜</span>
+      <span class="mob-nav-icon">
+        <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="15" rx="2.5" fill="#FFFBEB" stroke="#D97706" stroke-width="1.5"/><circle cx="17" cy="16" r="3.5" fill="#EF4444"/><path d="M15.5 19L14.5 22L17 21L19.5 22L18.5 19" fill="#DC2626"/></svg>
+      </span>
       <span class="mob-nav-label">Diploma</span>
     </button>
   </nav>
@@ -78,12 +119,17 @@
     <div class="game-card-modal">
       <div class="game-header">
         <div class="game-title-group">
-          <h3 id="game-modal-title">Odd One Out</h3>
-          <p id="game-modal-subtitle">Stage 1 of 5 • Basic Shape & Color Match</p>
+          <h3 id="game-modal-title">Activity</h3>
+          <p id="game-modal-subtitle">Stage 1 of 5</p>
         </div>
         <div class="game-actions">
-          <button class="btn-hint" id="btn-hint">💡 Hint</button>
-          <button class="btn-icon" id="btn-close-modal">✕</button>
+          <button class="btn-hint" id="btn-hint">
+            <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M9 18H15M10 21H14M12 2C7.6 2 4 5.6 4 10C4 12.8 5.5 15.2 7.7 16.5C8.4 16.9 8.9 17.6 9 18.4H15C15.1 17.6 15.6 16.9 16.3 16.5C18.5 15.2 20 12.8 20 10C20 5.6 16.4 2 12 2Z" fill="#FEF08A" stroke="#EAB308" stroke-width="1.7"/></svg>
+            <span>Hint</span>
+          </button>
+          <button class="btn-icon" id="btn-close-modal" aria-label="Close">
+            <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>
         </div>
       </div>
       <div class="game-progress-bar">
@@ -91,8 +137,10 @@
       </div>
       <div class="game-arena">
         <div class="question-prompt" id="question-prompt">
-          <span>Which item does NOT belong with the others?</span>
-          <button class="btn-audio-speak" id="btn-audio-speak">🔊</button>
+          <span>Choose the matching item</span>
+          <button class="btn-audio-speak" id="btn-audio-speak" title="Listen">
+            <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H3C2.4 9 2 9.4 2 10V14C2 14.6 2.4 15 3 15H6L11 19V5Z" fill="#3B82F6"/><path d="M15.5 8.5C16.5 9.4 17 10.7 17 12C17 13.3 16.5 14.6 15.5 15.5M19 5C20.9 6.8 22 9.3 22 12C22 14.7 20.9 17.2 19 19" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
         </div>
         <div class="game-arena-content" id="game-arena">
           <!-- Game specific interaction component rendered by JS -->
@@ -104,17 +152,23 @@
   <!-- Victory Celebration Modal -->
   <div class="modal-overlay" id="victory-modal">
     <div class="game-card-modal feedback-modal">
-      <div class="feedback-icon">🎉</div>
+      <div class="feedback-icon">
+        <svg class="kiddy-icon icon-xl" viewBox="0 0 24 24" fill="none"><path d="M4 14L8 18L18 8L14 4L4 14Z" fill="#F59E0B"/><circle cx="18" cy="5" r="2" fill="#EC4899"/><circle cx="21" cy="11" r="1.5" fill="#3B82F6"/><circle cx="15" cy="17" r="1.5" fill="#10B981"/><circle cx="10" cy="21" r="2" fill="#8B5CF6"/><path d="M7 11L2 13M13 7L15 2M11 13L9 16" stroke="#F97316" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
       <h2 style="font-weight:900; color:var(--primary-indigo);">Stage Completed!</h2>
-      <p style="font-size:16px; font-weight:700; color:var(--text-muted);" id="victory-feedback-sub">Outstanding logic skills!</p>
+      <p style="font-size:16px; font-weight:700; color:var(--text-muted);" id="victory-feedback-sub">Great job!</p>
       <div class="stars-earned" id="victory-stars">
-        <span class="star-icon filled">★</span>
-        <span class="star-icon filled">★</span>
-        <span class="star-icon filled">★</span>
+        <!-- Rendered by JS with SVG stars -->
       </div>
       <div class="victory-actions-row">
-        <button class="btn-continue btn-victory-next" id="btn-victory-next">▶ Next Problem</button>
-        <button class="btn-victory-road" id="btn-victory-continue">🗺️ Back to Map</button>
+        <button class="btn-continue btn-victory-next" id="btn-victory-next">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M7 4.5V19.5L19 12L7 4.5Z" fill="currentColor"/></svg>
+          <span>Next</span>
+        </button>
+        <button class="btn-victory-road" id="btn-victory-continue">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M3 6L9 3L15 6L21 3V18L15 21L9 18L3 21V6Z" fill="#E0E7FF" stroke="#4F46E5" stroke-width="1.5"/><path d="M9 3V18M15 6V21" stroke="#6366F1" stroke-width="1.5"/></svg>
+          <span>Map</span>
+        </button>
       </div>
     </div>
   </div>
@@ -122,56 +176,74 @@
   <!-- Learn from Mistakes Review Modal -->
   <div class="modal-overlay" id="review-modal">
     <div class="game-card-modal feedback-modal" style="border-top: 6px solid var(--solar-orange);">
-      <div class="feedback-icon">💡</div>
-      <h2 style="font-weight:900; color:var(--solar-orange);">Learn From Mistakes</h2>
+      <div class="feedback-icon">
+        <svg class="kiddy-icon icon-xl" viewBox="0 0 24 24" fill="none"><path d="M9 18H15M10 21H14M12 2C7.6 2 4 5.6 4 10C4 12.8 5.5 15.2 7.7 16.5C8.4 16.9 8.9 17.6 9 18.4H15C15.1 17.6 15.6 16.9 16.3 16.5C18.5 15.2 20 12.8 20 10C20 5.6 16.4 2 12 2Z" fill="#FEF08A" stroke="#EAB308" stroke-width="1.7"/></svg>
+      </div>
+      <h2 style="font-weight:900; color:var(--solar-orange);">Let's Check Again</h2>
       <p id="review-text" style="font-size:17px; font-weight:600; color:var(--text-dark); max-width: 500px; line-height:1.5;">
-        Let's analyze why that choice broke the logical rule!
+        Take a look at the clue and give it another try!
       </p>
-      <button class="btn-continue" id="btn-review-retry" style="background:var(--solar-orange);">Try Again</button>
+      <button class="btn-continue" id="btn-review-retry" style="background:var(--solar-orange);">
+        <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M4 4V9H9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12C20 16.4 16.4 20 12 20C8.4 20 5.3 17.6 4.3 14.3L4 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <span>Try Again</span>
+      </button>
     </div>
   </div>
 
-  <!-- 📊 Parent Analytics & Progress Modal -->
+  <!-- Parent & Learning Analytics Modal -->
   <div class="modal-overlay" id="analytics-modal">
     <div class="game-card-modal shell-modal">
       <div class="shell-modal-header">
-        <h2>📊 Parent & Educator Analytics Dashboard</h2>
-        <button class="btn-icon" id="btn-close-analytics">✕</button>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="4" height="8" rx="1.5" fill="#3B82F6"/><rect x="10" y="8" width="4" height="13" rx="1.5" fill="#10B981"/><rect x="17" y="3" width="4" height="18" rx="1.5" fill="#F59E0B"/></svg>
+          <h2>Learning Analytics</h2>
+        </div>
+        <button class="btn-icon" id="btn-close-analytics">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
       </div>
       <div class="analytics-content">
         <div class="analytics-overview-cards">
           <div class="analytics-card">
-            <span class="analytics-card-val" id="analytics-total-stages">75 / 75</span>
+            <span class="analytics-card-val" id="analytics-total-stages">0 / 75</span>
             <span class="analytics-card-lbl">Stages Solved</span>
           </div>
           <div class="analytics-card">
-            <span class="analytics-card-val" id="analytics-total-stars">225 ★</span>
-            <span class="analytics-card-lbl">Total Stars Earned</span>
+            <span class="analytics-card-val" id="analytics-total-stars">0 ★</span>
+            <span class="analytics-card-lbl">Stars Bank</span>
           </div>
           <div class="analytics-card">
-            <span class="analytics-card-val" id="analytics-rank-title">Lvl 15 • Grandmaster</span>
-            <span class="analytics-card-lbl">Logic Title</span>
+            <span class="analytics-card-val" id="analytics-rank-title">Lvl 1 • Explorer</span>
+            <span class="analytics-card-lbl">Skill Rank</span>
           </div>
         </div>
 
-        <h3 class="analytics-section-title">Course Mastery Breakdown</h3>
+        <h3 class="analytics-section-title">Course Mastery</h3>
         <div class="analytics-breakdown-list" id="analytics-breakdown-list">
           <!-- Populated by JS -->
         </div>
 
         <div class="analytics-footer">
-          <button class="btn-danger" id="btn-reset-progress">🗑️ Reset All Progress</button>
+          <button class="btn-danger" id="btn-reset-progress">
+            <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M4 7H20M10 11V17M14 11V17M5 7L6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19L19 7M9 7V4C9 3.4 9.4 3 10 3H14C14.6 3 15 3.4 15 4V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>Reset Progress</span>
+          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 🏆 Achievement Badges Modal -->
+  <!-- Achievement Badges Modal -->
   <div class="modal-overlay" id="badges-modal">
     <div class="game-card-modal shell-modal">
       <div class="shell-modal-header">
-        <h2>🏆 Player Achievement Badges</h2>
-        <button class="btn-icon" id="btn-close-badges">✕</button>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="14" r="7" fill="#FBBF24" stroke="#D97706" stroke-width="1.5"/><circle cx="12" cy="14" r="4.5" fill="#FCD34D"/><path d="M8 3L10.5 9M16 3L13.5 9" stroke="#3B82F6" stroke-width="3" stroke-linecap="round"/></svg>
+          <h2>Achievement Badges</h2>
+        </div>
+        <button class="btn-icon" id="btn-close-badges">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
       </div>
       <div class="badges-grid" id="badges-grid">
         <!-- Populated by JS -->
@@ -179,72 +251,89 @@
     </div>
   </div>
 
-  <!-- 🔥 Daily Streak Calendar Modal -->
+  <!-- Daily Streak Modal -->
   <div class="modal-overlay" id="streak-modal">
     <div class="game-card-modal shell-modal">
       <div class="shell-modal-header">
-        <h2>🔥 7-Day Logic Streak Calendar</h2>
-        <button class="btn-icon" id="btn-close-streak">✕</button>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#F97316"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
+          <h2>Daily Streak Bonus</h2>
+        </div>
+        <button class="btn-icon" id="btn-close-streak">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
       </div>
       <div class="streak-calendar-wrapper">
-        <p class="streak-desc">Keep your brain sharp every day to claim bonus stars and logic rewards!</p>
+        <p class="streak-desc">Practice daily to unlock bonus stars and rewards!</p>
         <div class="streak-days-row" id="streak-days-row">
           <!-- Populated by JS -->
         </div>
-        <button class="btn-continue" id="btn-claim-streak" style="margin-top:16px;">🔥 Claim Today's Bonus (+15 ★)</button>
+        <button class="btn-continue" id="btn-claim-streak" style="margin-top:16px;">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#FFFFFF"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
+          <span>Claim Bonus</span>
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- 📜 Official Diploma Certificate Modal -->
+  <!-- Official Diploma Certificate Modal -->
   <div class="modal-overlay" id="certificate-modal">
     <div class="game-card-modal certificate-modal-card">
-      <button class="btn-icon cert-close-btn" id="btn-close-certificate">✕</button>
+      <button class="btn-icon cert-close-btn" id="btn-close-certificate">
+        <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </button>
       <div class="certificate-paper" id="printable-certificate">
         <div class="cert-border-outer">
           <div class="cert-border-inner">
             <div class="cert-header">
-              <div class="cert-badge-emblem">💡</div>
-              <h1 class="cert-title">CERTIFICATE OF LOGIC MASTERY</h1>
-              <p class="cert-subtitle">LOGICLIKE EDUCATIONAL COGNITIVE ACADEMY</p>
+              <div class="cert-badge-emblem">
+                <svg class="kiddy-icon icon-hero" viewBox="0 0 36 36" fill="none">
+                  <rect width="36" height="36" rx="10" fill="url(#grad-cert-brand)"/>
+                  <path d="M9 13.5L18 8L27 13.5L18 19L9 13.5Z" fill="#FFFFFF"/>
+                  <path d="M12 17.5V23C12 25.5 14.7 27.5 18 27.5C21.3 27.5 24 25.5 24 23V17.5L18 21.2L12 17.5Z" fill="#FEF08A"/>
+                  <circle cx="18" cy="13.5" r="2.5" fill="#3B82F6"/>
+                  <defs>
+                    <linearGradient id="grad-cert-brand" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3B82F6"/>
+                      <stop offset="1" stop-color="#8B5CF6"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <h1 class="cert-title">CERTIFICATE OF EARLY LEARNING MASTERY</h1>
+              <p class="cert-subtitle">KIDDY LEARN COGNITIVE ACADEMY</p>
             </div>
             
             <div class="cert-body">
-              <p class="cert-present-text">This official diploma is proudly presented to</p>
-              <input type="text" class="cert-student-name" id="cert-student-name" value="Young Logician" placeholder="Enter Student Name">
+              <p class="cert-present-text">Presented with excellence to</p>
+              <input type="text" class="cert-student-name" id="cert-student-name" value="Young Star" placeholder="Enter Student Name">
               <p class="cert-achievement-text">
-                For demonstrating exceptional analytical reasoning, problem-solving, and cognitive mastery across Mathematics 📐, Science & Nature 🔬, and Aptitude & Logic 💡 using all interactive game engines:
+                For outstanding curiosity, deductive logic, and cognitive problem-solving across Mathematics, Science & Nature, and Visual Logic.
               </p>
-              <div class="cert-skills-chips">
-                <span>🎴 Card Grid Selection</span>
-                <span>✏️ Shape & Outline Tracing</span>
-                <span>🎴 3D Memory Card Match</span>
-                <span>🔊 Spoken Audio Identification</span>
-                <span>🎯 Drag & Drop Sorting</span>
-                <span>🔗 Matching Cords</span>
-                <span>⚖️ Balance Scale Physics</span>
-                <span>🔢 Rebus Math Keypad</span>
-                <span>📦 3D Spatial Projection</span>
-                <span>🧩 Sudoku & Matrix Logic</span>
+              <div class="cert-skills-chips" id="cert-skills-container">
+                <!-- Rendered cleanly with SVG icons -->
               </div>
             </div>
 
             <div class="cert-footer">
               <div class="cert-seal">
-                <div class="seal-ribbon">⭐ OFFICIAL ⭐</div>
-                <div class="seal-text">VERIFIED LOGIC SEAL</div>
+                <div class="seal-ribbon">OFFICIAL SEAL</div>
+                <div class="seal-text">KIDDY LEARN</div>
               </div>
               <div class="cert-stats">
-                <p><strong>Stars Bank:</strong> <span id="cert-stars-val">225 ★</span></p>
-                <p><strong>Rank Title:</strong> <span id="cert-rank-val">Grandmaster Logician</span></p>
-                <p><strong>Issue Date:</strong> <span id="cert-date-val">Sept 4, 2026</span></p>
+                <p><strong>Stars Bank:</strong> <span id="cert-stars-val">0 ★</span></p>
+                <p><strong>Rank Title:</strong> <span id="cert-rank-val">Grandmaster</span></p>
+                <p><strong>Issue Date:</strong> <span id="cert-date-val">Today</span></p>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="cert-actions-bar">
-        <button class="btn-continue" id="btn-print-certificate">🖨️ Print / Save Diploma PDF</button>
+        <button class="btn-continue" id="btn-print-certificate">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M6 9V3H18V9M6 18H4C2.9 18 2 17.1 2 16V11C2 9.9 2.9 9 4 9H20C21.1 9 22 9.9 22 11V16C22 17.1 21.1 18 20 18H18M6 14H18V21H6V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>Print / Save Diploma PDF</span>
+        </button>
       </div>
     </div>
   </div>

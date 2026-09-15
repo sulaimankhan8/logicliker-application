@@ -1,15 +1,9 @@
 /**
- * LogicLike Matching Pairs Connection Engine
- * Features:
- * - Left column (4-5 items/words/symbols) and Right column (4-5 matching pictures/definitions)
- * - Interactive connection chords drawn via SVG overlay
- * - Touch & click pairing (Select Left -> Select Right -> Connected line created)
- * - Click connected item to disconnect
- * - Distinct color-coded connection lines per pair
- * - Real-time validation, audio feedback, and 3-step hint engine
+ * Kiddy Learn - Matching Pairs Connection Engine
  */
 
 import { sound } from '../audio.js';
+import { getSvgIcon } from '../icons.js';
 
 const PAIR_COLORS = ['#6366F1', '#EC4899', '#10B981', '#F59E0B', '#8B5CF6', '#3B82F6'];
 
@@ -35,11 +29,9 @@ export class MatchingPairsEngine {
     const wrapper = document.createElement('div');
     wrapper.className = 'matching-engine-wrapper';
 
-    // Board container for left/right columns and SVG lines canvas
     const board = document.createElement('div');
     board.className = 'matching-board';
 
-    // SVG Overlay for connection cords
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('class', 'matching-svg-overlay');
     svg.setAttribute('id', 'matching-svg-overlay');
@@ -55,7 +47,7 @@ export class MatchingPairsEngine {
       card.setAttribute('data-left-id', pair.id);
       card.innerHTML = `
         <div class="node-content">
-          ${pair.leftIcon ? `<span class="node-icon">${pair.leftIcon}</span>` : ''}
+          ${pair.leftIcon ? `<span class="node-icon">${getSvgIcon(pair.leftIcon, 'icon-sm')}</span>` : ''}
           <span class="node-text">${pair.leftText}</span>
         </div>
         <div class="connect-port-dot port-right"></div>
@@ -71,11 +63,10 @@ export class MatchingPairsEngine {
 
     board.appendChild(leftCol);
 
-    // Right Column (shuffled or specified by rightItems)
+    // Right Column
     const rightCol = document.createElement('div');
     rightCol.className = 'matching-column right-column';
 
-    // Sort right items by stage.shuffledRight or default
     const rightItems = stage.rightItems || [...stage.pairs].reverse();
 
     rightItems.forEach((rItem) => {
@@ -85,7 +76,7 @@ export class MatchingPairsEngine {
       card.innerHTML = `
         <div class="connect-port-dot port-left"></div>
         <div class="node-content">
-          ${rItem.rightIcon ? `<span class="node-icon">${rItem.rightIcon}</span>` : ''}
+          ${rItem.rightIcon ? `<span class="node-icon">${getSvgIcon(rItem.rightIcon, 'icon-sm')}</span>` : ''}
           <span class="node-text">${rItem.rightText}</span>
         </div>
       `;
@@ -105,8 +96,8 @@ export class MatchingPairsEngine {
     const toolbar = document.createElement('div');
     toolbar.className = 'engine-toolbar';
     toolbar.innerHTML = `
-      <button class="btn-balance-check" id="btn-submit-matching">✓ Check & Submit</button>
-      <button class="btn-engine-hint" id="btn-trigger-hint">💡 Use Hint (Step 1/3)</button>
+      <button class="btn-balance-check" id="btn-submit-matching">${getSvgIcon('check', 'icon-xs')} <span>Check</span></button>
+      <button class="btn-engine-hint" id="btn-trigger-hint">${getSvgIcon('hint', 'icon-xs')} <span>Hint (1/3)</span></button>
     `;
 
     toolbar.querySelector('#btn-submit-matching').addEventListener('click', () => {
@@ -120,14 +111,11 @@ export class MatchingPairsEngine {
     wrapper.appendChild(toolbar);
     containerEl.appendChild(wrapper);
 
-    // Re-draw lines on window resize
     window.addEventListener('resize', () => this.drawLines(wrapper));
-
     setTimeout(() => this.drawLines(wrapper), 50);
   }
 
   handleLeftClick(leftId, wrapper) {
-    // If already connected, disconnect it
     if (this.connections.has(leftId)) {
       this.connections.delete(leftId);
       this.selectedLeft = null;
@@ -141,7 +129,6 @@ export class MatchingPairsEngine {
     } else {
       this.selectedLeft = leftId;
       if (this.selectedRight) {
-        // Complete connection
         this.makeConnection(this.selectedLeft, this.selectedRight, wrapper);
         this.selectedLeft = null;
         this.selectedRight = null;
@@ -152,7 +139,6 @@ export class MatchingPairsEngine {
   }
 
   handleRightClick(rightId, wrapper) {
-    // Check if right is already connected to something
     for (const [lId, rId] of this.connections.entries()) {
       if (rId === rightId) {
         this.connections.delete(lId);
@@ -168,7 +154,6 @@ export class MatchingPairsEngine {
     } else {
       this.selectedRight = rightId;
       if (this.selectedLeft) {
-        // Complete connection
         this.makeConnection(this.selectedLeft, this.selectedRight, wrapper);
         this.selectedLeft = null;
         this.selectedRight = null;
@@ -180,7 +165,6 @@ export class MatchingPairsEngine {
 
   makeConnection(leftId, rightId, wrapper) {
     sound.playStar();
-    // Remove any previous connection for this left or right
     for (const [lId, rId] of this.connections.entries()) {
       if (lId === leftId || rId === rightId) {
         this.connections.delete(lId);
@@ -248,7 +232,6 @@ export class MatchingPairsEngine {
         const color = PAIR_COLORS[colorIdx % PAIR_COLORS.length];
         colorIdx++;
 
-        // Draw smooth bezier curve
         const dx = (x2 - x1) * 0.5;
         const pathData = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
 
@@ -273,7 +256,6 @@ export class MatchingPairsEngine {
       }
     }
 
-    // Remove paths for disconnected pairs
     const allPaths = svg.querySelectorAll('path[data-conn-key]');
     allPaths.forEach(path => {
       const key = path.getAttribute('data-conn-key');
@@ -287,7 +269,7 @@ export class MatchingPairsEngine {
     const totalPairs = this.currentStage.pairs.length;
     if (this.connections.size < totalPairs) {
       sound.playError();
-      alert(`⚠️ Please connect all ${totalPairs} pairs before submitting!`);
+      alert(`Connect all ${totalPairs} pairs before checking!`);
       return;
     }
 
@@ -314,19 +296,17 @@ export class MatchingPairsEngine {
     const btnHint = wrapper.querySelector('#btn-trigger-hint');
 
     if (this.hintStep === 1) {
-      btnHint.textContent = '💡 Hint: Step 2/3 (Connect 1 Pair)';
-      alert(`💡 HINT: ${this.currentStage.hint}`);
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (2/3)</span>`;
+      alert(`Clue: ${this.currentStage.hint}`);
     } else if (this.hintStep === 2) {
-      btnHint.textContent = '💡 Hint: Step 3/3 (Full Solution)';
-      // Auto connect first missing or wrong pair
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (3/3)</span>`;
       const targetPair = this.currentStage.pairs.find(p => this.connections.get(p.id) !== p.id);
       if (targetPair) {
         this.makeConnection(targetPair.id, targetPair.id, wrapper);
-        alert(`💡 CLUE: "${targetPair.leftText}" connects with "${targetPair.rightText}"!`);
       }
     } else if (this.hintStep === 3) {
-      btnHint.textContent = '💡 Hint Used (Reset)';
-      alert(`💡 GUIDED REASONING:\n\n${this.currentStage.review}`);
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint Used</span>`;
+      alert(`Reasoning: ${this.currentStage.review}`);
     }
   }
 }

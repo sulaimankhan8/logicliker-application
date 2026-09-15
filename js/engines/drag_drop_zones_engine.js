@@ -1,16 +1,9 @@
 /**
- * LogicLike Drag & Drop Category & Habitat Placement Engine
- * Universal Pointer & Touch Drag-and-Drop + Tap-to-Place Engine
- * Features:
- * - Rock-solid Pointer Events drag (works flawlessly across desktop mouse, iPad/tablets, mobile touch)
- * - Dynamic floating drag avatar following cursor/finger with tilt and shadow
- * - Real-time hover dropzone highlight
- * - Fallback tap-to-select & tap-zone-to-place
- * - Click placed chip to return back to bank
- * - Real-time answer validation and 3-step hint engine
+ * Kiddy Learn - Drag & Drop Category & Habitat Placement Engine
  */
 
 import { sound } from '../audio.js';
+import { getSvgIcon } from '../icons.js';
 
 export class DragDropZonesEngine {
   constructor(appController) {
@@ -44,15 +37,12 @@ export class DragDropZonesEngine {
 
       zoneEl.innerHTML = `
         <div class="dropzone-header">
-          <span class="dropzone-icon">${zone.icon || '📦'}</span>
+          <span class="dropzone-icon">${getSvgIcon(zone.icon || zone.id, 'icon-md')}</span>
           <span class="dropzone-title">${zone.title}</span>
         </div>
-        <div class="dropzone-slot-area" id="zone-slot-${zone.id}">
-          <!-- Placed item chips inserted here -->
-        </div>
+        <div class="dropzone-slot-area" id="zone-slot-${zone.id}"></div>
       `;
 
-      // Tap to place when an item is selected
       zoneEl.addEventListener('click', () => {
         if (this.selectedItem) {
           this.placeItemInZone(this.selectedItem.id, zone.id, wrapper);
@@ -61,7 +51,6 @@ export class DragDropZonesEngine {
         }
       });
 
-      // HTML5 Drag & Drop backup
       zoneEl.addEventListener('dragover', (e) => {
         e.preventDefault();
         zoneEl.classList.add('drag-active');
@@ -89,20 +78,18 @@ export class DragDropZonesEngine {
     const bankSection = document.createElement('div');
     bankSection.className = 'drag-bank-section';
     bankSection.innerHTML = `
-      <p class="drag-bank-title">Drag items into the correct zones above, or click to place:</p>
-      <div class="drag-bank-items" id="drag-bank-items">
-        <!-- Available chips rendered dynamically -->
-      </div>
+      <p class="drag-bank-title">Drag or tap items to place into zones:</p>
+      <div class="drag-bank-items" id="drag-bank-items"></div>
     `;
 
     wrapper.appendChild(bankSection);
 
-    // Toolbar (Submit + Hint)
+    // Toolbar
     const toolbar = document.createElement('div');
     toolbar.className = 'engine-toolbar';
     toolbar.innerHTML = `
-      <button class="btn-balance-check" id="btn-submit-drag-zones">✓ Check & Submit</button>
-      <button class="btn-engine-hint" id="btn-trigger-hint">💡 Use Hint (Step 1/3)</button>
+      <button class="btn-balance-check" id="btn-submit-drag-zones">${getSvgIcon('check', 'icon-xs')} <span>Check</span></button>
+      <button class="btn-engine-hint" id="btn-trigger-hint">${getSvgIcon('hint', 'icon-xs')} <span>Hint (1/3)</span></button>
     `;
 
     toolbar.querySelector('#btn-submit-drag-zones').addEventListener('click', () => {
@@ -147,15 +134,14 @@ export class DragDropZonesEngine {
       const assignedZoneId = this.placements[item.id];
 
       if (assignedZoneId) {
-        // Render inside assigned zone
         const slotEl = wrapper.querySelector(`#zone-slot-${assignedZoneId}`);
         if (slotEl) {
           const placedChip = document.createElement('div');
           placedChip.className = 'placed-item-chip';
           placedChip.innerHTML = `
-            <span>${item.icon || '🏷️'}</span>
+            <span>${getSvgIcon(item.icon || item.id, 'icon-sm')}</span>
             <span class="placed-chip-label">${item.label}</span>
-            <span class="remove-chip-btn" title="Click to remove">✕</span>
+            <span class="remove-chip-btn" title="Remove">${getSvgIcon('close', 'icon-xs')}</span>
           `;
           placedChip.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -164,25 +150,23 @@ export class DragDropZonesEngine {
           slotEl.appendChild(placedChip);
         }
       } else {
-        // Render in source items bank with Universal Pointer Drag
         const bankChip = document.createElement('div');
         bankChip.className = `drag-item-chip ${this.selectedItem && this.selectedItem.id === item.id ? 'selected-chip' : ''}`;
         bankChip.setAttribute('draggable', 'true');
         bankChip.setAttribute('data-item-id', item.id);
 
         bankChip.innerHTML = `
-          <span class="drag-chip-icon">${item.icon || '🏷️'}</span>
+          <span class="drag-chip-icon">${getSvgIcon(item.icon || item.id, 'icon-sm')}</span>
           <span class="drag-chip-label">${item.label}</span>
         `;
 
         this.bindUniversalPointerDrag(bankChip, item, wrapper);
-
         bankEl.appendChild(bankChip);
       }
     });
 
     if (bankEl.children.length === 0) {
-      bankEl.innerHTML = `<div class="bank-all-placed-msg">🎉 All items placed! Click "Check & Submit" above.</div>`;
+      bankEl.innerHTML = `<div class="bank-all-placed-msg">${getSvgIcon('check', 'icon-sm')} All placed! Tap "Check" above.</div>`;
     }
   }
 
@@ -193,7 +177,6 @@ export class DragDropZonesEngine {
     let floatingAvatar = null;
 
     const onPointerDown = (e) => {
-      // Only primary mouse button or single touch
       if (e.button !== undefined && e.button !== 0) return;
 
       isDragging = false;
@@ -209,11 +192,10 @@ export class DragDropZonesEngine {
           this.selectedItem = null;
           this.updateBankSelection(wrapper);
 
-          // Create floating drag avatar
           floatingAvatar = document.createElement('div');
           floatingAvatar.className = 'dragging-floating-chip';
           floatingAvatar.innerHTML = `
-            <span>${item.icon || '🏷️'}</span>
+            <span>${getSvgIcon(item.icon || item.id, 'icon-sm')}</span>
             <span>${item.label}</span>
           `;
           document.body.appendChild(floatingAvatar);
@@ -224,7 +206,6 @@ export class DragDropZonesEngine {
           floatingAvatar.style.left = `${moveEvt.clientX}px`;
           floatingAvatar.style.top = `${moveEvt.clientY}px`;
 
-          // Hit test dropzones
           const elemBelow = document.elementFromPoint(moveEvt.clientX, moveEvt.clientY);
           const targetZone = elemBelow ? elemBelow.closest('.dropzone-card') : null;
 
@@ -247,10 +228,8 @@ export class DragDropZonesEngine {
             floatingAvatar = null;
           }
 
-          // Clear dropzone highlights
           wrapper.querySelectorAll('.dropzone-card').forEach(z => z.classList.remove('drag-active'));
 
-          // Identify dropzone under pointer
           const elemBelow = document.elementFromPoint(upEvt.clientX, upEvt.clientY);
           const targetZone = elemBelow ? elemBelow.closest('.dropzone-card') : null;
 
@@ -262,7 +241,6 @@ export class DragDropZonesEngine {
             }
           }
         } else {
-          // It was a tap / click!
           sound.playTap();
           if (this.selectedItem && this.selectedItem.id === item.id) {
             this.selectedItem = null;
@@ -280,7 +258,6 @@ export class DragDropZonesEngine {
 
     chipEl.addEventListener('pointerdown', onPointerDown);
 
-    // Native HTML5 drag backup
     chipEl.addEventListener('dragstart', (e) => {
       e.dataTransfer.setData('text/plain', item.id);
     });
@@ -304,7 +281,7 @@ export class DragDropZonesEngine {
 
     if (placedKeys.length < totalItems) {
       sound.playError();
-      alert(`⚠️ Please place all ${totalItems} items into the zones before submitting!`);
+      alert(`Please place all ${totalItems} items into zones!`);
       return;
     }
 
@@ -331,19 +308,18 @@ export class DragDropZonesEngine {
     const btnHint = wrapper.querySelector('#btn-trigger-hint');
 
     if (this.hintStep === 1) {
-      btnHint.textContent = '💡 Hint: Step 2/3 (Auto-place 1 Item)';
-      alert(`💡 HINT: ${this.currentStage.hint}`);
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (2/3)</span>`;
+      alert(`Clue: ${this.currentStage.hint}`);
     } else if (this.hintStep === 2) {
-      btnHint.textContent = '💡 Hint: Step 3/3 (Full Rule)';
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint (3/3)</span>`;
       const targetItem = this.currentStage.items.find(i => this.placements[i.id] !== i.correctZoneId);
       if (targetItem) {
         this.placements[targetItem.id] = targetItem.correctZoneId;
         this.renderBankAndSlots(wrapper);
-        alert(`💡 CLUE: "${targetItem.label}" belongs in the "${this.currentStage.zones.find(z => z.id === targetItem.correctZoneId)?.title}" zone!`);
       }
     } else if (this.hintStep === 3) {
-      btnHint.textContent = '💡 Hint Used (Reset)';
-      alert(`💡 GUIDED REASONING:\n\n${this.currentStage.review}`);
+      btnHint.innerHTML = `${getSvgIcon('hint', 'icon-xs')} <span>Hint Used</span>`;
+      alert(`Reasoning: ${this.currentStage.review}`);
     }
   }
 }

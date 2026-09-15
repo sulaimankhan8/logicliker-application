@@ -1,4 +1,4 @@
-/* LogicLike Demo Design System & Aesthetics */
+/* Kiddy Learn Design System & Aesthetics */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root {
@@ -56,6 +56,104 @@ body {
   z-index: 100;
 }
 
+/* Kiddy Learn - Vector SVG Icon System */
+.kiddy-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.kiddy-vector-img {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  object-fit: contain;
+  flex-shrink: 0;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.kiddy-icon.icon-inline,
+.kiddy-vector-img.icon-inline {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+}
+
+.kiddy-icon.icon-xs,
+.kiddy-vector-img.icon-xs {
+  width: 16px;
+  height: 16px;
+}
+
+.kiddy-icon.icon-sm,
+.kiddy-vector-img.icon-sm {
+  width: 22px;
+  height: 22px;
+}
+
+.kiddy-icon.icon-md,
+.kiddy-vector-img.icon-md {
+  width: 32px;
+  height: 32px;
+}
+
+.kiddy-icon.icon-lg,
+.kiddy-vector-img.icon-lg {
+  width: 52px;
+  height: 52px;
+}
+
+.kiddy-icon.icon-xl,
+.kiddy-vector-img.icon-xl {
+  width: 68px;
+  height: 68px;
+}
+
+.kiddy-icon.icon-hero,
+.kiddy-vector-img.icon-hero {
+  width: 84px;
+  height: 84px;
+}
+
+.kiddy-icon-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.kiddy-icon-spacer {
+  display: inline-block;
+  width: 10px;
+}
+
+.kiddy-math-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--primary-indigo);
+  background: #F1F5F9;
+  padding: 6px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #CBD5E1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.kiddy-icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
 .brand-container {
   display: flex;
   align-items: center;
@@ -64,25 +162,29 @@ body {
 }
 
 .brand-logo {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   background: white;
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  overflow: hidden;
+  padding: 2px;
 }
 
 .brand-title {
   font-weight: 900;
-  font-size: 20px;
+  font-size: 21px;
   letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
 }
 
 .brand-title span {
-  color: #5EEAD4;
+  color: #FBBF24;
+  margin-left: 2px;
 }
 
 /* Stats Pill Bank & Header Actions */
@@ -117,7 +219,9 @@ body {
 }
 
 .stat-icon {
-  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-shell-action {
@@ -2415,90 +2519,78 @@ canvas.isometric-canvas:active {
 
 .trace-track-bg {
   fill: none;
-  stroke: #E2E8F0;
-  stroke-width: 32;
+  stroke: #F1F5F9;
+  stroke-width: 18;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: stroke 0.3s ease;
 }
 
 .trace-track-dash {
   fill: none;
   stroke: #94A3B8;
-  stroke-width: 6;
-  stroke-dasharray: 8, 12;
+  stroke-width: 4;
+  stroke-dasharray: 6, 8;
   stroke-linecap: round;
   stroke-linejoin: round;
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
 .trace-loader-path {
   fill: none;
-  stroke-width: 28;
+  stroke-width: 12;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: url(#trace-glow);
-  transition: stroke-dashoffset 0.05s linear;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18));
+  transition: stroke-dashoffset 0.04s linear;
 }
 
-.trace-start-node circle {
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
-  animation: pulse-start 1.8s infinite ease-in-out;
+.trace-shape-fill {
+  transition: fill-opacity 0.25s ease, filter 0.5s ease;
+  pointer-events: none;
 }
 
-@keyframes pulse-start {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+.victory-fill-glow {
+  filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.6));
+  animation: victory-pulse 1.2s infinite alternate ease-in-out;
 }
 
-.trace-milestone-dot {
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-}
-
-.trace-milestone-dot.reached {
-  r: 9;
-  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.7));
+@keyframes victory-pulse {
+  from { fill-opacity: 0.35; }
+  to { fill-opacity: 0.55; }
 }
 
 .trace-pull-handle {
-  transition: transform 0.04s linear;
+  transition: transform 0.03s linear;
   cursor: grab;
+  touch-action: none;
 }
 
-.trace-pull-handle:active {
+.trace-pull-handle.is-dragging {
   cursor: grabbing;
 }
 
-.handle-halo {
-  animation: handle-halo-pulse 1.5s infinite ease-in-out;
-  transform-origin: center;
-}
-
-@keyframes handle-halo-pulse {
-  0%, 100% { transform: scale(0.9); opacity: 0.25; }
-  50% { transform: scale(1.35); opacity: 0.55; }
-}
-
 .handle-body {
-  transition: stroke-width 0.2s ease, transform 0.2s ease;
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
+  transition: stroke 0.2s ease, stroke-width 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+}
+
+.handle-core {
+  transition: fill 0.2s ease;
 }
 
 .trace-pull-handle:hover .handle-body,
-.trace-pull-handle:active .handle-body {
+.trace-pull-handle.is-dragging .handle-body {
   stroke-width: 5;
-  transform: scale(1.08);
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
 }
 
-.handle-tooltip {
-  pointer-events: none;
-  animation: tooltip-bounce 1.6s infinite ease-in-out;
+.trace-pull-handle.is-off-track .handle-body {
+  stroke: #EF4444 !important;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
 }
 
-@keyframes tooltip-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+.trace-pull-handle.is-off-track .handle-core {
+  fill: #EF4444 !important;
 }
 
 .victory-pop {
@@ -2507,7 +2599,7 @@ canvas.isometric-canvas:active {
 
 @keyframes handle-pop {
   0% { transform: scale(1); }
-  50% { transform: scale(1.5); }
+  50% { transform: scale(1.4); }
   100% { transform: scale(1); }
 }
 

@@ -1,21 +1,15 @@
 /**
- * LogicLike Application Controller & Multi-Engine Educational Platform
+ * Kiddy Learn Application Controller & Multi-Engine Educational Platform
  * Features:
- * - 3 Comprehensive Courses for Kids: Mathematics 📐, Science & Nature 🔬, Aptitude & Logic 💡
+ * - 3 Comprehensive Courses for Kids: Mathematics, Science & Nature, Aptitude & Logic
  * - 5-Level Structured Progression with Milestone Headers & Badges
- * - Dynamic Mix of 7 Game Engines:
- *   1. 🎴 cards-grid (Selection & Odd-One-Out)
- *   2. 🎯 drag-drop-zones (Habitat & Category Sorting)
- *   3. 🔗 matching-pairs (Two-column Connecting Cords)
- *   4. ⚖️ balance-scale (Mass & Physics Balance)
- *   5. 🔢 rebus-keypad (Picture Arithmetic & Equations)
- *   6. 📦 spatial-3d (3D Isometric Spatial Projection)
- *   7. 🧩 sudoku-matrix (Deductive Constraint Grids)
- * - Gamification Economy (Stars, 7-Day Streaks, Level Titles, Badges, Analytics, Official Diploma)
+ * - Dynamic Mix of 10 Game Engines with Vector SVG Visual Cues
+ * - Gamification Economy (Stars, 7-Day Streaks, Level Titles, Badges, Analytics, Diploma)
  */
 
 import { sound } from './audio.js';
 import { GAMES_CATALOG } from './games.js';
+import { getSvgIcon } from './icons.js';
 import { CardGridEngine } from './engines/card_grid_engine.js';
 import { DragDropZonesEngine } from './engines/drag_drop_zones_engine.js';
 import { MatchingPairsEngine } from './engines/matching_pairs_engine.js';
@@ -28,27 +22,27 @@ import { MemoryCardsEngine } from './engines/memory_cards_engine.js';
 import { ListenAndChooseEngine } from './engines/listen_and_choose_engine.js';
 
 const BADGES_CATALOG = [
-  { id: 'first_step', icon: '🌟', name: 'First Steps', desc: 'Solve your first logic puzzle', check: (state, totalSolved) => totalSolved >= 1 },
-  { id: 'math_prodigy', icon: '📐', name: 'Math Prodigy', desc: 'Complete 10+ Math stages', check: (state) => Object.keys(state.completedStages['math-course'] || {}).length >= 10 },
-  { id: 'science_hero', icon: '🔬', name: 'Science Explorer', desc: 'Complete 10+ Science stages', check: (state) => Object.keys(state.completedStages['science-course'] || {}).length >= 10 },
-  { id: 'aptitude_ace', icon: '💡', name: 'Aptitude Ace', desc: 'Complete 10+ Aptitude stages', check: (state) => Object.keys(state.completedStages['aptitude-course'] || {}).length >= 10 },
-  { id: 'level_master', icon: '🚀', name: 'Level Conqueror', desc: 'Unlock Level 3 in any course', check: (state) => Object.values(state.completedStages).some(map => Object.keys(map).length >= 10) },
-  { id: 'engine_expert', icon: '🎛️', name: 'All-Engine Master', desc: 'Solve 20+ puzzles across the engines', check: (state, totalSolved) => totalSolved >= 20 },
-  { id: 'streak_champ', icon: '🔥', name: 'Streak Champion', desc: 'Reach a 5-day daily streak', check: (state) => state.streak >= 5 },
-  { id: 'grandmaster', icon: '👑', name: 'Logic Grandmaster', desc: 'Earn 100+ stars across courses', check: (state) => state.stars >= 100 }
+  { id: 'first_step', iconKey: 'star', name: 'First Step', desc: 'Solved 1st puzzle', check: (state, totalSolved) => totalSolved >= 1 },
+  { id: 'math_prodigy', iconKey: 'math-course', name: 'Math Star', desc: '10+ Math solved', check: (state) => Object.keys(state.completedStages['math-course'] || {}).length >= 10 },
+  { id: 'science_hero', iconKey: 'science-course', name: 'Science Star', desc: '10+ Science solved', check: (state) => Object.keys(state.completedStages['science-course'] || {}).length >= 10 },
+  { id: 'aptitude_ace', iconKey: 'aptitude-course', name: 'Logic Ace', desc: '10+ Logic solved', check: (state) => Object.keys(state.completedStages['aptitude-course'] || {}).length >= 10 },
+  { id: 'level_master', iconKey: 'rocket', name: 'Level Conqueror', desc: 'Unlocked Level 3', check: (state) => Object.values(state.completedStages).some(map => Object.keys(map).length >= 10) },
+  { id: 'engine_expert', iconKey: 'cards-grid', name: 'Engine Master', desc: '20+ Puzzles solved', check: (state, totalSolved) => totalSolved >= 20 },
+  { id: 'streak_champ', iconKey: 'flame', name: 'Streak Champ', desc: '5-Day streak reached', check: (state) => state.streak >= 5 },
+  { id: 'grandmaster', iconKey: 'crown', name: 'Grandmaster', desc: '100+ Stars collected', check: (state) => state.stars >= 100 }
 ];
 
 const ENGINE_META = {
-  'cards-grid': { icon: '🎴', label: 'Card Grid' },
-  'drag-drop-zones': { icon: '🎯', label: 'Drag & Sort' },
-  'matching-pairs': { icon: '🔗', label: 'Match Pairs' },
-  'balance-scale': { icon: '⚖️', label: 'Balance Scale' },
-  'rebus-keypad': { icon: '🔢', label: 'Rebus Math' },
-  'spatial-3d': { icon: '📦', label: '3D Spatial' },
-  'sudoku-matrix': { icon: '🧩', label: 'Sudoku Matrix' },
-  'outline-trace': { icon: '✏️', label: 'Outline Trace' },
-  'memory-cards': { icon: '🎴', label: 'Memory Cards' },
-  'listen-and-choose': { icon: '🔊', label: 'Listen & Choose' }
+  'cards-grid': { iconKey: 'cards-grid', label: 'Cards' },
+  'drag-drop-zones': { iconKey: 'drag-drop-zones', label: 'Sort' },
+  'matching-pairs': { iconKey: 'matching-pairs', label: 'Pairs' },
+  'balance-scale': { iconKey: 'balance-scale', label: 'Scale' },
+  'rebus-keypad': { iconKey: 'rebus-keypad', label: 'Numbers' },
+  'spatial-3d': { iconKey: 'spatial-3d', label: '3D Cube' },
+  'sudoku-matrix': { iconKey: 'sudoku-matrix', label: 'Sudoku' },
+  'outline-trace': { iconKey: 'outline-trace', label: 'Trace' },
+  'memory-cards': { iconKey: 'memory-cards', label: 'Memory' },
+  'listen-and-choose': { iconKey: 'listen-and-choose', label: 'Audio' }
 };
 
 class AppController {
@@ -112,7 +106,7 @@ class AppController {
   }
 
   loadState() {
-    const saved = localStorage.getItem('logiclike_demo_player');
+    const saved = localStorage.getItem('kiddylearn_player') || localStorage.getItem('logiclike_demo_player');
     const todayKey = this.getTodayDateKey();
     const yesterdayKey = this.getYesterdayDateKey();
 
@@ -129,7 +123,6 @@ class AppController {
           } else if (lastClaimDate === yesterdayKey) {
             claimedToday = false;
           } else if (lastClaimDate) {
-            // Streak broken (more than 1 day missed)
             streak = 1;
             claimedToday = false;
           }
@@ -156,7 +149,7 @@ class AppController {
   }
 
   saveState() {
-    localStorage.setItem('logiclike_demo_player', JSON.stringify(this.playerState));
+    localStorage.setItem('kiddylearn_player', JSON.stringify(this.playerState));
     this.renderHeader();
   }
 
@@ -176,12 +169,12 @@ class AppController {
   getRankTitle() {
     const totalSolved = this.getTotalStagesSolved();
     const rankNum = this.getRankLevel();
-    if (totalSolved >= 60) return `Lvl ${rankNum} • Grandmaster Logician 👑`;
-    if (totalSolved >= 45) return `Lvl ${rankNum} • Cognitive Strategist ⚡`;
-    if (totalSolved >= 30) return `Lvl ${rankNum} • Master Detective 🔍`;
-    if (totalSolved >= 15) return `Lvl ${rankNum} • Junior Thinker 🚀`;
-    if (totalSolved >= 5)  return `Lvl ${rankNum} • Curious Explorer 🌱`;
-    return `Lvl ${rankNum} • Novice Apprentice 🌟`;
+    if (totalSolved >= 60) return `Lvl ${rankNum} • Grandmaster`;
+    if (totalSolved >= 45) return `Lvl ${rankNum} • Strategist`;
+    if (totalSolved >= 30) return `Lvl ${rankNum} • Detective`;
+    if (totalSolved >= 15) return `Lvl ${rankNum} • Thinker`;
+    if (totalSolved >= 5)  return `Lvl ${rankNum} • Explorer`;
+    return `Lvl ${rankNum} • Starter`;
   }
 
   initDOMElements() {
@@ -249,7 +242,9 @@ class AppController {
   bindEvents() {
     this.elAudioBtn.addEventListener('click', () => {
       const isMuted = sound.toggleMute();
-      this.elAudioBtn.textContent = isMuted ? "🔇" : "🔊";
+      this.elAudioBtn.innerHTML = isMuted 
+        ? getSvgIcon('speaker-muted', 'icon-sm')
+        : getSvgIcon('speaker', 'icon-sm');
     });
 
     this.elAudioSpeakBtn.addEventListener('click', () => {
@@ -284,7 +279,7 @@ class AppController {
           this.sudokuMatrixEngine.executeHint(this.elGameArena);
           break;
         default:
-          alert("💡 HINT: " + this.currentStageData.hint);
+          alert("Hint: " + this.currentStageData.hint);
           sound.playTap();
       }
     });
@@ -367,7 +362,8 @@ class AppController {
     if (mobCert) mobCert.addEventListener('click', () => { setActiveMobNav(mobCert); this.openCertificateModal(); });
 
     this.elBtnResetProgress.addEventListener('click', () => {
-      if (confirm("Are you sure you want to reset all game progress and stars?")) {
+      if (confirm("Reset all progress and stars?")) {
+        localStorage.removeItem('kiddylearn_player');
         localStorage.removeItem('logiclike_demo_player');
         this.playerState = {
           stars: 0,
@@ -395,7 +391,8 @@ class AppController {
       const btn = document.createElement('button');
       btn.className = `nav-tab ${game.category === this.activeCategory ? 'active' : ''}`;
       btn.innerHTML = `
-        <span>${game.icon}</span> ${game.name}
+        <span class="nav-tab-icon">${getSvgIcon(game.category, 'icon-sm')}</span>
+        <span class="nav-tab-label">${game.name}</span>
         <span class="nav-tab-badge">${completedCount}/${totalCount}</span>
       `;
       btn.addEventListener('click', () => {
@@ -412,54 +409,42 @@ class AppController {
 
   getStageHeroGraphic(stage) {
     if (stage.type === 'outline-trace') {
-      const shapeIcons = {
-        'star': '⭐ ✏️',
-        'heart': '❤️ ✏️',
-        'triangle': '🔺 ✏️',
-        'diamond': '💎 ✏️',
-        'number-8': '8️⃣ ✏️',
-        'letter-a': '🔤 ✏️',
-        'moon': '🌙 ✏️',
-        'rocket': '🚀 ✏️',
-        'butterfly': '🦋 ✏️'
-      };
-      return shapeIcons[stage.shape] || '✏️ 🎨';
+      const shapeIconKey = `shape-${stage.shape || 'star'}`;
+      return getSvgIcon(shapeIconKey, 'icon-lg');
     }
     if (stage.type === 'memory-cards' && stage.pairs) {
-      if (stage.pairs.length >= 2) return `${stage.pairs[0].icon} 🎴 ${stage.pairs[1].icon}`;
-      return '🎴 ✨';
+      const p1 = stage.pairs[0];
+      const p2 = stage.pairs[1] || p1;
+      return `<div class="kiddy-icon-group">${getSvgIcon(p1.icon || p1.id, 'icon-md')} ${getSvgIcon('memory-cards', 'icon-md')} ${getSvgIcon(p2.icon || p2.id, 'icon-md')}</div>`;
     }
     if (stage.type === 'listen-and-choose') {
-      return '🔊 👂 ⭐';
+      const correct = (stage.options && stage.options.find(o => o.isCorrect)) || (stage.options && stage.options[0]);
+      return `<div class="kiddy-icon-group">${getSvgIcon('listen-and-choose', 'icon-md')} ${correct ? getSvgIcon(correct.icon || correct.id, 'icon-md') : ''}</div>`;
     }
     if (stage.cards && stage.cards.length > 0) {
       const correctCard = stage.cards.find(c => c.isCorrect) || stage.cards[0];
-      if (correctCard.icon) return correctCard.icon;
+      if (correctCard.icon) return getSvgIcon(correctCard.icon, 'icon-lg');
     }
     if (stage.type === 'drag-drop-zones' && stage.zones) {
-      const icons = stage.zones.map(z => z.icon).filter(Boolean);
-      if (icons.length >= 2) return icons.slice(0, 2).join(' ⇄ ');
-      if (stage.items && stage.items.length >= 2) return `${stage.items[0].icon || '🎯'} ${stage.items[1].icon || '📦'}`;
-      return '🎯 📦';
+      return `<div class="kiddy-icon-group">${getSvgIcon(stage.zones[0].icon || stage.zones[0].id, 'icon-md')} ${getSvgIcon('drag-drop-zones', 'icon-md')} ${stage.zones[1] ? getSvgIcon(stage.zones[1].icon || stage.zones[1].id, 'icon-md') : ''}</div>`;
     }
     if (stage.type === 'matching-pairs' && stage.pairs) {
       const p1 = stage.pairs[0];
-      if (p1) return `${p1.leftIcon || '🔗'} ➔ ${p1.rightIcon || '⭐'}`;
-      return '🔗 ⭐';
+      return `<div class="kiddy-icon-group">${getSvgIcon(p1.leftIcon || 'star', 'icon-md')} ${getSvgIcon('matching-pairs', 'icon-md')} ${getSvgIcon(p1.rightIcon || 'star', 'icon-md')}</div>`;
     }
     if (stage.type === 'balance-scale') {
-      return '⚖️ 💎';
+      return getSvgIcon('balance-scale', 'icon-lg');
     }
     if (stage.type === 'rebus-keypad') {
-      return '🔢 ➕ 🧮';
+      return getSvgIcon('rebus-keypad', 'icon-lg');
     }
     if (stage.type === 'spatial-3d') {
-      return '📦 🧱 🎲';
+      return getSvgIcon('spatial-3d', 'icon-lg');
     }
     if (stage.type === 'sudoku-matrix') {
-      return '🧩 🔢 ✨';
+      return getSvgIcon('sudoku-matrix', 'icon-lg');
     }
-    return '🌟 💡';
+    return getSvgIcon('star', 'icon-lg');
   }
 
   renderRoadmap() {
@@ -467,31 +452,27 @@ class AppController {
     const gameProgress = this.playerState.completedStages[game.id] || {};
     const totalSolvedInCourse = Object.keys(gameProgress).length;
     const totalStagesInCourse = game.stages.length;
-    const coursePct = Math.round((totalSolvedInCourse / totalStagesInCourse) * 100);
 
     const levelDef = (game.levelThemes && game.levelThemes.find(l => l.level === this.activeLevel)) || {
       level: this.activeLevel,
       name: `Level ${this.activeLevel}`,
-      icon: '⭐',
-      desc: 'Progression Challenges'
+      desc: 'Progressive visual challenges'
     };
 
     const currentLevelStages = game.stages.filter(s => s.level === this.activeLevel);
     const levelSolvedCount = currentLevelStages.filter(s => gameProgress[s.stageNum] !== undefined).length;
     const isLevelComplete = levelSolvedCount === currentLevelStages.length;
-
     const maxLevel = game.levelThemes ? game.levelThemes.length : Math.max(1, ...game.stages.map(s => s.level || 1));
 
-    // Level unlock condition
     const isLevelUnlocked = (lvlNum) => {
       if (game.allUnlocked || game.id === 'demo-course' || lvlNum === 1) return true;
       const prevLvlStages = game.stages.filter(s => s.level === lvlNum - 1);
       return prevLvlStages.every(s => gameProgress[s.stageNum] !== undefined);
     };
 
-    // Build Level World Selector Pills
+    // Build Level Selector Pills
     let levelTabsHTML = '';
-    const levelList = game.levelThemes || Array.from({ length: maxLevel }, (_, i) => ({ level: i + 1, name: `Level ${i + 1}`, icon: '⭐' }));
+    const levelList = game.levelThemes || Array.from({ length: maxLevel }, (_, i) => ({ level: i + 1, name: `Level ${i + 1}` }));
     levelList.forEach(lDef => {
       const lvl = lDef.level;
       const lStages = game.stages.filter(s => s.level === lvl);
@@ -500,15 +481,15 @@ class AppController {
       const isUnlocked = isLevelUnlocked(lvl);
       const isActive = lvl === this.activeLevel;
 
-      let badgeIcon = `${lSolved}/${lStages.length}`;
-      if (isLvlDone) badgeIcon = '✓';
-      else if (!isUnlocked) badgeIcon = '🔒';
+      let statusBadge = `${lSolved}/${lStages.length}`;
+      if (isLvlDone) statusBadge = getSvgIcon('check', 'icon-xs');
+      else if (!isUnlocked) statusBadge = getSvgIcon('lock', 'icon-xs');
 
       levelTabsHTML += `
         <button class="level-world-pill ${isActive ? 'active' : ''} ${isLvlDone ? 'mastered' : ''} ${!isUnlocked ? 'locked' : ''}" data-level="${lvl}">
-          <span class="world-pill-icon">${lDef.icon}</span>
+          <span class="world-pill-icon">${getSvgIcon(isLvlDone ? 'crown' : (isUnlocked ? 'star' : 'lock'), 'icon-xs')}</span>
           <span class="world-pill-text">Lvl ${lvl}</span>
-          <span class="world-pill-status">${badgeIcon}</span>
+          <span class="world-pill-status">${statusBadge}</span>
         </button>
       `;
     });
@@ -527,23 +508,23 @@ class AppController {
       if (isCompleted) statusClass = 'completed';
       else if (isActive) statusClass = 'active';
 
-      const engineInfo = ENGINE_META[stage.type] || { icon: '🎮', label: stage.type };
+      const engineInfo = ENGINE_META[stage.type] || { iconKey: 'cards-grid', label: stage.type };
       const heroGraphic = this.getStageHeroGraphic(stage);
 
       let starsHTML = '';
       if (isCompleted) {
         for (let s = 1; s <= 3; s++) {
-          starsHTML += `<span class="star-icon ${s <= starsEarned ? 'filled' : 'empty'}">★</span>`;
+          starsHTML += getSvgIcon(s <= starsEarned ? 'star-filled' : 'star-empty', 'icon-sm');
         }
       } else {
-        starsHTML = `<span class="star-empty-row">★★★</span>`;
+        starsHTML = `<span class="star-empty-row">${getSvgIcon('star-empty', 'icon-xs')} ${getSvgIcon('star-empty', 'icon-xs')} ${getSvgIcon('star-empty', 'icon-xs')}</span>`;
       }
 
       stageCardsHTML += `
         <div class="deck-stage-card ${statusClass}" data-stage-idx="${stageGlobalIdx}">
           <div class="deck-card-top-row">
-            <span class="deck-stage-num-badge">${isCompleted ? '✓' : `#${stage.stageNum}`}</span>
-            <span class="deck-engine-tag">${engineInfo.icon} ${engineInfo.label}</span>
+            <span class="deck-stage-num-badge">${isCompleted ? getSvgIcon('check', 'icon-xs') : stage.stageNum}</span>
+            <span class="deck-engine-tag">${getSvgIcon(engineInfo.iconKey, 'icon-xs')} <span>${engineInfo.label}</span></span>
           </div>
           
           <div class="deck-visual-bubble">
@@ -557,7 +538,9 @@ class AppController {
 
           <div class="deck-stage-bottom">
             <button class="btn-deck-action ${isUnlocked ? (isCompleted ? 'replay' : 'play') : 'locked'}" ${!isUnlocked ? 'disabled' : ''}>
-              ${isCompleted ? '🔄 Replay' : (isUnlocked ? '▶ Play' : '🔒 Locked')}
+              ${isCompleted 
+                ? `${getSvgIcon('replay', 'icon-xs')} <span>Replay</span>` 
+                : (isUnlocked ? `${getSvgIcon('play', 'icon-xs')} <span>Play</span>` : `${getSvgIcon('lock', 'icon-xs')} <span>Locked</span>`)}
             </button>
           </div>
         </div>
@@ -568,19 +551,20 @@ class AppController {
     const isNextAvailable = this.activeLevel < maxLevel && isLevelUnlocked(this.activeLevel + 1);
 
     this.elMainContainerRoot.innerHTML = `
-      <!-- Single-Screen Hub Container -->
       <section class="hub-main-deck">
         <!-- Level World Hero Banner -->
         <div class="hub-hero-banner course-${this.activeCategory}">
           <div class="hub-hero-left">
-            <div class="hero-level-emblem">${levelDef.icon}</div>
+            <div class="hero-level-emblem">
+              ${getSvgIcon(game.category, 'icon-lg')}
+            </div>
             <div class="hero-level-info">
               <div class="hero-title-badge-row">
-                <span class="hero-course-tag">${game.icon} ${game.name}</span>
-                <span class="hero-mastery-tag ${isLevelComplete ? 'mastered' : ''}">${isLevelComplete ? '🏆 Level Mastered!' : `${levelSolvedCount}/${currentLevelStages.length} Solved`}</span>
+                <span class="hero-course-tag">${game.name}</span>
+                <span class="hero-mastery-tag ${isLevelComplete ? 'mastered' : ''}">${isLevelComplete ? 'Mastered' : `${levelSolvedCount}/${currentLevelStages.length} Solved`}</span>
               </div>
               <h2 class="hero-level-heading">Level ${this.activeLevel}: ${levelDef.name}</h2>
-              <p class="hero-level-sub">${levelDef.desc}</p>
+              <p class="hero-level-sub">${levelDef.desc || 'Complete stages to earn stars'}</p>
             </div>
           </div>
           <div class="hub-hero-right">
@@ -598,16 +582,15 @@ class AppController {
         <!-- Hub Footer Level Bar -->
         <div class="hub-deck-footer">
           <button class="btn-world-nav" id="btn-prev-level" ${!isPrevAvailable ? 'disabled' : ''}>
-            ◀ Level ${Math.max(1, this.activeLevel - 1)}
+            ${getSvgIcon('play', 'icon-xs', { rotate: 180 })} Level ${Math.max(1, this.activeLevel - 1)}
           </button>
           <div class="hub-footer-center">
             <div class="hub-level-dots">
               ${levelList.map(l => `<span class="hub-dot ${l.level === this.activeLevel ? 'active' : ''} ${game.stages.filter(s => s.level === l.level).every(s => gameProgress[s.stageNum] !== undefined) ? 'done' : ''}"></span>`).join('')}
             </div>
-            <span class="hub-motivation-text">💡 Complete all puzzles to master this course!</span>
           </div>
           <button class="btn-world-nav" id="btn-next-level" ${!isNextAvailable ? 'disabled' : ''}>
-            Level ${Math.min(maxLevel, this.activeLevel + 1)} ▶
+            Level ${Math.min(maxLevel, this.activeLevel + 1)} ${getSvgIcon('play', 'icon-xs')}
           </button>
         </div>
       </section>
@@ -625,7 +608,7 @@ class AppController {
 
     // Bind Deck Stage Card click events
     this.elMainContainerRoot.querySelectorAll('.deck-stage-card:not(.locked)').forEach(card => {
-      card.addEventListener('click', (e) => {
+      card.addEventListener('click', () => {
         sound.playTap();
         const stageIdx = parseInt(card.getAttribute('data-stage-idx'), 10);
         this.launchStage(stageIdx);
@@ -656,7 +639,7 @@ class AppController {
     this.activeStageIndex = stageIdx;
     this.currentStageData = this.activeGame.stages[stageIdx];
     
-    this.elGameTitle.textContent = `${this.activeGame.icon} ${this.activeGame.name}`;
+    this.elGameTitle.innerHTML = `<span style="display:inline-flex; align-items:center; gap:6px;">${getSvgIcon(this.activeGame.category, 'icon-xs')} <span>${this.activeGame.name}</span></span>`;
     this.elGameSubtitle.textContent = `Stage ${this.currentStageData.stageNum} of ${this.activeGame.stages.length} • ${this.currentStageData.title}`;
     
     const progressPct = ((stageIdx + 1) / this.activeGame.stages.length) * 100;
@@ -665,7 +648,6 @@ class AppController {
     this.renderStageContent();
     this.elGameModal.classList.add('open');
 
-    // Automatically speak every question aloud when launched!
     setTimeout(() => {
       this.speakCurrentQuestion();
     }, 250);
@@ -700,8 +682,8 @@ class AppController {
     const stage = this.currentStageData;
     this.elQuestionPrompt.innerHTML = `
       <span>${stage.prompt}</span>
-      <button class="btn-audio-speak" id="btn-audio-speak" title="Listen Question">
-        <span class="speak-btn-icon">🔊</span>
+      <button class="btn-audio-speak" id="btn-audio-speak" title="Listen">
+        ${getSvgIcon('speaker', 'icon-sm')}
         <span class="speak-pulse-dot"></span>
       </button>
     `;
@@ -752,13 +734,10 @@ class AppController {
     this.playerState.rankLevel = this.getRankLevel();
     this.elStars.textContent = `${this.playerState.stars} ★`;
     const streakNum = this.playerState.streak;
-    this.elStreak.textContent = `${streakNum} ${streakNum === 1 ? 'Day' : 'Days'} 🔥`;
+    this.elStreak.textContent = `${streakNum} ${streakNum === 1 ? 'Day' : 'Days'}`;
     this.elRank.textContent = `Lvl ${this.playerState.rankLevel}`;
   }
 
-  /* ==========================================================================
-     Shell Modals: Analytics, Badges, Streaks & Diploma Certificate
-     ========================================================================== */
   openAnalyticsModal() {
     sound.playTap();
     const totalSolved = this.getTotalStagesSolved();
@@ -779,19 +758,19 @@ class AppController {
 
       const courseCard = document.createElement('div');
       courseCard.className = 'analytics-course-box';
-      courseCard.style.cssText = 'background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:16px; margin-bottom:14px; display:flex; flex-direction:column; gap:10px;';
+      courseCard.style.cssText = 'background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:14px; margin-bottom:12px; display:flex; flex-direction:column; gap:8px;';
 
       let levelsHTML = '';
       if (game.levelThemes) {
-        levelsHTML = '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px; margin-top:4px;">';
+        levelsHTML = '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:6px; margin-top:4px;">';
         game.levelThemes.forEach(lvl => {
           const lvlStages = game.stages.filter(s => s.level === lvl.level);
           const lvlSolved = lvlStages.filter(s => gameProgress[s.stageNum] !== undefined).length;
           const isLvlDone = lvlSolved === lvlStages.length;
           levelsHTML += `
-            <div style="background:${isLvlDone ? '#ECFDF5' : '#FFFFFF'}; border:1px solid ${isLvlDone ? '#A7F3D0' : '#E2E8F0'}; border-radius:8px; padding:6px 10px; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-weight:700; color:${isLvlDone ? '#065F46' : '#475569'};">${lvl.icon} Lvl ${lvl.level}</span>
-              <span style="font-weight:800; color:${isLvlDone ? '#059669' : '#64748B'};">${isLvlDone ? '✓ 5/5' : `${lvlSolved}/${lvlStages.length}`}</span>
+            <div style="background:${isLvlDone ? '#ECFDF5' : '#FFFFFF'}; border:1px solid ${isLvlDone ? '#A7F3D0' : '#E2E8F0'}; border-radius:8px; padding:6px 8px; font-size:11px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700; color:${isLvlDone ? '#065F46' : '#475569'}; display:flex; align-items:center; gap:4px;">${getSvgIcon(isLvlDone ? 'crown' : 'star', 'icon-xs')} L${lvl.level}</span>
+              <span style="font-weight:800; color:${isLvlDone ? '#059669' : '#64748B'};">${isLvlDone ? '5/5' : `${lvlSolved}/${lvlStages.length}`}</span>
             </div>
           `;
         });
@@ -800,14 +779,14 @@ class AppController {
 
       courseCard.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div style="display:flex; align-items:center; gap:8px; font-weight:800; font-size:15px; color:var(--text-dark);">
-            <span>${game.icon}</span>
+          <div style="display:flex; align-items:center; gap:8px; font-weight:800; font-size:14px; color:var(--text-dark);">
+            <span>${getSvgIcon(game.category, 'icon-sm')}</span>
             <span>${game.name}</span>
-            <span style="font-size:12px; color:var(--text-muted); font-weight:600;">(${solved}/${total} Stages)</span>
+            <span style="font-size:11px; color:var(--text-muted); font-weight:600;">(${solved}/${total})</span>
           </div>
-          <span style="font-weight:900; font-size:14px; color:var(--primary-indigo);">${pct}%</span>
+          <span style="font-weight:900; font-size:13px; color:var(--primary-indigo);">${pct}%</span>
         </div>
-        <div class="analytics-progress-bar" style="height:8px; background:#E2E8F0; border-radius:4px; overflow:hidden;">
+        <div class="analytics-progress-bar" style="height:6px; background:#E2E8F0; border-radius:3px; overflow:hidden;">
           <div class="analytics-progress-fill" style="width:${pct}%; height:100%; background:var(--emerald-green); transition:width 0.3s ease;"></div>
         </div>
         ${levelsHTML}
@@ -831,11 +810,11 @@ class AppController {
       const card = document.createElement('div');
       card.className = `badge-card ${isUnlocked ? 'unlocked' : 'locked'}`;
       card.innerHTML = `
-        <div class="badge-icon">${badge.icon}</div>
+        <div class="badge-icon">${getSvgIcon(badge.iconKey, 'icon-lg')}</div>
         <div class="badge-name">${badge.name}</div>
         <div class="badge-desc">${badge.desc}</div>
-        <div style="margin-top:8px; font-weight:900; font-size:11px; color:${isUnlocked ? '#D97706' : '#94A3B8'};">
-          ${isUnlocked ? '✓ UNLOCKED' : '🔒 LOCKED'}
+        <div style="margin-top:6px; font-weight:900; font-size:11px; color:${isUnlocked ? '#D97706' : '#94A3B8'}; display:flex; align-items:center; justify-content:center; gap:4px;">
+          ${isUnlocked ? `${getSvgIcon('check', 'icon-xs')} UNLOCKED` : `${getSvgIcon('lock', 'icon-xs')} LOCKED`}
         </div>
       `;
       badgesGrid.appendChild(card);
@@ -862,18 +841,18 @@ class AppController {
       card.className = `streak-day-card ${statusClass}`;
       card.innerHTML = `
         <span class="streak-day-lbl">Day ${d}</span>
-        <span class="streak-day-star">${isPast ? '✓' : '🔥'}</span>
+        <span class="streak-day-star">${isPast ? getSvgIcon('check', 'icon-sm') : getSvgIcon('flame', 'icon-sm')}</span>
         <span class="streak-day-bonus">+${d * 5} ★</span>
       `;
       streakRow.appendChild(card);
     }
 
     if (this.playerState.claimedStreakToday) {
-      this.elBtnClaimStreak.textContent = '✓ Bonus Claimed Today!';
+      this.elBtnClaimStreak.innerHTML = `${getSvgIcon('check', 'icon-xs')} <span>Claimed Today!</span>`;
       this.elBtnClaimStreak.disabled = true;
       this.elBtnClaimStreak.style.opacity = '0.6';
     } else {
-      this.elBtnClaimStreak.textContent = `🔥 Claim Today's Bonus (+${currentDay * 5} ★)`;
+      this.elBtnClaimStreak.innerHTML = `${getSvgIcon('flame', 'icon-xs')} <span>Claim Bonus (+${currentDay * 5} ★)</span>`;
       this.elBtnClaimStreak.disabled = false;
       this.elBtnClaimStreak.style.opacity = '1';
     }
@@ -891,14 +870,12 @@ class AppController {
     this.playerState.lastClaimDate = this.getTodayDateKey();
     this.playerState.claimedStreakToday = true;
     
-    // Advance streak day for next consecutive claim if under 7
     if (this.playerState.streak < 7) {
       this.playerState.streak += 1;
     }
     
     this.saveState();
     this.openStreakModal();
-    alert(`🎉 Congratulations! You claimed +${bonus} Bonus Stars for your daily streak!`);
   }
 
   openCertificateModal() {
@@ -909,12 +886,25 @@ class AppController {
     const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     document.getElementById('cert-date-val').textContent = dateStr;
 
+    const skillsContainer = document.getElementById('cert-skills-container');
+    if (skillsContainer) {
+      skillsContainer.innerHTML = `
+        <span>${getSvgIcon('cards-grid', 'icon-xs')} Selection</span>
+        <span>${getSvgIcon('outline-trace', 'icon-xs')} Tracing</span>
+        <span>${getSvgIcon('memory-cards', 'icon-xs')} Memory Match</span>
+        <span>${getSvgIcon('listen-and-choose', 'icon-xs')} Audio</span>
+        <span>${getSvgIcon('drag-drop-zones', 'icon-xs')} Sorting</span>
+        <span>${getSvgIcon('matching-pairs', 'icon-xs')} Pairs</span>
+        <span>${getSvgIcon('balance-scale', 'icon-xs')} Physics</span>
+        <span>${getSvgIcon('rebus-keypad', 'icon-xs')} Math</span>
+        <span>${getSvgIcon('spatial-3d', 'icon-xs')} 3D Cubes</span>
+        <span>${getSvgIcon('sudoku-matrix', 'icon-xs')} Sudoku</span>
+      `;
+    }
+
     this.elCertificateModal.classList.add('open');
   }
 
-  /* ==========================================================================
-     Engine Renders
-     ========================================================================== */
   renderCardsGrid(stage) {
     this.cardGridEngine.render(stage, this.elGameArena);
   }
@@ -974,9 +964,6 @@ class AppController {
     }
   }
 
-  /* ==========================================================================
-     Common Feedback Handlers
-     ========================================================================== */
   handleCorrectAnswer() {
     sound.playSuccess();
     sound.playStar();
@@ -989,7 +976,6 @@ class AppController {
     const prevStars = this.playerState.completedStages[gameId][this.currentStageData.stageNum] || 0;
     const newStars = 3;
     
-    // Only grant incremental stars if first time or improved score
     if (newStars > prevStars) {
       this.playerState.stars += (newStars - prevStars);
     }
@@ -1005,23 +991,23 @@ class AppController {
 
     if (this.elBtnVictoryNext) {
       if (isFinalStage) {
-        this.elBtnVictoryNext.innerHTML = '🏆 View Diploma';
+        this.elBtnVictoryNext.innerHTML = `${getSvgIcon('trophy', 'icon-xs')} <span>Diploma</span>`;
       } else {
         const nextStage = this.activeGame.stages[nextIdx];
-        this.elBtnVictoryNext.innerHTML = `▶ Next Problem (${nextStage.stageNum}/${this.activeGame.stages.length})`;
+        this.elBtnVictoryNext.innerHTML = `${getSvgIcon('play', 'icon-xs')} <span>Next (${nextStage.stageNum}/${this.activeGame.stages.length})</span>`;
       }
     }
 
     if (this.elVictoryFeedbackSub) {
       this.elVictoryFeedbackSub.textContent = isFinalStage
-        ? "Incredible achievement! You mastered the entire course!"
-        : "Outstanding logic skills! Keep up the momentum!";
+        ? "Awesome! Course completed!"
+        : "Great job! Keep going!";
     }
 
     this.elVictoryStars.innerHTML = `
-      <span class="star-icon filled">★</span>
-      <span class="star-icon filled">★</span>
-      <span class="star-icon filled">★</span>
+      ${getSvgIcon('star-filled', 'icon-lg')}
+      ${getSvgIcon('star-filled', 'icon-lg')}
+      ${getSvgIcon('star-filled', 'icon-lg')}
     `;
     this.renderHeader();
     this.elVictoryModal.classList.add('open');
