@@ -313,6 +313,7 @@ class AppController {
       modal.classList.remove('open');
     });
     if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (this.setActiveMobNav) this.setActiveMobNav('mob-nav-home');
   }
 
   bindEvents() {
@@ -457,16 +458,17 @@ class AppController {
     const mobAnalytics = document.getElementById('mob-nav-analytics');
     const mobCert = document.getElementById('mob-nav-certificate');
 
-    const setActiveMobNav = (btn) => {
-      document.querySelectorAll('.mobile-nav-item').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
+    this.setActiveMobNav = (btnId) => {
+      document.querySelectorAll('.mobile-nav-item').forEach(b => {
+        b.classList.toggle('active', b.id === btnId);
+      });
     };
 
-    if (mobHome) mobHome.addEventListener('click', () => { sound.playTap(); this.closeAllModals(); this.renderRoadmap(); setActiveMobNav(mobHome); });
-    if (mobBadges) mobBadges.addEventListener('click', () => { setActiveMobNav(mobBadges); this.openBadgesModal(); });
-    if (mobStreak) mobStreak.addEventListener('click', () => { setActiveMobNav(mobStreak); this.openStreakModal(); });
-    if (mobAnalytics) mobAnalytics.addEventListener('click', () => { setActiveMobNav(mobAnalytics); this.openAnalyticsModal(); });
-    if (mobCert) mobCert.addEventListener('click', () => { setActiveMobNav(mobCert); this.openCertificateModal(); });
+    if (mobHome) mobHome.addEventListener('click', () => { sound.playTap(); this.closeAllModals(); this.renderRoadmap(); this.setActiveMobNav('mob-nav-home'); });
+    if (mobBadges) mobBadges.addEventListener('click', () => { this.setActiveMobNav('mob-nav-badges'); this.openBadgesModal(); });
+    if (mobStreak) mobStreak.addEventListener('click', () => { this.setActiveMobNav('mob-nav-streak'); this.openStreakModal(); });
+    if (mobAnalytics) mobAnalytics.addEventListener('click', () => { this.setActiveMobNav('mob-nav-analytics'); this.openAnalyticsModal(); });
+    if (mobCert) mobCert.addEventListener('click', () => { this.setActiveMobNav('mob-nav-certificate'); this.openCertificateModal(); });
 
     if (this.elBtnResetProgress) {
       this.elBtnResetProgress.addEventListener('click', () => {
@@ -877,6 +879,7 @@ class AppController {
 
   openAnalyticsModal() {
     sound.playTap();
+    if (this.setActiveMobNav) this.setActiveMobNav('mob-nav-analytics');
     const totalSolved = this.getTotalStagesSolved();
     const totalAvailable = GAMES_CATALOG.reduce((acc, g) => acc + g.stages.length, 0);
 
@@ -936,6 +939,7 @@ class AppController {
 
   openBadgesModal() {
     sound.playTap();
+    if (this.setActiveMobNav) this.setActiveMobNav('mob-nav-badges');
     const totalSolved = this.getTotalStagesSolved();
     const badgesGrid = document.getElementById('badges-grid');
     if (!badgesGrid) return;
@@ -994,6 +998,7 @@ class AppController {
       card.addEventListener('click', () => {
         if (isUnlocked) {
           sound.playSparkle();
+          this.launchConfetti(30);
           card.classList.add('badge-tap-pop');
           setTimeout(() => card.classList.remove('badge-tap-pop'), 600);
           this.mascot.say(`Awesome badge: ${badge.name}! 🌟`, 'cheering', 3000, true);
@@ -1011,6 +1016,7 @@ class AppController {
 
   openStreakModal() {
     sound.playTap();
+    if (this.setActiveMobNav) this.setActiveMobNav('mob-nav-streak');
     const streakDaysRow = document.getElementById('streak-days-row');
     streakDaysRow.innerHTML = '';
 
@@ -1050,6 +1056,8 @@ class AppController {
     if (this.playerState.claimedStreakToday) return;
 
     sound.playSparkle();
+    sound.hapticStreak();
+    this.launchConfetti(45);
     const bonusStars = this.playerState.streak * 10;
     this.playerState.stars += bonusStars;
     this.playerState.claimedStreakToday = true;
@@ -1063,6 +1071,7 @@ class AppController {
 
   openCertificateModal() {
     sound.playSparkle();
+    if (this.setActiveMobNav) this.setActiveMobNav('mob-nav-certificate');
     const totalSolved = this.getTotalStagesSolved();
     
     document.getElementById('cert-stars-val').textContent = `${this.playerState.stars} ★`;
@@ -1084,6 +1093,114 @@ class AppController {
     }
 
     this.elCertificateModal.classList.add('open');
+  }
+
+  launchConfetti(count = 50) {
+    const container = document.createElement('div');
+    container.className = 'confetti-burst-container';
+    container.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:99999;overflow:hidden;';
+    document.body.appendChild(container);
+
+    const colors = ['#F59E0B', '#10B981', '#3B82F6', '#EC4899', '#8B5CF6', '#EF4444', '#FBBF24', '#06B6D4'];
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const size = Math.random() * 8 + 6;
+      const isCircle = Math.random() > 0.4;
+      const startX = window.innerWidth / 2 + (Math.random() * 160 - 80);
+      const startY = window.innerHeight * 0.4;
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 320 + 120;
+      const vx = Math.cos(angle) * speed;
+      const vy = Math.sin(angle) * speed - 160;
+      const rot = Math.random() * 360;
+
+      p.style.cssText = `
+        position: absolute;
+        left: ${startX}px;
+        top: ${startY}px;
+        width: ${size}px;
+        height: ${isCircle ? size : size * 0.55}px;
+        background: ${color};
+        border-radius: ${isCircle ? '50%' : '3px'};
+        transform: translate3d(0,0,0) rotate(${rot}deg);
+        opacity: 1;
+        transition: transform 1.25s cubic-bezier(0.12, 0.8, 0.33, 1), opacity 1.25s ease-out;
+      `;
+      container.appendChild(p);
+
+      requestAnimationFrame(() => {
+        p.style.transform = `translate3d(${vx}px, ${vy + 450}px, 0) rotate(${rot + 720}deg)`;
+        p.style.opacity = '0';
+      });
+    }
+
+    setTimeout(() => {
+      container.remove();
+    }, 1400);
+  }
+
+  handleCorrectAnswer() {
+    sound.playSuccess();
+    sound.playStar();
+    this.launchConfetti(55);
+
+    this.mascot.reactToSuccess(this.currentStageData.title);
+    this.hintEngine.recordSuccess();
+
+    const gameId = this.activeGame.id;
+    if (!this.playerState.completedStages[gameId]) {
+      this.playerState.completedStages[gameId] = {};
+    }
+    
+    const prevStars = this.playerState.completedStages[gameId][this.currentStageData.stageNum] || 0;
+    const newStars = 3;
+    
+    if (newStars > prevStars) {
+      this.playerState.stars += (newStars - prevStars);
+    }
+    
+    this.playerState.completedStages[gameId][this.currentStageData.stageNum] = newStars;
+    this.playerState.rankLevel = this.getRankLevel();
+    this.saveState();
+
+    this.closeGameModal();
+
+    const nextIdx = this.activeStageIndex + 1;
+    const isFinalStage = nextIdx >= this.activeGame.stages.length;
+
+    if (this.elBtnVictoryNext) {
+      if (isFinalStage) {
+        this.elBtnVictoryNext.innerHTML = `${getSvgIcon('trophy', 'icon-xs')} <span>Diploma</span>`;
+      } else {
+        const nextStage = this.activeGame.stages[nextIdx];
+        this.elBtnVictoryNext.innerHTML = `${getSvgIcon('play', 'icon-xs')} <span>Next (${nextStage.stageNum}/${this.activeGame.stages.length})</span>`;
+      }
+    }
+
+    if (this.elVictoryFeedbackSub) {
+      this.elVictoryFeedbackSub.textContent = isFinalStage
+        ? "Awesome! Course completed!"
+        : "Great job! Keep going!";
+    }
+
+    this.elVictoryStars.innerHTML = `
+      ${getSvgIcon('star-filled', 'icon-lg')}
+      ${getSvgIcon('star-filled', 'icon-lg')}
+      ${getSvgIcon('star-filled', 'icon-lg')}
+    `;
+    this.renderHeader();
+    this.elVictoryModal.classList.add('open');
+  }
+
+  handleWrongAnswer(reviewExplanation) {
+    this.mascot.reactToMistake();
+    this.hintEngine.recordMistake(this.currentStageData.hint || reviewExplanation);
+    const arena = this.elGameArena;
+    if (arena) {
+      arena.classList.add('soft-wobble');
+      setTimeout(() => arena.classList.remove('soft-wobble'), 600);
+    }
   }
 
   renderCardsGrid(stage) {

@@ -113,7 +113,34 @@ class AudioEngine {
     return this.muted;
   }
 
+  haptic(pattern = 15) {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try {
+        navigator.vibrate(pattern);
+      } catch (e) {
+        // Safe fallback if permission not granted
+      }
+    }
+  }
+
+  hapticTap() {
+    this.haptic(15);
+  }
+
+  hapticSuccess() {
+    this.haptic([25, 40, 45, 40, 80]);
+  }
+
+  hapticError() {
+    this.haptic([50, 60, 50]);
+  }
+
+  hapticStreak() {
+    this.haptic([30, 40, 60, 40, 90, 40, 120]);
+  }
+
   playTap() {
+    this.hapticTap();
     if (this.muted) return;
     this.init();
     if (!this.ctx) return;
@@ -136,6 +163,7 @@ class AudioEngine {
   }
 
   playFlip() {
+    this.hapticTap();
     if (this.muted) return;
     this.init();
     if (!this.ctx) return;
@@ -202,6 +230,7 @@ class AudioEngine {
   }
 
   playSuccess() {
+    this.hapticSuccess();
     if (this.muted) return;
     this.init();
     if (!this.ctx) return;
@@ -227,6 +256,7 @@ class AudioEngine {
   }
 
   playStar() {
+    this.hapticTap();
     if (this.muted) return;
     this.init();
     if (!this.ctx) return;
@@ -249,6 +279,7 @@ class AudioEngine {
   }
 
   playError() {
+    this.hapticError();
     if (this.muted) return;
     this.init();
     if (!this.ctx) return;
@@ -271,6 +302,7 @@ class AudioEngine {
   }
 
   playFanfare() {
+    this.hapticSuccess();
     if (this.muted) return;
     this.init();
     if (!this.ctx) return;

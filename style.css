@@ -4678,4 +4678,633 @@ button:active, .clickable:active, .game-card:active {
   100% { transform: scale(1); }
 }
 
+/* ==========================================================================
+   MOBILE BOTTOM NAVIGATION DOCK
+   ========================================================================== */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(64px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1.5px solid #E2E8F0;
+  box-shadow: 0 -4px 24px rgba(44, 29, 148, 0.08);
+  z-index: 800;
+  align-items: center;
+  justify-content: space-around;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.mobile-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  border-radius: 14px;
+  color: #64748B;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  position: relative;
+}
+
+.mobile-nav-item .mob-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.mobile-nav-item .mob-nav-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  transition: color 0.2s ease;
+}
+
+.mobile-nav-item:active {
+  transform: scale(0.9);
+}
+
+.mobile-nav-item.active {
+  color: var(--primary-indigo);
+}
+
+.mobile-nav-item.active .mob-nav-icon {
+  transform: scale(1.15) translateY(-2px);
+}
+
+.mobile-nav-item.active .mob-nav-label {
+  color: var(--primary-indigo);
+  font-weight: 900;
+}
+
+.mobile-nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  width: 16px;
+  height: 3px;
+  background: var(--primary-indigo);
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   LIVING MASCOT COMPANION DOCK & FLOATING AVATAR
+   ========================================================================== */
+.mascot-companion-dock {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 700;
+  pointer-events: none;
+}
+
+.mascot-companion-wrapper {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mascot-companion-wrapper:active {
+  transform: scale(0.92);
+}
+
+.mascot-avatar {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  filter: drop-shadow(0 8px 18px rgba(234, 88, 12, 0.35));
+  animation: mascot-float 3.5s ease-in-out infinite;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mascot-avatar:hover {
+  transform: scale(1.1) rotate(4deg);
+}
+
+.mascot-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.mascot-speech-bubble {
+  background: white;
+  border: 2px solid #FEF08A;
+  border-radius: 18px 18px 4px 18px;
+  padding: 8px 14px;
+  margin-bottom: 8px;
+  box-shadow: 0 8px 24px rgba(44, 29, 148, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 260px;
+  opacity: 0;
+  transform: scale(0.8) translateY(10px);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.mascot-speech-bubble.active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+.bubble-text {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-dark);
+  line-height: 1.35;
+}
+
+.bubble-speaker-btn {
+  background: #FEF3C7;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D97706;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.bubble-speaker-btn:hover {
+  transform: scale(1.15);
+}
+
+/* Mascot Animations */
+@keyframes mascot-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(2deg); }
+}
+
+.mascot-avatar.jiggle-tickle {
+  animation: jiggle-tickle 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes jiggle-tickle {
+  10%, 90% { transform: translate3d(-2px, 0, 0) scale(1.1) rotate(-6deg); }
+  20%, 80% { transform: translate3d(3px, 0, 0) scale(1.1) rotate(6deg); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0) scale(1.15) rotate(-8deg); }
+  40%, 60% { transform: translate3d(4px, 0, 0) scale(1.15) rotate(8deg); }
+}
+
+.mascot-avatar.bounce-victory {
+  animation: bounce-victory 0.8s cubic-bezier(0.28, 0.84, 0.42, 1) both;
+}
+
+@keyframes bounce-victory {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25) translateY(-20px); }
+  50% { transform: scale(0.95) translateY(0); }
+  70% { transform: scale(1.15) translateY(-10px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+.mascot-avatar.soft-wobble {
+  animation: mascot-soft-wobble 0.6s ease-in-out;
+}
+
+@keyframes mascot-soft-wobble {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-8deg) scale(0.95); }
+  75% { transform: rotate(8deg) scale(0.95); }
+}
+
+/* Eye Blinking */
+.mascot-eyes.blinking {
+  transform: scaleY(0.1);
+  transform-origin: 60px 54px;
+}
+
+/* ==========================================================================
+   GLOBAL TACTILE TOUCH RESPONSE
+   ========================================================================== */
+button, 
+.stat-pill, 
+.nav-tab, 
+.deck-stage-card, 
+.badge-item-card, 
+.level-world-pill,
+.drag-item-chip,
+.placed-item-chip,
+.keypad-btn,
+.memory-card {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button:active:not(:disabled),
+.stat-pill:active,
+.btn-shell-action:active,
+.btn-continue:active,
+.btn-hint:active,
+.btn-audio-speak:active,
+.btn-icon:active {
+  transform: scale(0.94);
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+/* Tablets (landscape / smaller laptops) */
+@media (max-width: 1024px) {
+  .hub-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .main-container {
+    padding: 8px 12px;
+  }
+}
+
+/* Tablets (portrait) & Mobile Screens (<= 768px) */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-bottom-nav {
+    display: flex;
+  }
+
+  .mascot-companion-dock {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    right: 14px;
+  }
+
+  .mascot-avatar {
+    width: 62px;
+    height: 62px;
+  }
+
+  .mascot-speech-bubble {
+    max-width: 210px;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 14px 14px 4px 14px;
+  }
+
+  .bubble-text {
+    font-size: 11.5px;
+  }
+
+  /* Compact Header */
+  .app-header {
+    padding: 6px 12px;
+  }
+
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+  }
+
+  .brand-title {
+    font-size: 17px;
+  }
+
+  .stats-bar {
+    gap: 6px;
+  }
+
+  .stat-pill {
+    padding: 4px 8px;
+    font-size: 11.5px;
+    gap: 4px;
+    border-radius: 12px;
+  }
+
+  .btn-voice-toggle {
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 12px;
+  }
+
+  #persona-label {
+    display: none;
+  }
+
+  .btn-header-audio {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Horizontal Category Tabs */
+  .category-nav {
+    padding: 6px 10px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+  }
+
+  .category-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-tab {
+    padding: 5px 11px;
+    font-size: 12px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  /* Hub Container */
+  .main-container {
+    padding: 6px 8px;
+    gap: 6px;
+    overflow: visible;
+  }
+
+  .hub-main-deck {
+    padding: 10px 10px;
+    border-radius: 18px;
+    overflow: visible;
+    gap: 8px;
+  }
+
+  .hub-hero-banner {
+    padding: 8px 12px;
+    border-radius: 14px;
+    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-level-emblem {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+    border-radius: 11px;
+  }
+
+  .hero-level-heading {
+    font-size: 15px;
+  }
+
+  .hero-level-sub {
+    font-size: 11px;
+  }
+
+  /* Scrollable Level World Pills */
+  .world-pills-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .world-pills-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .level-world-pill {
+    padding: 5px 10px;
+    font-size: 11px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  /* Responsive Stage Grid */
+  .hub-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    overflow: visible;
+  }
+
+  .deck-stage-card {
+    padding: 8px;
+    border-radius: 16px;
+    min-height: 180px;
+  }
+
+  .deck-visual-bubble {
+    height: 95px;
+    border-radius: 12px;
+    margin: 4px 0;
+  }
+
+  .deck-hero-graphic {
+    font-size: 32px;
+  }
+
+  .deck-stage-title {
+    font-size: 12px;
+    min-height: 28px;
+  }
+
+  .btn-deck-action {
+    padding: 6px 0;
+    font-size: 12px;
+    border-radius: 10px;
+  }
+
+  /* Full Responsive Modal System */
+  .modal-overlay {
+    padding: 6px;
+    align-items: flex-end;
+  }
+
+  .game-card-modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100dvh - 20px);
+    height: auto;
+    border-radius: 22px 22px 14px 14px;
+    margin: 0;
+  }
+
+  .game-header {
+    padding: 8px 14px;
+  }
+
+  .game-arena {
+    padding: 10px 12px;
+    gap: 8px;
+    max-height: calc(100dvh - 120px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .question-prompt {
+    font-size: 13.5px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    gap: 6px;
+  }
+
+  /* Engine Specific Mobile Layouts */
+  .cards-grid-container {
+    gap: 10px;
+  }
+
+  .dropzones-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .dropzone-card {
+    padding: 8px 12px;
+    min-height: 75px;
+  }
+
+  .drag-bank-items {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .drag-item-chip {
+    padding: 7px 12px;
+    font-size: 13px;
+    border-radius: 12px;
+  }
+
+  .placed-item-chip {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .badges-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: calc(100dvh - 160px);
+    overflow-y: auto;
+  }
+
+  .badge-item-card {
+    padding: 10px 8px;
+  }
+
+  .badge-name {
+    font-size: 13px;
+  }
+
+  .badge-desc {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+
+  .streak-days-row {
+    gap: 5px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .streak-day-box {
+    min-width: 44px;
+    padding: 6px 4px;
+    border-radius: 10px;
+  }
+
+  .day-label {
+    font-size: 10px;
+  }
+
+  .day-bonus {
+    font-size: 10.5px;
+  }
+
+  /* Diploma Certificate Mobile Fit */
+  .certificate-modal-card {
+    max-height: calc(100dvh - 16px);
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  .certificate-paper {
+    padding: 12px;
+  }
+
+  .cert-title {
+    font-size: 14px;
+    letter-spacing: 0px;
+  }
+
+  .cert-student-name {
+    font-size: 18px;
+    width: 90%;
+  }
+
+  .cert-achievement-text {
+    font-size: 11px;
+  }
+}
+
+/* Small Smartphone Viewports (<= 480px) */
+@media (max-width: 480px) {
+  .brand-title span {
+    display: none;
+  }
+
+  .stat-pill {
+    padding: 3px 6px;
+    font-size: 10.5px;
+  }
+
+  .hub-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .deck-stage-card {
+    padding: 6px;
+  }
+
+  .deck-visual-bubble {
+    height: 80px;
+  }
+
+  .deck-hero-graphic {
+    font-size: 26px;
+  }
+
+  .deck-stage-title {
+    font-size: 11.5px;
+    min-height: 26px;
+  }
+
+  .btn-deck-action {
+    padding: 5px 0;
+    font-size: 11.5px;
+  }
+}
+
+
 
