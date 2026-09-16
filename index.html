@@ -273,25 +273,50 @@
 
   <!-- Daily Streak Modal -->
   <div class="modal-overlay" id="streak-modal">
-    <div class="game-card-modal shell-modal">
-      <div class="shell-modal-header">
+    <div class="game-card-modal shell-modal streak-modal-card">
+      <div class="shell-modal-header streak-modal-header">
         <div style="display:flex; align-items:center; gap:8px;">
           <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#F97316"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
-          <h2>Daily Streak Bonus</h2>
+          <h2>Practice Streak</h2>
         </div>
-        <button class="btn-icon" id="btn-close-streak">
+        <button class="btn-icon" id="btn-close-streak" aria-label="Close Streak">
           <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
         </button>
       </div>
       <div class="streak-calendar-wrapper">
-        <p class="streak-desc">Practice daily to unlock bonus stars and rewards!</p>
+        <div class="streak-hero-display" id="streak-hero-display">
+          <div class="streak-flame-emblem">
+            <svg class="kiddy-icon" viewBox="0 0 24 24" fill="none" style="width:48px; height:48px;"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#F97316"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
+          </div>
+          <div class="streak-hero-count" id="streak-hero-count">1</div>
+          <div class="streak-hero-label" id="streak-hero-label">Day Streak</div>
+          <p class="streak-desc">Practice every day to keep your learning flame burning!</p>
+        </div>
+
         <div class="streak-days-row" id="streak-days-row">
           <!-- Populated by JS -->
         </div>
-        <button class="btn-continue" id="btn-claim-streak">
-          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#FFFFFF"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
-          <span>Claim Bonus</span>
-        </button>
+
+        <!-- Duolingo-Style Streak Repair Feature (Max 2) -->
+        <div class="streak-repair-card" id="streak-repair-card">
+          <div class="streak-repair-info">
+            <div class="streak-repair-top">
+              <span class="streak-repair-icon">🛡️</span>
+              <span class="streak-repair-title">Streak Repairs</span>
+              <span class="streak-repair-badge" id="streak-repair-badge">2 / 2</span>
+            </div>
+            <p class="streak-repair-desc" id="streak-repair-desc">
+              Protects your streak if you miss a day! Earn 1 repair every 7-day streak milestone.
+            </p>
+          </div>
+          <div class="streak-repair-action-slot" id="streak-repair-action-slot">
+            <!-- Rendered if broken -->
+          </div>
+        </div>
+
+        <div class="streak-footer-status" id="streak-footer-status">
+          <!-- Practiced today / practice a stage status -->
+        </div>
       </div>
     </div>
   </div>

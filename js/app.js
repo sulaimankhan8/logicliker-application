@@ -188,24 +188,30 @@ class AppController {
         const parsed = JSON.parse(saved);
         if (parsed && typeof parsed === 'object') {
           let streak = parsed.streak ?? 1;
-          let lastClaimDate = parsed.lastClaimDate || null;
-          let claimedToday = false;
+          let streakRepairs = parsed.streakRepairs !== undefined ? Math.min(2, Math.max(0, parsed.streakRepairs)) : 2;
+          let lastPracticeDate = parsed.lastPracticeDate || parsed.lastClaimDate || null;
+          let practicedToday = false;
+          let isStreakBroken = false;
 
-          if (lastClaimDate === todayKey) {
-            claimedToday = true;
-          } else if (lastClaimDate === yesterdayKey) {
-            claimedToday = false;
-          } else if (lastClaimDate) {
-            streak = 1;
-            claimedToday = false;
+          if (lastPracticeDate === todayKey) {
+            practicedToday = true;
+          } else if (lastPracticeDate === yesterdayKey) {
+            practicedToday = false;
+          } else if (lastPracticeDate) {
+            practicedToday = false;
+            if (streak > 1) {
+              isStreakBroken = true;
+            }
           }
 
           return {
             stars: parsed.stars ?? 0,
             streak: streak,
+            streakRepairs: streakRepairs,
+            lastPracticeDate: lastPracticeDate,
+            practicedToday: practicedToday,
+            isStreakBroken: isStreakBroken,
             rankLevel: parsed.rankLevel ?? 1,
-            lastClaimDate: lastClaimDate,
-            claimedStreakToday: claimedToday,
             completedStages: parsed.completedStages || {}
           };
         }
@@ -214,9 +220,11 @@ class AppController {
     return {
       stars: 0,
       streak: 1,
+      streakRepairs: 2,
+      lastPracticeDate: null,
+      practicedToday: false,
+      isStreakBroken: false,
       rankLevel: 1,
-      lastClaimDate: null,
-      claimedStreakToday: false,
       completedStages: {}
     };
   }
@@ -1017,56 +1025,137 @@ class AppController {
   openStreakModal() {
     sound.playTap();
     if (this.setActiveMobNav) this.setActiveMobNav('mob-nav-streak');
+    
+    const currentStreak = this.playerState.streak || 1;
+    const isBroken = this.playerState.isStreakBroken;
+    const repairs = this.playerState.streakRepairs !== undefined ? this.playerState.streakRepairs : 2;
+    const practicedToday = this.playerState.practicedToday;
+
+    // 1. Hero Streak Display
+    const heroCount = document.getElementById('streak-hero-count');
+    const heroLabel = document.getElementById('streak-hero-label');
+    if (heroCount) heroCount.textContent = currentStreak;
+    if (heroLabel) heroLabel.textContent = currentStreak === 1 ? 'Day Streak' : 'Days Streak';
+
+    // 2. 7-Day Habit Tracker Track
     const streakDaysRow = document.getElementById('streak-days-row');
-    streakDaysRow.innerHTML = '';
+    if (streakDaysRow) {
+      streakDaysRow.innerHTML = '';
+      const dayInCycle = ((currentStreak - 1) % 7) + 1;
 
-    const currentStreak = this.playerState.streak;
-    const claimedToday = this.playerState.claimedStreakToday;
+      for (let day = 1; day <= 7; day++) {
+        const isPastInCycle = day < dayInCycle;
+        const isTodayInCycle = day === dayInCycle;
+        const isDone = isPastInCycle || (isTodayInCycle && practicedToday) || (day === 7 && currentStreak % 7 === 0 && practicedToday);
 
-    for (let day = 1; day <= 7; day++) {
-      const isPast = day < currentStreak;
-      const isToday = day === currentStreak;
-      const isClaimed = (isPast) || (isToday && claimedToday);
-
-      const dayPill = document.createElement('div');
-      dayPill.className = `streak-day-box ${isClaimed ? 'claimed' : ''} ${isToday ? 'today' : ''}`;
-      dayPill.innerHTML = `
-        <span class="day-label">Day ${day}</span>
-        <div class="day-flame-icon">${getSvgIcon('flame', 'icon-sm')}</div>
-        <span class="day-bonus">+${day * 10} ★</span>
-      `;
-      streakDaysRow.appendChild(dayPill);
+        const dayBox = document.createElement('div');
+        dayBox.className = `streak-day-box ${isDone ? 'claimed' : ''} ${isTodayInCycle ? 'today' : ''}`;
+        dayBox.innerHTML = `
+          <span class="day-label">Day ${day}</span>
+          <div class="day-flame-icon">
+            <svg class="kiddy-icon icon-sm" viewBox="0 0 24 24" fill="none">
+              <path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="${isDone ? '#F97316' : '#CBD5E1'}"/>
+              <path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="${isDone ? '#FEF08A' : '#E2E8F0'}"/>
+            </svg>
+          </div>
+          <span class="day-bonus">${isDone ? '✓' : `D${day}`}</span>
+        `;
+        streakDaysRow.appendChild(dayBox);
+      }
     }
 
-    if (claimedToday) {
-      this.elBtnClaimStreak.disabled = true;
-      this.elBtnClaimStreak.innerHTML = `<span>Claimed Today ✓</span>`;
-    } else {
-      this.elBtnClaimStreak.disabled = false;
-      this.elBtnClaimStreak.innerHTML = `
-        <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#FFFFFF"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
-        <span>Claim Day ${currentStreak} Bonus</span>
-      `;
+    // 3. Duolingo-style Streak Repair (Max 2)
+    const badgeEl = document.getElementById('streak-repair-badge');
+    if (badgeEl) badgeEl.textContent = `${repairs} / 2`;
+
+    const actionSlot = document.getElementById('streak-repair-action-slot');
+    if (actionSlot) {
+      actionSlot.innerHTML = '';
+      if (isBroken && repairs > 0) {
+        const repairBtn = document.createElement('button');
+        repairBtn.className = 'btn-streak-repair';
+        repairBtn.innerHTML = `<span>🛡️ Use Streak Repair (${repairs} Left)</span>`;
+        repairBtn.addEventListener('click', () => {
+          this.useStreakRepair();
+        });
+        actionSlot.appendChild(repairBtn);
+      } else if (isBroken && repairs === 0) {
+        actionSlot.innerHTML = `<span class="streak-broken-pill">⚠️ Streak Broken • No repairs left</span>`;
+      } else {
+        actionSlot.innerHTML = `<span class="streak-shield-active-pill">🛡️ Streak Protected (Max 2)</span>`;
+      }
+    }
+
+    // 4. Footer Status
+    const footerStatus = document.getElementById('streak-footer-status');
+    if (footerStatus) {
+      if (practicedToday) {
+        footerStatus.innerHTML = `
+          <div class="streak-status-banner done">
+            <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#15803D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Streak maintained today! See you tomorrow! 🔥</span>
+          </div>
+        `;
+      } else if (isBroken) {
+        footerStatus.innerHTML = `
+          <div class="streak-status-banner broken">
+            <span>Missed yesterday! Use a Streak Repair or solve a puzzle to restart!</span>
+          </div>
+        `;
+      } else {
+        footerStatus.innerHTML = `
+          <div class="streak-status-banner pending">
+            <span>⭐ Solve any puzzle today to extend your streak!</span>
+          </div>
+        `;
+      }
     }
 
     this.elStreakModal.classList.add('open');
   }
 
-  claimDailyStreak() {
-    if (this.playerState.claimedStreakToday) return;
+  useStreakRepair() {
+    if ((this.playerState.streakRepairs || 0) <= 0 || !this.playerState.isStreakBroken) return;
 
     sound.playSparkle();
-    sound.hapticStreak();
+    sound.hapticSuccess();
     this.launchConfetti(45);
-    const bonusStars = this.playerState.streak * 10;
-    this.playerState.stars += bonusStars;
-    this.playerState.claimedStreakToday = true;
-    this.playerState.lastClaimDate = this.getTodayDateKey();
+
+    this.playerState.streakRepairs = Math.max(0, this.playerState.streakRepairs - 1);
+    this.playerState.isStreakBroken = false;
+    this.playerState.lastPracticeDate = this.getYesterdayDateKey();
     this.saveState();
 
-    this.elBtnClaimStreak.disabled = true;
-    this.elBtnClaimStreak.innerHTML = `<span>Claimed +${bonusStars} ★!</span>`;
+    this.mascot.say(`🛡️ Streak repaired! Your flame is burning bright! 🔥`, 'cheering', 4000, true);
     this.openStreakModal();
+  }
+
+  recordDailyPractice() {
+    const todayKey = this.getTodayDateKey();
+    const yesterdayKey = this.getYesterdayDateKey();
+
+    if (this.playerState.lastPracticeDate === todayKey) {
+      return;
+    }
+
+    if (this.playerState.lastPracticeDate === yesterdayKey) {
+      this.playerState.streak += 1;
+      // Milestone: every 7 days, earn 1 streak repair (max 2)
+      if (this.playerState.streak % 7 === 0 && (this.playerState.streakRepairs || 0) < 2) {
+        this.playerState.streakRepairs = Math.min(2, (this.playerState.streakRepairs || 0) + 1);
+        this.mascot.say(`🔥 7-Day Streak milestone reached! +1 Streak Repair earned! 🛡️`, 'cheering', 4500, true);
+      }
+    } else if (!this.playerState.lastPracticeDate) {
+      this.playerState.streak = 1;
+    } else if (this.playerState.isStreakBroken) {
+      this.playerState.streak = 1;
+      this.playerState.isStreakBroken = false;
+    }
+
+    this.playerState.lastPracticeDate = todayKey;
+    this.playerState.practicedToday = true;
+    this.playerState.isStreakBroken = false;
+    this.saveState();
   }
 
   openCertificateModal() {
@@ -1162,6 +1251,9 @@ class AppController {
     
     this.playerState.completedStages[gameId][this.currentStageData.stageNum] = newStars;
     this.playerState.rankLevel = this.getRankLevel();
+    
+    // Automatically record daily practice & streak continuity
+    this.recordDailyPractice();
     this.saveState();
 
     this.closeGameModal();
