@@ -1,0 +1,1090 @@
+{
+  "praise_1": {
+    "text": "WOOHOO! Brilliant job! You solved it!",
+    "file": "assets/audio/praise_1.mp3"
+  },
+  "praise_2": {
+    "text": "SUPERSTAR! That was amazing!",
+    "file": "assets/audio/praise_2.mp3"
+  },
+  "praise_3": {
+    "text": "You are a true logic champion!",
+    "file": "assets/audio/praise_3.mp3"
+  },
+  "praise_4": {
+    "text": "High five! That was super smart!",
+    "file": "assets/audio/praise_4.mp3"
+  },
+  "praise_5": {
+    "text": "Outstanding thinking! Keep going!",
+    "file": "assets/audio/praise_5.mp3"
+  },
+  "praise_6": {
+    "text": "Awesome! Stage completed!",
+    "file": "assets/audio/praise_6.mp3"
+  },
+  "oops_1": {
+    "text": "Oopsie! That's okay, let's try one more time!",
+    "file": "assets/audio/oops_1.mp3"
+  },
+  "oops_2": {
+    "text": "You're super close! Take another look!",
+    "file": "assets/audio/oops_2.mp3"
+  },
+  "oops_3": {
+    "text": "No worries! We learn by trying!",
+    "file": "assets/audio/oops_3.mp3"
+  },
+  "oops_4": {
+    "text": "Mistakes help our brain grow stronger!",
+    "file": "assets/audio/oops_4.mp3"
+  },
+  "oops_5": {
+    "text": "Almost there! Give it another try!",
+    "file": "assets/audio/oops_5.mp3"
+  },
+  "hint_intro_1": {
+    "text": "Hmm, let's put on our thinking caps!",
+    "file": "assets/audio/hint_intro_1.mp3"
+  },
+  "hint_intro_2": {
+    "text": "Look closely at the colors and shapes!",
+    "file": "assets/audio/hint_intro_2.mp3"
+  },
+  "hint_intro_3": {
+    "text": "Follow the magical glowing pointer!",
+    "file": "assets/audio/hint_intro_3.mp3"
+  },
+  "greeting_1": {
+    "text": "Hi friend! Let's learn and play!",
+    "file": "assets/audio/greeting_1.mp3"
+  },
+  "greeting_2": {
+    "text": "I'm ready for another fun puzzle! Let's go!",
+    "file": "assets/audio/greeting_2.mp3"
+  },
+  "tickle_1": {
+    "text": "Hehehe! That tickles!",
+    "file": "assets/audio/tickle_1.mp3"
+  },
+  "prompt_demo-course_s1": {
+    "text": "Which fruit does NOT belong with the green vegetables?",
+    "file": "assets/audio/prompt_demo-course_s1.mp3"
+  },
+  "hint_demo-course_s1": {
+    "text": "Three items are green vegetables. One is a sweet red berry fruit!",
+    "file": "assets/audio/hint_demo-course_s1.mp3"
+  },
+  "review_demo-course_s1": {
+    "text": "The Strawberry is a fruit, while the others are green vegetables!",
+    "file": "assets/audio/review_demo-course_s1.mp3"
+  },
+  "prompt_demo-course_s2": {
+    "text": "Trace along the dashed outline of the golden five-point star:",
+    "file": "assets/audio/prompt_demo-course_s2.mp3"
+  },
+  "hint_demo-course_s2": {
+    "text": "Drag your finger or cursor along the dashed star outline to fill it with color!",
+    "file": "assets/audio/hint_demo-course_s2.mp3"
+  },
+  "review_demo-course_s2": {
+    "text": "Awesome! You traced all 5 vertices of the star.",
+    "file": "assets/audio/review_demo-course_s2.mp3"
+  },
+  "prompt_demo-course_s3": {
+    "text": "Memorize card pairs before they flip, then find and match each animal:",
+    "file": "assets/audio/prompt_demo-course_s3.mp3"
+  },
+  "hint_demo-course_s3": {
+    "text": "Watch during the 3-second preview: Puppy, Kitten, and Bunny positions!",
+    "file": "assets/audio/hint_demo-course_s3.mp3"
+  },
+  "review_demo-course_s3": {
+    "text": "You successfully matched all 3 memory pairs!",
+    "file": "assets/audio/review_demo-course_s3.mp3"
+  },
+  "prompt_demo-course_s4": {
+    "text": "Listen to the spoken animal name and choose the matching picture:",
+    "file": "assets/audio/prompt_demo-course_s4.mp3"
+  },
+  "hint_demo-course_s4": {
+    "text": "The voice spoke 'Elephant'. Select the gentle giant with a long trunk!",
+    "file": "assets/audio/hint_demo-course_s4.mp3"
+  },
+  "review_demo-course_s4": {
+    "text": "The Elephant is the largest living land mammal with a flexible trunk!",
+    "file": "assets/audio/review_demo-course_s4.mp3"
+  },
+  "prompt_demo-course_s5": {
+    "text": "Sort animals into Ocean  vs Jungle  habitats:",
+    "file": "assets/audio/prompt_demo-course_s5.mp3"
+  },
+  "hint_demo-course_s5": {
+    "text": "Dolphins and Sharks swim in oceans. Tigers and Monkeys live in jungle forests!",
+    "file": "assets/audio/hint_demo-course_s5.mp3"
+  },
+  "review_demo-course_s5": {
+    "text": "Dolphins & Sharks in the Ocean, Tigers & Monkeys in the Jungle!",
+    "file": "assets/audio/review_demo-course_s5.mp3"
+  },
+  "prompt_demo-course_s6": {
+    "text": "Connect each number on the left to its matching star count on the right:",
+    "file": "assets/audio/prompt_demo-course_s6.mp3"
+  },
+  "hint_demo-course_s6": {
+    "text": "Connect 2  2 Stars, 3  3 Stars, 4  4 Stars, 5  5 Stars!",
+    "file": "assets/audio/hint_demo-course_s6.mp3"
+  },
+  "review_demo-course_s6": {
+    "text": "Two = 2, Three = 3, Four = 4, and Five = 5!",
+    "file": "assets/audio/review_demo-course_s6.mp3"
+  },
+  "prompt_demo-course_s7": {
+    "text": "Left pan has 10 kg. Right pan has 4 kg. Add the missing weight to balance:",
+    "file": "assets/audio/prompt_demo-course_s7.mp3"
+  },
+  "hint_demo-course_s7": {
+    "text": "4 + ? = 10. You need a 6 kg weight on the right pan!",
+    "file": "assets/audio/hint_demo-course_s7.mp3"
+  },
+  "review_demo-course_s7": {
+    "text": "4 kg + 6 kg = 10 kg balances the scale!",
+    "file": "assets/audio/review_demo-course_s7.mp3"
+  },
+  "prompt_demo-course_s8": {
+    "text": "Find the value of Banana  in this picture equation:",
+    "file": "assets/audio/prompt_demo-course_s8.mp3"
+  },
+  "hint_demo-course_s8": {
+    "text": "1.  +  = 8   = 4. 2. 4 +  = 10   = 6!",
+    "file": "assets/audio/hint_demo-course_s8.mp3"
+  },
+  "review_demo-course_s8": {
+    "text": "= 4, so 4 +  = 10 gives  = 6!",
+    "file": "assets/audio/review_demo-course_s8.mp3"
+  },
+  "prompt_demo-course_s9": {
+    "text": "Rotate and count all unit cubes in this 3D structure:",
+    "file": "assets/audio/prompt_demo-course_s9.mp3"
+  },
+  "hint_demo-course_s9": {
+    "text": "Count the columns: (2 + 1) + (1 + 2) = 6 cubes!",
+    "file": "assets/audio/hint_demo-course_s9.mp3"
+  },
+  "review_demo-course_s9": {
+    "text": "There are 6 unit cubes in this 3D block arrangement!",
+    "file": "assets/audio/review_demo-course_s9.mp3"
+  },
+  "prompt_demo-course_s10": {
+    "text": "Place , , and  so none repeat in any row or column:",
+    "file": "assets/audio/prompt_demo-course_s10.mp3"
+  },
+  "hint_demo-course_s10": {
+    "text": "Row 2 contains  and . The missing primary color is Red !",
+    "file": "assets/audio/hint_demo-course_s10.mp3"
+  },
+  "review_demo-course_s10": {
+    "text": "Each row and column uniquely contains Red, Blue, and Yellow!",
+    "file": "assets/audio/review_demo-course_s10.mp3"
+  },
+  "prompt_math-course_s1": {
+    "text": "Which basket contains EXACTLY 5 apples?",
+    "file": "assets/audio/prompt_math-course_s1.mp3"
+  },
+  "hint_math-course_s1": {
+    "text": "Point and count each apple: 1, 2, 3, 4, 5!",
+    "file": "assets/audio/hint_math-course_s1.mp3"
+  },
+  "review_math-course_s1": {
+    "text": "The third basket has exactly 5 apples (1 + 1 + 1 + 1 + 1 = 5)!",
+    "file": "assets/audio/review_math-course_s1.mp3"
+  },
+  "prompt_math-course_s2": {
+    "text": "Trace along the dashed outline of the 3-sided triangle:",
+    "file": "assets/audio/prompt_math-course_s2.mp3"
+  },
+  "hint_math-course_s2": {
+    "text": "Follow the 3 straight sides from the top vertex down to the base!",
+    "file": "assets/audio/hint_math-course_s2.mp3"
+  },
+  "review_math-course_s2": {
+    "text": "Great job! A triangle has 3 vertices and 3 straight sides.",
+    "file": "assets/audio/review_math-course_s2.mp3"
+  },
+  "prompt_math-course_s3": {
+    "text": "Memorize card pairs before they flip, then find and match each pair:",
+    "file": "assets/audio/prompt_math-course_s3.mp3"
+  },
+  "hint_math-course_s3": {
+    "text": "Remember the positions during the 3-second preview: 3 Apples, 4 Stars, 5 Balloons!",
+    "file": "assets/audio/hint_math-course_s3.mp3"
+  },
+  "review_math-course_s3": {
+    "text": "You matched all counting quantity pairs!",
+    "file": "assets/audio/review_math-course_s3.mp3"
+  },
+  "prompt_math-course_s4": {
+    "text": "Listen to the spoken quantity and select the matching picture:",
+    "file": "assets/audio/prompt_math-course_s4.mp3"
+  },
+  "hint_math-course_s4": {
+    "text": "The voice spoke 'Five Apples'. Tap the group containing 5 red apples!",
+    "file": "assets/audio/hint_math-course_s4.mp3"
+  },
+  "review_math-course_s4": {
+    "text": "5 Apples is the correct quantity matching the spoken audio!",
+    "file": "assets/audio/review_math-course_s4.mp3"
+  },
+  "prompt_math-course_s5": {
+    "text": "Fill the grid so digits 1, 2, and 3 appear once per row and column:",
+    "file": "assets/audio/prompt_math-course_s5.mp3"
+  },
+  "hint_math-course_s5": {
+    "text": "Look at Row 2: it has 2 and 3. The only missing counting number is 1!",
+    "file": "assets/audio/hint_math-course_s5.mp3"
+  },
+  "review_math-course_s5": {
+    "text": "Each row and column contains counting numbers 1, 2, and 3 without repetition!",
+    "file": "assets/audio/review_math-course_s5.mp3"
+  },
+  "prompt_math-course_s6": {
+    "text": "Which pair of numbers ADDS UP to 10?",
+    "file": "assets/audio/prompt_math-course_s6.mp3"
+  },
+  "hint_math-course_s6": {
+    "text": "Add each pair together: 6 + 4 = 10, 5 + 3 = 8, 7 + 2 = 9, 4 + 4 = 8!",
+    "file": "assets/audio/hint_math-course_s6.mp3"
+  },
+  "review_math-course_s6": {
+    "text": "6 + 4 = 10! The number bonds of 10 include 6 and 4.",
+    "file": "assets/audio/review_math-course_s6.mp3"
+  },
+  "prompt_math-course_s7": {
+    "text": "Sort addition equations into '= 8' vs '= 10':",
+    "file": "assets/audio/prompt_math-course_s7.mp3"
+  },
+  "hint_math-course_s7": {
+    "text": "5 + 3 = 8, 4 + 4 = 8. 6 + 4 = 10, 7 + 3 = 10!",
+    "file": "assets/audio/hint_math-course_s7.mp3"
+  },
+  "review_math-course_s7": {
+    "text": "5+3 and 4+4 make 8. 6+4 and 7+3 make 10!",
+    "file": "assets/audio/review_math-course_s7.mp3"
+  },
+  "prompt_math-course_s8": {
+    "text": "Trace along the double-loop outline of the number 8:",
+    "file": "assets/audio/prompt_math-course_s8.mp3"
+  },
+  "hint_math-course_s8": {
+    "text": "Start at the top loop and curve around through the center cross into the lower loop!",
+    "file": "assets/audio/hint_math-course_s8.mp3"
+  },
+  "review_math-course_s8": {
+    "text": "Superb! Number 8 is shaped with two connected symmetrical loops.",
+    "file": "assets/audio/review_math-course_s8.mp3"
+  },
+  "prompt_math-course_s9": {
+    "text": "Memorize and match the addition equations with their total sums:",
+    "file": "assets/audio/prompt_math-course_s9.mp3"
+  },
+  "hint_math-course_s9": {
+    "text": "Remember the doubles: 2+2 makes 4, 3+3 makes 6, and 5+5 makes 10!",
+    "file": "assets/audio/hint_math-course_s9.mp3"
+  },
+  "review_math-course_s9": {
+    "text": "You matched all addition doubles pairs!",
+    "file": "assets/audio/review_math-course_s9.mp3"
+  },
+  "prompt_math-course_s10": {
+    "text": "Find the value of Banana  in this addition puzzle:",
+    "file": "assets/audio/prompt_math-course_s10.mp3"
+  },
+  "hint_math-course_s10": {
+    "text": "1.  +  = 8 means  = 4. 2. 4 +  = 10, so  = 10 - 4!",
+    "file": "assets/audio/hint_math-course_s10.mp3"
+  },
+  "review_math-course_s10": {
+    "text": "= 4. Adding: 4 +  = 10   = 6!",
+    "file": "assets/audio/review_math-course_s10.mp3"
+  },
+  "prompt_math-course_s11": {
+    "text": "Which card shows a SUBTRACTION difference equal to 5?",
+    "file": "assets/audio/prompt_math-course_s11.mp3"
+  },
+  "hint_math-course_s11": {
+    "text": "Calculate each subtraction: 9 - 4 = 5, 8 - 2 = 6, 10 - 7 = 3, 6 - 3 = 3!",
+    "file": "assets/audio/hint_math-course_s11.mp3"
+  },
+  "review_math-course_s11": {
+    "text": "9 - 4 = 5! Subtracting 4 from 9 leaves a difference of 5.",
+    "file": "assets/audio/review_math-course_s11.mp3"
+  },
+  "prompt_math-course_s12": {
+    "text": "Sort subtractions into 'Result = 3' vs 'Result = 5':",
+    "file": "assets/audio/prompt_math-course_s12.mp3"
+  },
+  "hint_math-course_s12": {
+    "text": "8 - 5 = 3, 10 - 7 = 3. 9 - 4 = 5, 12 - 7 = 5!",
+    "file": "assets/audio/hint_math-course_s12.mp3"
+  },
+  "review_math-course_s12": {
+    "text": "8-5 and 10-7 equal 3. 9-4 and 12-7 equal 5!",
+    "file": "assets/audio/review_math-course_s12.mp3"
+  },
+  "prompt_math-course_s13": {
+    "text": "Connect each subtraction problem on the left to its correct result on the right:",
+    "file": "assets/audio/prompt_math-course_s13.mp3"
+  },
+  "hint_math-course_s13": {
+    "text": "10-3=7, 8-4=4, 9-6=3, 15-9=6!",
+    "file": "assets/audio/hint_math-course_s13.mp3"
+  },
+  "review_math-course_s13": {
+    "text": "10-3=7, 8-4=4, 9-6=3, and 15-9=6!",
+    "file": "assets/audio/review_math-course_s13.mp3"
+  },
+  "prompt_math-course_s14": {
+    "text": "Listen to the spoken mathematical operation and select the correct symbol:",
+    "file": "assets/audio/prompt_math-course_s14.mp3"
+  },
+  "hint_math-course_s14": {
+    "text": "The spoken word is 'Minus Sign'. Minus represents subtraction!",
+    "file": "assets/audio/hint_math-course_s14.mp3"
+  },
+  "review_math-course_s14": {
+    "text": "The minus sign '' is used to subtract or find the difference between numbers.",
+    "file": "assets/audio/review_math-course_s14.mp3"
+  },
+  "prompt_math-course_s15": {
+    "text": "Fill the 3x3 matrix with numbers 3, 6, 9 without duplicate per row or column:",
+    "file": "assets/audio/prompt_math-course_s15.mp3"
+  },
+  "hint_math-course_s15": {
+    "text": "Row 2 contains 6 and 9. What is the missing number from [3, 6, 9]?",
+    "file": "assets/audio/hint_math-course_s15.mp3"
+  },
+  "review_math-course_s15": {
+    "text": "Every row and column has numbers 3, 6, and 9 (multiples with difference 3)!",
+    "file": "assets/audio/review_math-course_s15.mp3"
+  },
+  "prompt_math-course_s16": {
+    "text": "Which card represents 4 GROUPS of 3 (4 \u00d7 3 = 12)?",
+    "file": "assets/audio/prompt_math-course_s16.mp3"
+  },
+  "hint_math-course_s16": {
+    "text": "Count 4 equal groups containing 3 stars each: 3 + 3 + 3 + 3 = 12!",
+    "file": "assets/audio/hint_math-course_s16.mp3"
+  },
+  "review_math-course_s16": {
+    "text": "4 groups of 3 equals 12 (4 \u00d7 3 = 12)!",
+    "file": "assets/audio/review_math-course_s16.mp3"
+  },
+  "prompt_math-course_s17": {
+    "text": "Sort numbers into 'Multiples of 3' vs 'Multiples of 4':",
+    "file": "assets/audio/prompt_math-course_s17.mp3"
+  },
+  "hint_math-course_s17": {
+    "text": "6 and 9 are in the 3 times table. 8 and 16 are in the 4 times table!",
+    "file": "assets/audio/hint_math-course_s17.mp3"
+  },
+  "review_math-course_s17": {
+    "text": "3\u00d72=6, 3\u00d73=9. 4\u00d72=8, 4\u00d74=16!",
+    "file": "assets/audio/review_math-course_s17.mp3"
+  },
+  "prompt_math-course_s18": {
+    "text": "Trace along the 4 straight symmetrical sides of the diamond:",
+    "file": "assets/audio/prompt_math-course_s18.mp3"
+  },
+  "hint_math-course_s18": {
+    "text": "Trace from the top point down to the sides and join at the bottom tip!",
+    "file": "assets/audio/hint_math-course_s18.mp3"
+  },
+  "review_math-course_s18": {
+    "text": "Brilliant! A diamond shape (rhombus) has 4 congruent sides and 2 lines of symmetry.",
+    "file": "assets/audio/review_math-course_s18.mp3"
+  },
+  "prompt_math-course_s19": {
+    "text": "Count all cubes in this 3x3 array where every column is 2 blocks high (3 \u00d7 3 \u00d7 2):",
+    "file": "assets/audio/prompt_math-course_s19.mp3"
+  },
+  "hint_math-course_s19": {
+    "text": "There are 9 columns (3 \u00d7 3), and each column has 2 cubes: 9 \u00d7 2 = ?",
+    "file": "assets/audio/hint_math-course_s19.mp3"
+  },
+  "review_math-course_s19": {
+    "text": "A 3x3 array of height 2 contains 3 \u00d7 3 \u00d7 2 = 18 unit cubes!",
+    "file": "assets/audio/review_math-course_s19.mp3"
+  },
+  "prompt_math-course_s20": {
+    "text": "Complete the 4x4 Latin matrix with factors 1, 2, 3, 4 without repetition:",
+    "file": "assets/audio/prompt_math-course_s20.mp3"
+  },
+  "hint_math-course_s20": {
+    "text": "Row 3 already contains 2, 1, and 4. The missing factor is 3!",
+    "file": "assets/audio/hint_math-course_s20.mp3"
+  },
+  "review_math-course_s20": {
+    "text": "Digits 1, 2, 3, and 4 appear exactly once in each row and column!",
+    "file": "assets/audio/review_math-course_s20.mp3"
+  },
+  "prompt_math-course_s21": {
+    "text": "What is the correct answer to: 3 + 4 \u00d7 2?",
+    "file": "assets/audio/prompt_math-course_s21.mp3"
+  },
+  "hint_math-course_s21": {
+    "text": "Order of Operations rule: Multiply before you add! 4 \u00d7 2 = 8, then 3 + 8 = 11.",
+    "file": "assets/audio/hint_math-course_s21.mp3"
+  },
+  "review_math-course_s21": {
+    "text": "Multiplication comes before addition: 4 \u00d7 2 = 8  3 + 8 = 11!",
+    "file": "assets/audio/review_math-course_s21.mp3"
+  },
+  "prompt_math-course_s22": {
+    "text": "Sort representations into 'Half (1/2)' vs 'Quarter (1/4)':",
+    "file": "assets/audio/prompt_math-course_s22.mp3"
+  },
+  "hint_math-course_s22": {
+    "text": "2/4 and 50/100 are equal to one half (1/2). 1/4 and 25/100 are equal to one quarter (1/4)!",
+    "file": "assets/audio/hint_math-course_s22.mp3"
+  },
+  "review_math-course_s22": {
+    "text": "2/4 = 1/2 (Half). 1/4 = 25% (Quarter)!",
+    "file": "assets/audio/review_math-course_s22.mp3"
+  },
+  "prompt_math-course_s23": {
+    "text": "Connect each fraction on the left to its percentage value on the right:",
+    "file": "assets/audio/prompt_math-course_s23.mp3"
+  },
+  "hint_math-course_s23": {
+    "text": "1/2 = 50%, 1/4 = 25%, 3/4 = 75%, 1/10 = 10%!",
+    "file": "assets/audio/hint_math-course_s23.mp3"
+  },
+  "review_math-course_s23": {
+    "text": "1/2 = 50%, 1/4 = 25%, 3/4 = 75%, and 1/10 = 10%!",
+    "file": "assets/audio/review_math-course_s23.mp3"
+  },
+  "prompt_math-course_s24": {
+    "text": "Find the value of Trophy  in this 3-step algebra system:",
+    "file": "assets/audio/prompt_math-course_s24.mp3"
+  },
+  "hint_math-course_s24": {
+    "text": "1.  = 8. 2. 8 \u00d7  = 32   = 4. 3. 4 +  = 13   = 13 - 4!",
+    "file": "assets/audio/hint_math-course_s24.mp3"
+  },
+  "review_math-course_s24": {
+    "text": "= 8,  = 4, and 4 +  = 13   = 9!",
+    "file": "assets/audio/review_math-course_s24.mp3"
+  },
+  "prompt_math-course_s25": {
+    "text": "Complete the master 4x4 Roman numeral matrix (I, II, III, IV) without duplicates:",
+    "file": "assets/audio/prompt_math-course_s25.mp3"
+  },
+  "hint_math-course_s25": {
+    "text": "Row 3 contains III, IV, and I. The missing numeral is II!",
+    "file": "assets/audio/hint_math-course_s25.mp3"
+  },
+  "review_math-course_s25": {
+    "text": "Each row and column holds Roman Numerals I, II, III, and IV without conflict!",
+    "file": "assets/audio/review_math-course_s25.mp3"
+  },
+  "prompt_science-course_s1": {
+    "text": "Put the marine animals in the Ocean  and land animals in the Jungle :",
+    "file": "assets/audio/prompt_science-course_s1.mp3"
+  },
+  "hint_science-course_s1": {
+    "text": "Dolphins and Sharks swim in saltwater oceans. Tigers and Monkeys live in terrestrial jungle forests!",
+    "file": "assets/audio/hint_science-course_s1.mp3"
+  },
+  "review_science-course_s1": {
+    "text": "Dolphins & Sharks live in the Ocean (). Tigers & Monkeys live in the Jungle ()!",
+    "file": "assets/audio/review_science-course_s1.mp3"
+  },
+  "prompt_science-course_s2": {
+    "text": "Connect each animal on the left to what it eats on the right:",
+    "file": "assets/audio/prompt_science-course_s2.mp3"
+  },
+  "hint_science-course_s2": {
+    "text": "Rabbits love crunchy carrots, monkeys eat bananas, frogs catch flying insects, and pandas feed on bamboo!",
+    "file": "assets/audio/hint_science-course_s2.mp3"
+  },
+  "review_science-course_s2": {
+    "text": "Rabbit  Carrot, Monkey  Banana, Frog  Fly, Panda  Bamboo!",
+    "file": "assets/audio/review_science-course_s2.mp3"
+  },
+  "prompt_science-course_s3": {
+    "text": "Memorize the animals during preview, then find and match the animal pairs:",
+    "file": "assets/audio/prompt_science-course_s3.mp3"
+  },
+  "hint_science-course_s3": {
+    "text": "Memorize the positions of the Dolphin, Lion, and Parrot!",
+    "file": "assets/audio/hint_science-course_s3.mp3"
+  },
+  "review_science-course_s3": {
+    "text": "You matched all the animal pairs successfully!",
+    "file": "assets/audio/review_science-course_s3.mp3"
+  },
+  "prompt_science-course_s4": {
+    "text": "Listen to the spoken animal name and select the matching picture:",
+    "file": "assets/audio/prompt_science-course_s4.mp3"
+  },
+  "hint_science-course_s4": {
+    "text": "The voice spoke 'Elephant'. Select the gentle giant with a long trunk!",
+    "file": "assets/audio/hint_science-course_s4.mp3"
+  },
+  "review_science-course_s4": {
+    "text": "The Elephant is the largest living land mammal with a flexible trunk!",
+    "file": "assets/audio/review_science-course_s4.mp3"
+  },
+  "prompt_science-course_s5": {
+    "text": "Trace along the symmetrical wings of the butterfly:",
+    "file": "assets/audio/prompt_science-course_s5.mp3"
+  },
+  "hint_science-course_s5": {
+    "text": "Follow the curved wings on both sides from top to bottom!",
+    "file": "assets/audio/hint_science-course_s5.mp3"
+  },
+  "review_science-course_s5": {
+    "text": "Marvelous! Butterflies have bilateral symmetry with identical left and right wings.",
+    "file": "assets/audio/review_science-course_s5.mp3"
+  },
+  "prompt_science-course_s6": {
+    "text": "Sort items into 'Living Organisms ' vs 'Non-Living Objects \ufe0f':",
+    "file": "assets/audio/prompt_science-course_s6.mp3"
+  },
+  "hint_science-course_s6": {
+    "text": "Living things grow, breathe, and reproduce. Rocks and cars are non-living objects!",
+    "file": "assets/audio/hint_science-course_s6.mp3"
+  },
+  "review_science-course_s6": {
+    "text": "Trees & Birds are living organisms. Rocks & Cars are non-living!",
+    "file": "assets/audio/review_science-course_s6.mp3"
+  },
+  "prompt_science-course_s7": {
+    "text": "Connect each plant anatomy part on the left to its biological function on the right:",
+    "file": "assets/audio/prompt_science-course_s7.mp3"
+  },
+  "hint_science-course_s7": {
+    "text": "Roots absorb water, Stems carry water upward, Leaves capture sunlight, Flowers make seeds!",
+    "file": "assets/audio/hint_science-course_s7.mp3"
+  },
+  "review_science-course_s7": {
+    "text": "Roots  Water uptake, Stem  Transport, Leaves  Photosynthesis, Flower  Seed reproduction!",
+    "file": "assets/audio/review_science-course_s7.mp3"
+  },
+  "prompt_science-course_s8": {
+    "text": "Which part of a plant anchors it in the soil and ABSORBS WATER?",
+    "file": "assets/audio/prompt_science-course_s8.mp3"
+  },
+  "hint_science-course_s8": {
+    "text": "Look underground: roots absorb moisture and vital nutrients from the soil!",
+    "file": "assets/audio/hint_science-course_s8.mp3"
+  },
+  "review_science-course_s8": {
+    "text": "Plant roots grow deep into the ground to anchor the plant and drink water!",
+    "file": "assets/audio/review_science-course_s8.mp3"
+  },
+  "prompt_science-course_s9": {
+    "text": "Trace along the curved lobes and pointed base of the heart:",
+    "file": "assets/audio/prompt_science-course_s9.mp3"
+  },
+  "hint_science-course_s9": {
+    "text": "Start at the center notch, curve around the left and right lobes, and meet at the bottom point!",
+    "file": "assets/audio/hint_science-course_s9.mp3"
+  },
+  "review_science-course_s9": {
+    "text": "Great job! The heart is a muscular organ that pumps oxygen-rich blood through living bodies.",
+    "file": "assets/audio/review_science-course_s9.mp3"
+  },
+  "prompt_science-course_s10": {
+    "text": "Place Flower , Tree , and Leaf  with no duplicate per row or column:",
+    "file": "assets/audio/prompt_science-course_s10.mp3"
+  },
+  "hint_science-course_s10": {
+    "text": "Row 2 contains  and . What is the missing botanical symbol?",
+    "file": "assets/audio/hint_science-course_s10.mp3"
+  },
+  "review_science-course_s10": {
+    "text": "Each row and column holds Flower, Tree, and Leaf without duplication!",
+    "file": "assets/audio/review_science-course_s10.mp3"
+  },
+  "prompt_science-course_s11": {
+    "text": "Sort each everyday item into its state of matter:",
+    "file": "assets/audio/prompt_science-course_s11.mp3"
+  },
+  "hint_science-course_s11": {
+    "text": "Ice is a solid, liquid water flows in a glass, and steam is a gas that disperses into the air!",
+    "file": "assets/audio/hint_science-course_s11.mp3"
+  },
+  "review_science-course_s11": {
+    "text": "Ice = Solid , Water = Liquid , Steam = Gas !",
+    "file": "assets/audio/review_science-course_s11.mp3"
+  },
+  "prompt_science-course_s12": {
+    "text": "Connect each thermal state change to what happens to water:",
+    "file": "assets/audio/prompt_science-course_s12.mp3"
+  },
+  "hint_science-course_s12": {
+    "text": "Melting: Ice  Water. Freezing: Water  Ice. Evaporation: Water  Steam. Condensation: Vapor  Water drops!",
+    "file": "assets/audio/hint_science-course_s12.mp3"
+  },
+  "review_science-course_s12": {
+    "text": "Melting (Solid  Liquid), Freezing (Liquid  Solid), Evaporation (Liquid  Gas), Condensation (Gas  Liquid)!",
+    "file": "assets/audio/review_science-course_s12.mp3"
+  },
+  "prompt_science-course_s13": {
+    "text": "Which material is an ELECTRICAL CONDUCTOR that allows electricity to flow?",
+    "file": "assets/audio/prompt_science-course_s13.mp3"
+  },
+  "hint_science-course_s13": {
+    "text": "Metals like copper and aluminum conduct electricity. Wood, rubber, and plastic are insulators!",
+    "file": "assets/audio/hint_science-course_s13.mp3"
+  },
+  "review_science-course_s13": {
+    "text": "Copper metal is an excellent electrical conductor used in electrical wiring!",
+    "file": "assets/audio/review_science-course_s13.mp3"
+  },
+  "prompt_science-course_s14": {
+    "text": "Listen to the spoken state of matter and choose the matching solid object:",
+    "file": "assets/audio/prompt_science-course_s14.mp3"
+  },
+  "hint_science-course_s14": {
+    "text": "The spoken word is 'Ice Cube'. Ice is the solid state of water with a fixed crystal shape!",
+    "file": "assets/audio/hint_science-course_s14.mp3"
+  },
+  "review_science-course_s14": {
+    "text": "Ice cubes are solid water with fixed volume and shape at temperatures below 0\u00b0C (32\u00b0F).",
+    "file": "assets/audio/review_science-course_s14.mp3"
+  },
+  "prompt_science-course_s15": {
+    "text": "Place Solid , Liquid , Gas , and Plasma  with no duplicate per row/column:",
+    "file": "assets/audio/prompt_science-course_s15.mp3"
+  },
+  "hint_science-course_s15": {
+    "text": "Row 3 already contains , , and . The missing state of matter is Gas !",
+    "file": "assets/audio/hint_science-course_s15.mp3"
+  },
+  "review_science-course_s15": {
+    "text": "Every row and column contains Solid, Liquid, Gas, and Plasma uniquely!",
+    "file": "assets/audio/review_science-course_s15.mp3"
+  },
+  "prompt_science-course_s16": {
+    "text": "Sort planets into 'Inner Rocky Planets ' vs 'Outer Gas Giants ':",
+    "file": "assets/audio/prompt_science-course_s16.mp3"
+  },
+  "hint_science-course_s16": {
+    "text": "Mercury, Venus, Earth, Mars are small rocky worlds. Jupiter, Saturn, Uranus, Neptune are giant gas planets!",
+    "file": "assets/audio/hint_science-course_s16.mp3"
+  },
+  "review_science-course_s16": {
+    "text": "Mercury & Mars are Rocky Planets. Jupiter & Saturn are Gas Giants!",
+    "file": "assets/audio/review_science-course_s16.mp3"
+  },
+  "prompt_science-course_s17": {
+    "text": "Connect each celestial body on the left to its unique astronomical feature:",
+    "file": "assets/audio/prompt_science-course_s17.mp3"
+  },
+  "hint_science-course_s17": {
+    "text": "The Sun is our star, Earth has life and oceans, the Moon orbits Earth, and Saturn has rings!",
+    "file": "assets/audio/hint_science-course_s17.mp3"
+  },
+  "review_science-course_s17": {
+    "text": "Sun  Star, Earth  Habitable Oceans, Moon  Satellite, Saturn  Rings!",
+    "file": "assets/audio/review_science-course_s17.mp3"
+  },
+  "prompt_science-course_s18": {
+    "text": "Which planet is known as the 'RED PLANET' due to iron oxide rust on its surface?",
+    "file": "assets/audio/prompt_science-course_s18.mp3"
+  },
+  "hint_science-course_s18": {
+    "text": "Mars is the 4th planet from the Sun, covered in red rusty dust where rovers explore!",
+    "file": "assets/audio/hint_science-course_s18.mp3"
+  },
+  "review_science-course_s18": {
+    "text": "Mars is called the Red Planet because iron minerals in its soil oxidize (rust) into red dust!",
+    "file": "assets/audio/review_science-course_s18.mp3"
+  },
+  "prompt_science-course_s19": {
+    "text": "Trace along the nose cone, aerodynamic fuselage, and fins of the rocket:",
+    "file": "assets/audio/prompt_science-course_s19.mp3"
+  },
+  "hint_science-course_s19": {
+    "text": "Start at the tip of the nose cone, trace down both sides, and outline the rocket fins!",
+    "file": "assets/audio/hint_science-course_s19.mp3"
+  },
+  "review_science-course_s19": {
+    "text": "Awesome! Rockets use thrust from burning propulsion fuels to escape Earth's gravity.",
+    "file": "assets/audio/review_science-course_s19.mp3"
+  },
+  "prompt_science-course_s20": {
+    "text": "Memorize the celestial bodies during preview, then find and match each pair:",
+    "file": "assets/audio/prompt_science-course_s20.mp3"
+  },
+  "hint_science-course_s20": {
+    "text": "Memorize the positions of Sun, Earth, Moon, and Saturn during the 3-second preview!",
+    "file": "assets/audio/hint_science-course_s20.mp3"
+  },
+  "review_science-course_s20": {
+    "text": "You successfully matched all the celestial planet pairs in our solar system!",
+    "file": "assets/audio/review_science-course_s20.mp3"
+  },
+  "prompt_science-course_s21": {
+    "text": "Sort organisms into 'Producers  (Make Food)' vs 'Consumers  (Eat Others)':",
+    "file": "assets/audio/prompt_science-course_s21.mp3"
+  },
+  "hint_science-course_s21": {
+    "text": "Plants (grass, trees) produce food via sunlight. Animals (lions, hawks) consume other organisms!",
+    "file": "assets/audio/hint_science-course_s21.mp3"
+  },
+  "review_science-course_s21": {
+    "text": "Grass & Trees are Producers (). Lions & Hawks are Consumers ()!",
+    "file": "assets/audio/review_science-course_s21.mp3"
+  },
+  "prompt_science-course_s22": {
+    "text": "Connect each vital human organ on the left to its biological function on the right:",
+    "file": "assets/audio/prompt_science-course_s22.mp3"
+  },
+  "hint_science-course_s22": {
+    "text": "Heart pumps blood, Lungs breathe air, Brain controls the nervous system, Stomach digests food!",
+    "file": "assets/audio/hint_science-course_s22.mp3"
+  },
+  "review_science-course_s22": {
+    "text": "Heart  Blood circulation, Lungs  Respiration, Brain  Nervous control, Stomach  Digestion!",
+    "file": "assets/audio/review_science-course_s22.mp3"
+  },
+  "prompt_science-course_s23": {
+    "text": "Sun \ufe0f  Grass   Grasshopper   Frog   . What apex predator tops this food chain?",
+    "file": "assets/audio/prompt_science-course_s23.mp3"
+  },
+  "hint_science-course_s23": {
+    "text": "Look for the top predatory bird of prey that hunts frogs and rodents!",
+    "file": "assets/audio/hint_science-course_s23.mp3"
+  },
+  "review_science-course_s23": {
+    "text": "Eagles and hawks are apex predators atop the vertebrate food chain!",
+    "file": "assets/audio/review_science-course_s23.mp3"
+  },
+  "prompt_science-course_s24": {
+    "text": "Connect each simple physics machine on the left to its real-world example on the right:",
+    "file": "assets/audio/prompt_science-course_s24.mp3"
+  },
+  "hint_science-course_s24": {
+    "text": "Seesaw = Lever, Flagpole rope = Pulley, Ramp = Inclined Plane, Bicycle = Wheel & Axle!",
+    "file": "assets/audio/hint_science-course_s24.mp3"
+  },
+  "review_science-course_s24": {
+    "text": "Lever  Seesaw, Pulley  Flagpole, Inclined Plane  Ramp, Wheel & Axle  Bicycle!",
+    "file": "assets/audio/review_science-course_s24.mp3"
+  },
+  "prompt_science-course_s25": {
+    "text": "Place Microscope , Magnet , Beaker , and Telescope  without duplicate:",
+    "file": "assets/audio/prompt_science-course_s25.mp3"
+  },
+  "hint_science-course_s25": {
+    "text": "Row 3 already contains , , and . The missing apparatus is Beaker !",
+    "file": "assets/audio/hint_science-course_s25.mp3"
+  },
+  "review_science-course_s25": {
+    "text": "All four science instruments are placed with zero row/column duplicates!",
+    "file": "assets/audio/review_science-course_s25.mp3"
+  },
+  "prompt_aptitude-course_s1": {
+    "text": "Which item does NOT belong with the other red shapes?",
+    "file": "assets/audio/prompt_aptitude-course_s1.mp3"
+  },
+  "hint_aptitude-course_s1": {
+    "text": "Three items are red geometric shapes. One is a yellow fruit!",
+    "file": "assets/audio/hint_aptitude-course_s1.mp3"
+  },
+  "review_aptitude-course_s1": {
+    "text": "Red Circle, Square, and Triangle are red geometric shapes. The Banana is a yellow fruit!",
+    "file": "assets/audio/review_aptitude-course_s1.mp3"
+  },
+  "prompt_aptitude-course_s2": {
+    "text": "Sort shapes into '3 Sides (Triangles )' vs '4 Sides (Squares/Rectangles )':",
+    "file": "assets/audio/prompt_aptitude-course_s2.mp3"
+  },
+  "hint_aptitude-course_s2": {
+    "text": "Triangles have 3 straight edges/sides. Squares and rectangles have 4 straight sides!",
+    "file": "assets/audio/hint_aptitude-course_s2.mp3"
+  },
+  "review_aptitude-course_s2": {
+    "text": "Triangles = 3 sides. Squares & Rectangles = 4 sides!",
+    "file": "assets/audio/review_aptitude-course_s2.mp3"
+  },
+  "prompt_aptitude-course_s3": {
+    "text": "Trace along the 5 glowing vertices of the star:",
+    "file": "assets/audio/prompt_aptitude-course_s3.mp3"
+  },
+  "hint_aptitude-course_s3": {
+    "text": "Follow the continuous star path from the top point down and across to each vertex!",
+    "file": "assets/audio/hint_aptitude-course_s3.mp3"
+  },
+  "review_aptitude-course_s3": {
+    "text": "Awesome! A five-point star has 10 sides and 5 pointed vertices.",
+    "file": "assets/audio/review_aptitude-course_s3.mp3"
+  },
+  "prompt_aptitude-course_s4": {
+    "text": "Memorize card pairs before they flip, then find and match each colored shape:",
+    "file": "assets/audio/prompt_aptitude-course_s4.mp3"
+  },
+  "hint_aptitude-course_s4": {
+    "text": "Remember the positions: Red Circle, Blue Diamond, and Green Square!",
+    "file": "assets/audio/hint_aptitude-course_s4.mp3"
+  },
+  "review_aptitude-course_s4": {
+    "text": "You matched all the colored shape pairs successfully!",
+    "file": "assets/audio/review_aptitude-course_s4.mp3"
+  },
+  "prompt_aptitude-course_s5": {
+    "text": "Listen to the spoken polygon name and select the 6-sided geometric shape:",
+    "file": "assets/audio/prompt_aptitude-course_s5.mp3"
+  },
+  "hint_aptitude-course_s5": {
+    "text": "The voice spoke 'Hexagon'. A hexagon has exactly 6 straight sides and 6 vertices!",
+    "file": "assets/audio/hint_aptitude-course_s5.mp3"
+  },
+  "review_aptitude-course_s5": {
+    "text": "A hexagon '' is a polygon with 6 equal sides and 6 internal angles.",
+    "file": "assets/audio/review_aptitude-course_s5.mp3"
+  },
+  "prompt_aptitude-course_s6": {
+    "text": "Which arrow comes next in the 90\u00b0 clockwise sequence?",
+    "file": "assets/audio/prompt_aptitude-course_s6.mp3"
+  },
+  "hint_aptitude-course_s6": {
+    "text": "The arrow rotates 90\u00b0 clockwise: Up  Right  Down  Next is Left!",
+    "file": "assets/audio/hint_aptitude-course_s6.mp3"
+  },
+  "review_aptitude-course_s6": {
+    "text": "Clockwise turns: Up (0\u00b0), Right (90\u00b0), Down (180\u00b0), and LEFT (270\u00b0)!",
+    "file": "assets/audio/review_aptitude-course_s6.mp3"
+  },
+  "prompt_aptitude-course_s7": {
+    "text": "Sort arrows into 'Pointing Left / Down \u2199\ufe0f' vs 'Pointing Right / Up \u2197\ufe0f':",
+    "file": "assets/audio/prompt_aptitude-course_s7.mp3"
+  },
+  "hint_aptitude-course_s7": {
+    "text": "Left (\u2b05\ufe0f) and Down (\u2b07\ufe0f) go into the left/down zone. Right (\ufe0f) and Up (\u2b06\ufe0f) go into the right/up zone!",
+    "file": "assets/audio/hint_aptitude-course_s7.mp3"
+  },
+  "review_aptitude-course_s7": {
+    "text": "Left/Down = \u2b05\ufe0f \u2b07\ufe0f. Right/Up = \ufe0f \u2b06\ufe0f!",
+    "file": "assets/audio/review_aptitude-course_s7.mp3"
+  },
+  "prompt_aptitude-course_s8": {
+    "text": "Connect each concept on the left to its direct logical opposite on the right:",
+    "file": "assets/audio/prompt_aptitude-course_s8.mp3"
+  },
+  "hint_aptitude-course_s8": {
+    "text": "Opposite of Hot is Cold, Fast is Slow, Day is Night, Heavy is Light!",
+    "file": "assets/audio/hint_aptitude-course_s8.mp3"
+  },
+  "review_aptitude-course_s8": {
+    "text": "Hot \u2194 Cold, Fast \u2194 Slow, Day \u2194 Night, Heavy \u2194 Light!",
+    "file": "assets/audio/review_aptitude-course_s8.mp3"
+  },
+  "prompt_aptitude-course_s9": {
+    "text": "Trace along the curved outer and inner arcs of the crescent moon:",
+    "file": "assets/audio/prompt_aptitude-course_s9.mp3"
+  },
+  "hint_aptitude-course_s9": {
+    "text": "Start at the top tip, follow the outer arc, and curve back along the inner crescent!",
+    "file": "assets/audio/hint_aptitude-course_s9.mp3"
+  },
+  "review_aptitude-course_s9": {
+    "text": "Splendid! The crescent moon is formed when sunlight illuminates only a sliver of the lunar sphere.",
+    "file": "assets/audio/review_aptitude-course_s9.mp3"
+  },
+  "prompt_aptitude-course_s10": {
+    "text": "Place \u2b06\ufe0f (Up), \ufe0f (Right), \u2b07\ufe0f (Down) with no duplicate per row or column:",
+    "file": "assets/audio/prompt_aptitude-course_s10.mp3"
+  },
+  "hint_aptitude-course_s10": {
+    "text": "Row 2 contains \ufe0f and \u2b07\ufe0f. What is the missing directional arrow?",
+    "file": "assets/audio/hint_aptitude-course_s10.mp3"
+  },
+  "review_aptitude-course_s10": {
+    "text": "Each row and column holds \u2b06\ufe0f, \ufe0f, and \u2b07\ufe0f in rotational balance!",
+    "file": "assets/audio/review_aptitude-course_s10.mp3"
+  },
+  "prompt_aptitude-course_s11": {
+    "text": "Rule: Must be ROUND  AND RED . Which item satisfies BOTH rules?",
+    "file": "assets/audio/prompt_aptitude-course_s11.mp3"
+  },
+  "hint_aptitude-course_s11": {
+    "text": "Look for the item that has a circular shape AND is red in color!",
+    "file": "assets/audio/hint_aptitude-course_s11.mp3"
+  },
+  "review_aptitude-course_s11": {
+    "text": "The Red Apple satisfies both conditions: it is circular in cross-section and red!",
+    "file": "assets/audio/review_aptitude-course_s11.mp3"
+  },
+  "prompt_aptitude-course_s12": {
+    "text": "Sort items into 'Red Fruits ' vs 'Other Items':",
+    "file": "assets/audio/prompt_aptitude-course_s12.mp3"
+  },
+  "hint_aptitude-course_s12": {
+    "text": "Strawberries and Cherries are both RED AND FRUITS. Firetrucks and Bananas miss one attribute!",
+    "file": "assets/audio/hint_aptitude-course_s12.mp3"
+  },
+  "review_aptitude-course_s12": {
+    "text": "Strawberries & Cherries are Red Fruits. Firetrucks & Bananas go into Other!",
+    "file": "assets/audio/review_aptitude-course_s12.mp3"
+  },
+  "prompt_aptitude-course_s13": {
+    "text": "Connect each community profession on the left to their specialized equipment tool on the right:",
+    "file": "assets/audio/prompt_aptitude-course_s13.mp3"
+  },
+  "hint_aptitude-course_s13": {
+    "text": "Doctor  Stethoscope, Chef  Pan, Artist  Paint Brush, Firefighter  Fire Extinguisher!",
+    "file": "assets/audio/hint_aptitude-course_s13.mp3"
+  },
+  "review_aptitude-course_s13": {
+    "text": "Doctor  Stethoscope, Chef  Pan, Artist  Paintbrush, Firefighter  Extinguisher!",
+    "file": "assets/audio/review_aptitude-course_s13.mp3"
+  },
+  "prompt_aptitude-course_s14": {
+    "text": "Listen to the spoken equipment name and select the optical astronomy instrument:",
+    "file": "assets/audio/prompt_aptitude-course_s14.mp3"
+  },
+  "hint_aptitude-course_s14": {
+    "text": "The voice spoke 'Telescope'. It is used by astronomers to view distant stars and planets!",
+    "file": "assets/audio/hint_aptitude-course_s14.mp3"
+  },
+  "review_aptitude-course_s14": {
+    "text": "A telescope '' is an optical instrument that magnifies distant celestial objects in space.",
+    "file": "assets/audio/review_aptitude-course_s14.mp3"
+  },
+  "prompt_aptitude-course_s15": {
+    "text": "Place Heart \ufe0f, Diamond \ufe0f, Club \ufe0f, Spade \ufe0f without duplicate per row/column:",
+    "file": "assets/audio/prompt_aptitude-course_s15.mp3"
+  },
+  "hint_aptitude-course_s15": {
+    "text": "Row 3 contains \ufe0f, \ufe0f, and \ufe0f. What is the missing card suit?",
+    "file": "assets/audio/hint_aptitude-course_s15.mp3"
+  },
+  "review_aptitude-course_s15": {
+    "text": "Every row and column contains Heart, Diamond, Club, and Spade uniquely!",
+    "file": "assets/audio/review_aptitude-course_s15.mp3"
+  },
+  "prompt_aptitude-course_s16": {
+    "text": "What is the correct horizontal mirror reflection of pointing left ()?",
+    "file": "assets/audio/prompt_aptitude-course_s16.mp3"
+  },
+  "hint_aptitude-course_s16": {
+    "text": "A vertical mirror flips horizontal directions: Left becomes Right!",
+    "file": "assets/audio/hint_aptitude-course_s16.mp3"
+  },
+  "review_aptitude-course_s16": {
+    "text": "The mirror reflection of pointing left () is pointing right ()!",
+    "file": "assets/audio/review_aptitude-course_s16.mp3"
+  },
+  "prompt_aptitude-course_s17": {
+    "text": "Sort shapes into 'Symmetrical  (Mirror Line)' vs 'Asymmetrical  (No Mirror Line)':",
+    "file": "assets/audio/prompt_aptitude-course_s17.mp3"
+  },
+  "hint_aptitude-course_s17": {
+    "text": "Butterflies and Hearts can be folded down the center into identical mirror halves. Letter F and Hands cannot!",
+    "file": "assets/audio/hint_aptitude-course_s17.mp3"
+  },
+  "review_aptitude-course_s17": {
+    "text": "Butterfly & Heart are Symmetrical. Letter F & Hand are Asymmetrical!",
+    "file": "assets/audio/review_aptitude-course_s17.mp3"
+  },
+  "prompt_aptitude-course_s18": {
+    "text": "Connect each 3D solid geometry object to the 2D shadow shape it casts directly from top:",
+    "file": "assets/audio/prompt_aptitude-course_s18.mp3"
+  },
+  "hint_aptitude-course_s18": {
+    "text": "A sphere casts a circle, a cube casts a square, a cone side casts a triangle, and a cylinder side casts a rectangle!",
+    "file": "assets/audio/hint_aptitude-course_s18.mp3"
+  },
+  "review_aptitude-course_s18": {
+    "text": "Sphere  Circle, Cube  Square, Cone  Triangle, Cylinder  Rectangle!",
+    "file": "assets/audio/review_aptitude-course_s18.mp3"
+  },
+  "prompt_aptitude-course_s19": {
+    "text": "Memorize the logic symbols during preview, then find and match each pair:",
+    "file": "assets/audio/prompt_aptitude-course_s19.mp3"
+  },
+  "hint_aptitude-course_s19": {
+    "text": "Remember the locations: Idea Bulb, Puzzle Piece, Target, and Trophy!",
+    "file": "assets/audio/hint_aptitude-course_s19.mp3"
+  },
+  "review_aptitude-course_s19": {
+    "text": "You successfully identified and paired all the logic badge icons!",
+    "file": "assets/audio/review_aptitude-course_s19.mp3"
+  },
+  "prompt_aptitude-course_s20": {
+    "text": "Place , , ,  without duplicate per row or column:",
+    "file": "assets/audio/prompt_aptitude-course_s20.mp3"
+  },
+  "hint_aptitude-course_s20": {
+    "text": "Row 3 contains , , and . What is the missing color?",
+    "file": "assets/audio/hint_aptitude-course_s20.mp3"
+  },
+  "review_aptitude-course_s20": {
+    "text": "Each row and column uniquely contains Red, Blue, Yellow, and Green shapes!",
+    "file": "assets/audio/review_aptitude-course_s20.mp3"
+  },
+  "prompt_aptitude-course_s21": {
+    "text": "Rule 1: All Birds have feathers. Rule 2: Owls are Birds. Conclusion?",
+    "file": "assets/audio/prompt_aptitude-course_s21.mp3"
+  },
+  "hint_aptitude-course_s21": {
+    "text": "By transitive deduction: If Owls are Birds, and all Birds have feathers, then Owls must have feathers!",
+    "file": "assets/audio/hint_aptitude-course_s21.mp3"
+  },
+  "review_aptitude-course_s21": {
+    "text": "Syllogistic logic: Owls \u2282 Birds \u2282 Feathers  Therefore, Owls have feathers!",
+    "file": "assets/audio/review_aptitude-course_s21.mp3"
+  },
+  "prompt_aptitude-course_s22": {
+    "text": "Sort logical statements into 'Always True ' vs 'Never True ':",
+    "file": "assets/audio/prompt_aptitude-course_s22.mp3"
+  },
+  "hint_aptitude-course_s22": {
+    "text": "Squares always have 4 sides and fish need water (Always True). Triangles have 3 corners, not 5 (Never True)!",
+    "file": "assets/audio/hint_aptitude-course_s22.mp3"
+  },
+  "review_aptitude-course_s22": {
+    "text": "Squares have 4 sides & fish need water = Always True. Triangles have 5 corners = Never True!",
+    "file": "assets/audio/review_aptitude-course_s22.mp3"
+  },
+  "prompt_aptitude-course_s23": {
+    "text": "Trace along the diagonal legs and horizontal bridge of the letter A:",
+    "file": "assets/audio/prompt_aptitude-course_s23.mp3"
+  },
+  "hint_aptitude-course_s23": {
+    "text": "Start at the bottom-left leg, go up to the apex, trace down the right leg, and cross the middle bar!",
+    "file": "assets/audio/hint_aptitude-course_s23.mp3"
+  },
+  "review_aptitude-course_s23": {
+    "text": "Awesome! Letter A is the first letter of the alphabet with two slanted diagonals and a crossbar.",
+    "file": "assets/audio/review_aptitude-course_s23.mp3"
+  },
+  "prompt_aptitude-course_s24": {
+    "text": "Rotate the 3D model and count all cubes including hidden interior columns:",
+    "file": "assets/audio/prompt_aptitude-course_s24.mp3"
+  },
+  "hint_aptitude-course_s24": {
+    "text": "Four corner towers of height 4 (16), four wall columns of height 2 (8), and center keep of height 3 (3). 16 + 8 + 3 = ?",
+    "file": "assets/audio/hint_aptitude-course_s24.mp3"
+  },
+  "review_aptitude-course_s24": {
+    "text": "Corner towers (16) + Wall columns (8) + Center keep (3) = 27 cubes in total!",
+    "file": "assets/audio/review_aptitude-course_s24.mp3"
+  },
+  "prompt_aptitude-course_s25": {
+    "text": "Complete the master 4x4 matrix with , , ,  without conflict:",
+    "file": "assets/audio/prompt_aptitude-course_s25.mp3"
+  },
+  "hint_aptitude-course_s25": {
+    "text": "Row 3 contains , , and . The missing symbol is Rocket !",
+    "file": "assets/audio/hint_aptitude-course_s25.mp3"
+  },
+  "review_aptitude-course_s25": {
+    "text": "Every row and column holds Star, Target, Rocket, and Diamond without conflict!",
+    "file": "assets/audio/review_aptitude-course_s25.mp3"
+  }
+}

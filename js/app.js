@@ -10,6 +10,8 @@
 import { sound } from './audio.js';
 import { GAMES_CATALOG } from './games.js';
 import { getSvgIcon } from './icons.js';
+import { MascotCompanion } from './mascot.js';
+import { HintEngine } from './hint_engine.js';
 import { CardGridEngine } from './engines/card_grid_engine.js';
 import { DragDropZonesEngine } from './engines/drag_drop_zones_engine.js';
 import { MatchingPairsEngine } from './engines/matching_pairs_engine.js';
@@ -22,14 +24,81 @@ import { MemoryCardsEngine } from './engines/memory_cards_engine.js';
 import { ListenAndChooseEngine } from './engines/listen_and_choose_engine.js';
 
 const BADGES_CATALOG = [
-  { id: 'first_step', iconKey: 'star', name: 'First Step', desc: 'Solved 1st puzzle', check: (state, totalSolved) => totalSolved >= 1 },
-  { id: 'math_prodigy', iconKey: 'math-course', name: 'Math Star', desc: '10+ Math solved', check: (state) => Object.keys(state.completedStages['math-course'] || {}).length >= 10 },
-  { id: 'science_hero', iconKey: 'science-course', name: 'Science Star', desc: '10+ Science solved', check: (state) => Object.keys(state.completedStages['science-course'] || {}).length >= 10 },
-  { id: 'aptitude_ace', iconKey: 'aptitude-course', name: 'Logic Ace', desc: '10+ Logic solved', check: (state) => Object.keys(state.completedStages['aptitude-course'] || {}).length >= 10 },
-  { id: 'level_master', iconKey: 'rocket', name: 'Level Conqueror', desc: 'Unlocked Level 3', check: (state) => Object.values(state.completedStages).some(map => Object.keys(map).length >= 10) },
-  { id: 'engine_expert', iconKey: 'cards-grid', name: 'Engine Master', desc: '20+ Puzzles solved', check: (state, totalSolved) => totalSolved >= 20 },
-  { id: 'streak_champ', iconKey: 'flame', name: 'Streak Champ', desc: '5-Day streak reached', check: (state) => state.streak >= 5 },
-  { id: 'grandmaster', iconKey: 'crown', name: 'Grandmaster', desc: '100+ Stars collected', check: (state) => state.stars >= 100 }
+  { 
+    id: 'first_step', 
+    iconKey: 'star', 
+    name: 'First Step', 
+    tier: 'Bronze',
+    desc: 'Solved 1st puzzle', 
+    check: (state, totalSolved) => totalSolved >= 1,
+    getProgress: (state, totalSolved) => ({ current: Math.min(1, totalSolved), total: 1 })
+  },
+  { 
+    id: 'math_prodigy', 
+    iconKey: 'math-course', 
+    name: 'Math Prodigy', 
+    tier: 'Silver',
+    desc: '10+ Math solved', 
+    check: (state) => Object.keys(state.completedStages['math-course'] || {}).length >= 10,
+    getProgress: (state) => ({ current: Math.min(10, Object.keys(state.completedStages['math-course'] || {}).length), total: 10 })
+  },
+  { 
+    id: 'science_hero', 
+    iconKey: 'science-course', 
+    name: 'Science Hero', 
+    tier: 'Silver',
+    desc: '10+ Science solved', 
+    check: (state) => Object.keys(state.completedStages['science-course'] || {}).length >= 10,
+    getProgress: (state) => ({ current: Math.min(10, Object.keys(state.completedStages['science-course'] || {}).length), total: 10 })
+  },
+  { 
+    id: 'aptitude_ace', 
+    iconKey: 'aptitude-course', 
+    name: 'Logic Ace', 
+    tier: 'Silver',
+    desc: '10+ Logic solved', 
+    check: (state) => Object.keys(state.completedStages['aptitude-course'] || {}).length >= 10,
+    getProgress: (state) => ({ current: Math.min(10, Object.keys(state.completedStages['aptitude-course'] || {}).length), total: 10 })
+  },
+  { 
+    id: 'level_master', 
+    iconKey: 'rocket', 
+    name: 'Level Conqueror', 
+    tier: 'Gold',
+    desc: 'Conquered Level 3', 
+    check: (state) => Object.values(state.completedStages).some(map => Object.keys(map).length >= 10),
+    getProgress: (state) => {
+      const maxCourse = Math.max(0, ...Object.values(state.completedStages).map(m => Object.keys(m).length));
+      return { current: Math.min(10, maxCourse), total: 10 };
+    }
+  },
+  { 
+    id: 'engine_expert', 
+    iconKey: 'cards-grid', 
+    name: 'Engine Master', 
+    tier: 'Gold',
+    desc: '20+ Puzzles solved', 
+    check: (state, totalSolved) => totalSolved >= 20,
+    getProgress: (state, totalSolved) => ({ current: Math.min(20, totalSolved), total: 20 })
+  },
+  { 
+    id: 'streak_champ', 
+    iconKey: 'flame', 
+    name: 'Streak Champ', 
+    tier: 'Diamond',
+    desc: '5-Day streak reached', 
+    check: (state) => state.streak >= 5,
+    getProgress: (state) => ({ current: Math.min(5, state.streak), total: 5 })
+  },
+  { 
+    id: 'grandmaster', 
+    iconKey: 'crown', 
+    name: 'Grandmaster', 
+    tier: 'Master',
+    desc: '100+ Stars collected', 
+    check: (state) => state.stars >= 100,
+    getProgress: (state) => ({ current: Math.min(100, state.stars), total: 100 })
+  }
 ];
 
 const ENGINE_META = {
@@ -64,6 +133,10 @@ class AppController {
     this.outlineTraceEngine = new OutlineTraceEngine(this);
     this.memoryCardsEngine = new MemoryCardsEngine(this);
     this.listenAndChooseEngine = new ListenAndChooseEngine(this);
+
+    // Living Mascot Companion & Kid-Friendly Hint Scaffolding
+    this.mascot = new MascotCompanion('mascot-root');
+    this.hintEngine = new HintEngine(this.mascot);
 
     // Player Progress State
     this.playerState = this.loadState();
@@ -192,6 +265,9 @@ class AppController {
     this.elBtnOpenBadges = document.getElementById('btn-open-badges');
     this.elBtnOpenAnalytics = document.getElementById('btn-open-analytics');
     this.elBtnOpenCertificate = document.getElementById('btn-open-certificate');
+    this.elVoicePersonaBtn = document.getElementById('btn-voice-persona-toggle');
+    this.elPersonaIcon = document.getElementById('persona-icon');
+    this.elPersonaLabel = document.getElementById('persona-label');
 
     // Game Modal Elements
     this.elGameModal = document.getElementById('game-modal');
@@ -247,14 +323,31 @@ class AppController {
         : getSvgIcon('speaker', 'icon-sm');
     });
 
+    if (this.elVoicePersonaBtn) {
+      this.elVoicePersonaBtn.addEventListener('click', () => {
+        sound.playTap();
+        const newPersona = sound.togglePersona();
+        this.updateVoicePersonaUI(newPersona);
+      });
+    }
+
     this.elAudioSpeakBtn.addEventListener('click', () => {
-      if (this.currentStageData) {
-        sound.speak(this.currentStageData.prompt);
-      }
+      this.speakCurrentQuestion();
     });
 
     this.elHintBtn.addEventListener('click', () => {
       if (!this.currentStageData) return;
+      sound.playTap();
+      
+      // Speak the natural stage hint
+      sound.speakStageHint(
+        this.activeGame.category,
+        this.currentStageData.stageNum,
+        this.currentStageData.hint
+      );
+
+      // Display Leo hint bubble
+      this.mascot.say(`💡 Hint: ${this.currentStageData.hint}`, 'thinking', 5000, false);
       
       switch (this.currentStageData.type) {
         case 'cards-grid':
@@ -278,18 +371,26 @@ class AppController {
         case 'sudoku-matrix':
           this.sudokuMatrixEngine.executeHint(this.elGameArena);
           break;
+        case 'outline-trace':
+          this.outlineTraceEngine.executeHint(this.elGameArena);
+          break;
+        case 'memory-cards':
+          this.memoryCardsEngine.executeHint(this.elGameArena);
+          break;
+        case 'listen-and-choose':
+          this.listenAndChooseEngine.executeHint(this.elGameArena);
+          break;
         default:
-          alert("Hint: " + this.currentStageData.hint);
-          sound.playTap();
+          break;
       }
     });
 
     // Close Buttons for all Modals
-    this.elCloseModalBtn.addEventListener('click', () => this.closeAllModals());
-    this.elCloseAnalytics.addEventListener('click', () => this.closeAllModals());
-    this.elCloseBadges.addEventListener('click', () => this.closeAllModals());
-    this.elCloseStreak.addEventListener('click', () => this.closeAllModals());
-    this.elCloseCertificate.addEventListener('click', () => this.closeAllModals());
+    if (this.elCloseModalBtn) this.elCloseModalBtn.addEventListener('click', () => this.closeAllModals());
+    if (this.elCloseAnalytics) this.elCloseAnalytics.addEventListener('click', () => this.closeAllModals());
+    if (this.elCloseBadges) this.elCloseBadges.addEventListener('click', () => this.closeAllModals());
+    if (this.elCloseStreak) this.elCloseStreak.addEventListener('click', () => this.closeAllModals());
+    if (this.elCloseCertificate) this.elCloseCertificate.addEventListener('click', () => this.closeAllModals());
 
     // Backdrop Click on Overlay Closes Modal
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
@@ -314,34 +415,40 @@ class AppController {
       });
     }
 
-    this.elBtnVictoryContinue.addEventListener('click', () => {
-      sound.playTap();
-      this.closeAllModals();
-      this.syncActiveLevel();
-      this.renderRoadmap();
-      this.renderCategoryNav();
-    });
+    if (this.elBtnVictoryContinue) {
+      this.elBtnVictoryContinue.addEventListener('click', () => {
+        sound.playTap();
+        this.closeAllModals();
+        this.syncActiveLevel();
+        this.renderRoadmap();
+        this.renderCategoryNav();
+      });
+    }
 
-    this.elBtnReviewRetry.addEventListener('click', () => {
-      this.closeAllModals();
-      this.renderStageContent();
-    });
+    if (this.elBtnReviewRetry) {
+      this.elBtnReviewRetry.addEventListener('click', () => {
+        this.closeAllModals();
+        this.renderStageContent();
+      });
+    }
 
     // Shell Navigation Button Events
-    this.elPillStars.addEventListener('click', () => this.openAnalyticsModal());
-    this.elPillRank.addEventListener('click', () => this.openAnalyticsModal());
-    this.elBtnOpenAnalytics.addEventListener('click', () => this.openAnalyticsModal());
+    if (this.elPillStars) this.elPillStars.addEventListener('click', () => this.openAnalyticsModal());
+    if (this.elPillRank) this.elPillRank.addEventListener('click', () => this.openAnalyticsModal());
+    if (this.elBtnOpenAnalytics) this.elBtnOpenAnalytics.addEventListener('click', () => this.openAnalyticsModal());
 
-    this.elBtnOpenBadges.addEventListener('click', () => this.openBadgesModal());
+    if (this.elBtnOpenBadges) this.elBtnOpenBadges.addEventListener('click', () => this.openBadgesModal());
 
-    this.elPillStreak.addEventListener('click', () => this.openStreakModal());
-    this.elBtnClaimStreak.addEventListener('click', () => this.claimDailyStreak());
+    if (this.elPillStreak) this.elPillStreak.addEventListener('click', () => this.openStreakModal());
+    if (this.elBtnClaimStreak) this.elBtnClaimStreak.addEventListener('click', () => this.claimDailyStreak());
 
-    this.elBtnOpenCertificate.addEventListener('click', () => this.openCertificateModal());
-    this.elBtnPrintCertificate.addEventListener('click', () => {
-      sound.playFanfare();
-      window.print();
-    });
+    if (this.elBtnOpenCertificate) this.elBtnOpenCertificate.addEventListener('click', () => this.openCertificateModal());
+    if (this.elBtnPrintCertificate) {
+      this.elBtnPrintCertificate.addEventListener('click', () => {
+        sound.playFanfare();
+        window.print();
+      });
+    }
 
     // Mobile Bottom Navigation Bar Wireup
     const mobHome = document.getElementById('mob-nav-home');
@@ -355,31 +462,33 @@ class AppController {
       if (btn) btn.classList.add('active');
     };
 
-    if (mobHome) mobHome.addEventListener('click', () => { sound.playTap(); this.closeAllModals(); setActiveMobNav(mobHome); });
+    if (mobHome) mobHome.addEventListener('click', () => { sound.playTap(); this.closeAllModals(); this.renderRoadmap(); setActiveMobNav(mobHome); });
     if (mobBadges) mobBadges.addEventListener('click', () => { setActiveMobNav(mobBadges); this.openBadgesModal(); });
     if (mobStreak) mobStreak.addEventListener('click', () => { setActiveMobNav(mobStreak); this.openStreakModal(); });
     if (mobAnalytics) mobAnalytics.addEventListener('click', () => { setActiveMobNav(mobAnalytics); this.openAnalyticsModal(); });
     if (mobCert) mobCert.addEventListener('click', () => { setActiveMobNav(mobCert); this.openCertificateModal(); });
 
-    this.elBtnResetProgress.addEventListener('click', () => {
-      if (confirm("Reset all progress and stars?")) {
-        localStorage.removeItem('kiddylearn_player');
-        localStorage.removeItem('logiclike_demo_player');
-        this.playerState = {
-          stars: 0,
-          streak: 1,
-          rankLevel: 1,
-          lastClaimDate: null,
-          claimedStreakToday: false,
-          completedStages: {}
-        };
-        this.activeLevel = 1;
-        this.saveState();
-        this.closeAllModals();
-        this.renderRoadmap();
-        this.renderCategoryNav();
-      }
-    });
+    if (this.elBtnResetProgress) {
+      this.elBtnResetProgress.addEventListener('click', () => {
+        if (confirm("Reset all progress and stars?")) {
+          localStorage.removeItem('kiddylearn_player');
+          localStorage.removeItem('logiclike_demo_player');
+          this.playerState = {
+            stars: 0,
+            streak: 1,
+            rankLevel: 1,
+            lastClaimDate: null,
+            claimedStreakToday: false,
+            completedStages: {}
+          };
+          this.activeLevel = 1;
+          this.saveState();
+          this.closeAllModals();
+          this.renderRoadmap();
+          this.renderCategoryNav();
+        }
+      });
+    }
   }
 
   renderCategoryNav() {
@@ -635,6 +744,8 @@ class AppController {
     }
   }
 
+
+
   launchStage(stageIdx) {
     this.activeStageIndex = stageIdx;
     this.currentStageData = this.activeGame.stages[stageIdx];
@@ -648,9 +759,13 @@ class AppController {
     this.renderStageContent();
     this.elGameModal.classList.add('open');
 
+    // Notify Mascot & Reset Hint Scaffolding
+    this.mascot.reactToGameStart(this.currentStageData.title, this.activeGame.category);
+    this.hintEngine.setGame(this.currentStageData);
+
     setTimeout(() => {
       this.speakCurrentQuestion();
-    }, 250);
+    }, 350);
   }
 
   speakCurrentQuestion() {
@@ -658,7 +773,9 @@ class AppController {
     const btnSpeak = document.getElementById('btn-audio-speak');
     if (btnSpeak) btnSpeak.classList.add('is-speaking');
 
-    sound.speak(
+    sound.speakStagePrompt(
+      this.activeGame.category,
+      this.currentStageData.stageNum,
       this.currentStageData.prompt,
       () => {
         const btn = document.getElementById('btn-audio-speak');
@@ -736,6 +853,26 @@ class AppController {
     const streakNum = this.playerState.streak;
     this.elStreak.textContent = `${streakNum} ${streakNum === 1 ? 'Day' : 'Days'}`;
     this.elRank.textContent = `Lvl ${this.playerState.rankLevel}`;
+    this.updateVoicePersonaUI(sound.getPersona());
+  }
+
+  updateVoicePersonaUI(persona) {
+    if (!this.elPersonaIcon || !this.elPersonaLabel) return;
+    if (persona === 'teacher') {
+      this.elPersonaIcon.textContent = '👩‍🏫';
+      this.elPersonaLabel.textContent = 'Teacher';
+      if (this.elVoicePersonaBtn) {
+        this.elVoicePersonaBtn.classList.add('persona-teacher');
+        this.elVoicePersonaBtn.title = 'Current: Teacher Voice (Miss Emma) • Tap to switch to Leo (Kid Voice)';
+      }
+    } else {
+      this.elPersonaIcon.textContent = '🦁';
+      this.elPersonaLabel.textContent = 'Kid Voice';
+      if (this.elVoicePersonaBtn) {
+        this.elVoicePersonaBtn.classList.remove('persona-teacher');
+        this.elVoicePersonaBtn.title = 'Current: Kid Voice (Leo) • Tap to switch to Teacher Voice (Miss Emma)';
+      }
+    }
   }
 
   openAnalyticsModal() {
@@ -799,24 +936,73 @@ class AppController {
 
   openBadgesModal() {
     sound.playTap();
+    const totalSolved = this.getTotalStagesSolved();
     const badgesGrid = document.getElementById('badges-grid');
+    if (!badgesGrid) return;
     badgesGrid.innerHTML = '';
 
-    const totalSolved = this.getTotalStagesSolved();
-
+    let unlockedCount = 0;
     BADGES_CATALOG.forEach(badge => {
-      const isUnlocked = badge.check(this.playerState, totalSolved);
+      if (badge.check(this.playerState, totalSolved)) unlockedCount++;
+    });
 
+    const scoreEl = document.getElementById('badges-unlocked-score');
+    if (scoreEl) {
+      scoreEl.textContent = `${unlockedCount} / ${BADGES_CATALOG.length}`;
+    }
+
+    BADGES_CATALOG.forEach((badge, idx) => {
+      const isUnlocked = badge.check(this.playerState, totalSolved);
+      const progress = badge.getProgress ? badge.getProgress(this.playerState, totalSolved) : null;
       const card = document.createElement('div');
-      card.className = `badge-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+      card.className = `badge-item-card ${isUnlocked ? 'unlocked' : 'locked'} tier-${badge.tier ? badge.tier.toLowerCase() : 'bronze'}`;
+      card.style.animationDelay = `${idx * 0.05}s`;
+
+      let progressHtml = '';
+      if (progress && !isUnlocked) {
+        const pct = Math.min(100, Math.round((progress.current / progress.total) * 100));
+        progressHtml = `
+          <div class="badge-mini-prog-wrapper">
+            <div class="badge-mini-prog-track">
+              <div class="badge-mini-prog-fill" style="width:${pct}%"></div>
+            </div>
+            <span class="badge-mini-prog-txt">${progress.current}/${progress.total}</span>
+          </div>
+        `;
+      }
+
       card.innerHTML = `
-        <div class="badge-icon">${getSvgIcon(badge.iconKey, 'icon-lg')}</div>
-        <div class="badge-name">${badge.name}</div>
-        <div class="badge-desc">${badge.desc}</div>
-        <div style="margin-top:6px; font-weight:900; font-size:11px; color:${isUnlocked ? '#D97706' : '#94A3B8'}; display:flex; align-items:center; justify-content:center; gap:4px;">
-          ${isUnlocked ? `${getSvgIcon('check', 'icon-xs')} UNLOCKED` : `${getSvgIcon('lock', 'icon-xs')} LOCKED`}
+        <div class="badge-card-shine"></div>
+        <div class="badge-tier-tag">${badge.tier || 'Medal'}</div>
+        <div class="badge-emblem-wrap">
+          <div class="badge-icon-medallion ${isUnlocked ? 'gold-glow' : 'slate-rim'}">
+            ${getSvgIcon(badge.iconKey, 'icon-md')}
+          </div>
+          ${isUnlocked ? '<span class="badge-sparkle-star">✨</span>' : '<span class="badge-lock-indicator">🔒</span>'}
+        </div>
+        <div class="badge-details">
+          <h4 class="badge-name">${badge.name}</h4>
+          <p class="badge-desc">${badge.desc}</p>
+        </div>
+        <div class="badge-card-bottom">
+          <div class="badge-status-pill ${isUnlocked ? 'pill-unlocked' : 'pill-locked'}">
+            ${isUnlocked ? '<span>Unlocked ⭐</span>' : (progressHtml ? progressHtml : '<span>Locked 🔒</span>')}
+          </div>
         </div>
       `;
+
+      card.addEventListener('click', () => {
+        if (isUnlocked) {
+          sound.playSparkle();
+          card.classList.add('badge-tap-pop');
+          setTimeout(() => card.classList.remove('badge-tap-pop'), 600);
+          this.mascot.say(`Awesome badge: ${badge.name}! 🌟`, 'cheering', 3000, true);
+        } else {
+          sound.playTap();
+          this.mascot.say(`Keep practicing to unlock ${badge.name}! 🚀`, 'encouraging', 3000, true);
+        }
+      });
+
       badgesGrid.appendChild(card);
     });
 
@@ -825,36 +1011,36 @@ class AppController {
 
   openStreakModal() {
     sound.playTap();
-    const streakRow = document.getElementById('streak-days-row');
-    streakRow.innerHTML = '';
+    const streakDaysRow = document.getElementById('streak-days-row');
+    streakDaysRow.innerHTML = '';
 
-    const currentDay = Math.min(this.playerState.streak, 7);
+    const currentStreak = this.playerState.streak;
+    const claimedToday = this.playerState.claimedStreakToday;
 
-    for (let d = 1; d <= 7; d++) {
-      const isPast = d < currentDay;
-      const isToday = d === currentDay;
-      let statusClass = '';
-      if (isPast) statusClass = 'claimed';
-      else if (isToday) statusClass = 'active';
+    for (let day = 1; day <= 7; day++) {
+      const isPast = day < currentStreak;
+      const isToday = day === currentStreak;
+      const isClaimed = (isPast) || (isToday && claimedToday);
 
-      const card = document.createElement('div');
-      card.className = `streak-day-card ${statusClass}`;
-      card.innerHTML = `
-        <span class="streak-day-lbl">Day ${d}</span>
-        <span class="streak-day-star">${isPast ? getSvgIcon('check', 'icon-sm') : getSvgIcon('flame', 'icon-sm')}</span>
-        <span class="streak-day-bonus">+${d * 5} ★</span>
+      const dayPill = document.createElement('div');
+      dayPill.className = `streak-day-box ${isClaimed ? 'claimed' : ''} ${isToday ? 'today' : ''}`;
+      dayPill.innerHTML = `
+        <span class="day-label">Day ${day}</span>
+        <div class="day-flame-icon">${getSvgIcon('flame', 'icon-sm')}</div>
+        <span class="day-bonus">+${day * 10} ★</span>
       `;
-      streakRow.appendChild(card);
+      streakDaysRow.appendChild(dayPill);
     }
 
-    if (this.playerState.claimedStreakToday) {
-      this.elBtnClaimStreak.innerHTML = `${getSvgIcon('check', 'icon-xs')} <span>Claimed Today!</span>`;
+    if (claimedToday) {
       this.elBtnClaimStreak.disabled = true;
-      this.elBtnClaimStreak.style.opacity = '0.6';
+      this.elBtnClaimStreak.innerHTML = `<span>Claimed Today ✓</span>`;
     } else {
-      this.elBtnClaimStreak.innerHTML = `${getSvgIcon('flame', 'icon-xs')} <span>Claim Bonus (+${currentDay * 5} ★)</span>`;
       this.elBtnClaimStreak.disabled = false;
-      this.elBtnClaimStreak.style.opacity = '1';
+      this.elBtnClaimStreak.innerHTML = `
+        <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#FFFFFF"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
+        <span>Claim Day ${currentStreak} Bonus</span>
+      `;
     }
 
     this.elStreakModal.classList.add('open');
@@ -863,40 +1049,35 @@ class AppController {
   claimDailyStreak() {
     if (this.playerState.claimedStreakToday) return;
 
-    sound.playFanfare();
-    const currentDay = Math.min(this.playerState.streak, 7);
-    const bonus = currentDay * 5;
-    this.playerState.stars += bonus;
-    this.playerState.lastClaimDate = this.getTodayDateKey();
+    sound.playSparkle();
+    const bonusStars = this.playerState.streak * 10;
+    this.playerState.stars += bonusStars;
     this.playerState.claimedStreakToday = true;
-    
-    if (this.playerState.streak < 7) {
-      this.playerState.streak += 1;
-    }
-    
+    this.playerState.lastClaimDate = this.getTodayDateKey();
     this.saveState();
+
+    this.elBtnClaimStreak.disabled = true;
+    this.elBtnClaimStreak.innerHTML = `<span>Claimed +${bonusStars} ★!</span>`;
     this.openStreakModal();
   }
 
   openCertificateModal() {
-    sound.playFanfare();
+    sound.playSparkle();
+    const totalSolved = this.getTotalStagesSolved();
+    
     document.getElementById('cert-stars-val').textContent = `${this.playerState.stars} ★`;
     document.getElementById('cert-rank-val').textContent = this.getRankTitle();
-
-    const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    document.getElementById('cert-date-val').textContent = dateStr;
+    
+    const d = new Date();
+    document.getElementById('cert-date-val').textContent = d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 
     const skillsContainer = document.getElementById('cert-skills-container');
     if (skillsContainer) {
       skillsContainer.innerHTML = `
-        <span>${getSvgIcon('cards-grid', 'icon-xs')} Selection</span>
-        <span>${getSvgIcon('outline-trace', 'icon-xs')} Tracing</span>
-        <span>${getSvgIcon('memory-cards', 'icon-xs')} Memory Match</span>
-        <span>${getSvgIcon('listen-and-choose', 'icon-xs')} Audio</span>
-        <span>${getSvgIcon('drag-drop-zones', 'icon-xs')} Sorting</span>
-        <span>${getSvgIcon('matching-pairs', 'icon-xs')} Pairs</span>
-        <span>${getSvgIcon('balance-scale', 'icon-xs')} Physics</span>
-        <span>${getSvgIcon('rebus-keypad', 'icon-xs')} Math</span>
+        <span>${getSvgIcon('math-course', 'icon-xs')} Arithmetic Logic</span>
+        <span>${getSvgIcon('science-course', 'icon-xs')} Nature & Animals</span>
+        <span>${getSvgIcon('aptitude-course', 'icon-xs')} Spatial Reasoning</span>
+        <span>${getSvgIcon('cards-grid', 'icon-xs')} Pattern Recognition</span>
         <span>${getSvgIcon('spatial-3d', 'icon-xs')} 3D Cubes</span>
         <span>${getSvgIcon('sudoku-matrix', 'icon-xs')} Sudoku</span>
       `;
@@ -968,6 +1149,9 @@ class AppController {
     sound.playSuccess();
     sound.playStar();
 
+    this.mascot.reactToSuccess(this.currentStageData.title);
+    this.hintEngine.recordSuccess();
+
     const gameId = this.activeGame.id;
     if (!this.playerState.completedStages[gameId]) {
       this.playerState.completedStages[gameId] = {};
@@ -1014,8 +1198,13 @@ class AppController {
   }
 
   handleWrongAnswer(reviewExplanation) {
-    this.elReviewText.textContent = reviewExplanation;
-    this.elReviewModal.classList.add('open');
+    this.mascot.reactToMistake();
+    this.hintEngine.recordMistake(this.currentStageData.hint || reviewExplanation);
+    const arena = this.elGameArena;
+    if (arena) {
+      arena.classList.add('soft-wobble');
+      setTimeout(() => arena.classList.remove('soft-wobble'), 600);
+    }
   }
 }
 
