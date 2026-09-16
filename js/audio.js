@@ -6,7 +6,7 @@ class AudioEngine {
   constructor() {
     this.ctx = null;
     this.muted = false;
-    this.speechSynth = window.speechSynthesis || null;
+    this.speechSynth = (typeof window !== 'undefined' && window.speechSynthesis) ? window.speechSynthesis : null;
     this.isSpeaking = false;
     this.voices = [];
     this.selectedVoice = null;
@@ -14,6 +14,7 @@ class AudioEngine {
     this.neuralPack = new NeuralVoicePack(null);
     this.localHuman = new LocalHumanAudioEngine(null);
     this.preCompiled = new PreCompiledAudioPlayer();
+    this.activeSequenceTimers = [];
     
     this.initVoices();
   }
@@ -516,12 +517,13 @@ class AudioEngine {
   }
 
   speak(text, onStart = null, onEnd = null) {
-    if (this.muted) {
+    if (this.muted || !text) {
       if (onEnd) onEnd();
       return;
     }
 
     this.init();
+    this.stopSpeech();
 
     // 1. If a Pre-Compiled High-Quality Human Audio Asset exists, play it instantly (0ms latency, zero CPU lag)
     if (this.preCompiled) {
@@ -532,24 +534,7 @@ class AudioEngine {
       }
     }
 
-    // 2. Play 100% Local Human Vocal Resonance Formants (Zero API Calls)
-    if (this.localHuman) {
-      this.localHuman.speakLocalHuman(text, onStart, null);
-    }
-
-    if (!this.speechSynth) {
-      if (onEnd) onEnd();
-      return;
-    }
-    this.speechSynth.cancel(); // Stop any previous speech
-
-    // Ensure voices are loaded
-    if (!this.selectedVoice && this.voices.length === 0) {
-      this.voices = this.speechSynth.getVoices() || [];
-      this.selectedVoice = this.pickBestNaturalVoice();
-    }
-
-    // Format text with natural pauses and clean emojis
+    // 2. Format text with natural pauses and clean emojis
     const cleanText = text
       .replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
       .replace(/\s+/g, ' ')
@@ -560,48 +545,105 @@ class AudioEngine {
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(cleanText);
+    // 3. Web Speech API (Natural Browser Voices)
+    if (this.speechSynth) {
+      if (!this.selectedVoice && this.voices.length === 0) {
+        this.voices = this.speechSynth.getVoices() || [];
+        this.selectedVoice = this.pickBestNaturalVoice();
+      }
 
-    if (this.selectedVoice) {
-      utterance.voice = this.selectedVoice;
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+
+      if (this.selectedVoice) {
+        utterance.voice = this.selectedVoice;
+      }
+
+      // Persona-specific natural inflection modulation
+      if (this.voicePersona === 'playful-leo') {
+        utterance.rate = 0.94;
+        utterance.pitch = 1.26; // warm animated kid companion
+      } else if (this.voicePersona === 'teacher') {
+        utterance.rate = 0.86;
+        utterance.pitch = 1.06; // calm, clear & reassuring
+      } else {
+        utterance.rate = 0.90;
+        utterance.pitch = 1.14; // friendly, enthusiastic
+      }
+
+      utterance.volume = 1.0;
+
+      utterance.onstart = () => {
+        this.isSpeaking = true;
+        if (onStart) onStart();
+      };
+
+      utterance.onend = () => {
+        this.isSpeaking = false;
+        if (onEnd) onEnd();
+      };
+
+      utterance.onerror = () => {
+        this.isSpeaking = false;
+        if (onEnd) onEnd();
+      };
+
+      this.speechSynth.speak(utterance);
+      return;
     }
 
-    // Persona-specific natural inflection modulation
-    if (this.voicePersona === 'playful-leo') {
-      utterance.rate = 0.94;
-      utterance.pitch = 1.26; // warm animated kid companion
-    } else if (this.voicePersona === 'teacher') {
-      utterance.rate = 0.86;
-      utterance.pitch = 1.06; // calm, clear & reassuring
-    } else {
-      // Default: Warm Storyteller
-      utterance.rate = 0.90;
-      utterance.pitch = 1.14; // friendly, enthusiastic
+    // 4. Fallback: 100% Local Human Vocal Resonance Formants if speechSynth is unavailable
+    if (this.localHuman) {
+      this.localHuman.speakLocalHuman(cleanText, onStart, onEnd);
+      return;
     }
 
-    utterance.volume = 1.0;
+    if (onEnd) onEnd();
+  }
 
-    utterance.onstart = () => {
-      this.isSpeaking = true;
-      if (onStart) onStart();
+  speakSequence(items, onComplete = null) {
+    this.stopSpeech();
+    if (this.muted || !items || items.length === 0) {
+      if (onComplete) onComplete();
+      return;
+    }
+
+    let currentIndex = 0;
+    const playNext = () => {
+      if (currentIndex >= items.length) {
+        if (onComplete) onComplete();
+        return;
+      }
+      const item = items[currentIndex++];
+      const text = typeof item === 'string' ? item : item.text;
+      const delayAfter = (item && item.delayAfter !== undefined) ? item.delayAfter : 350;
+      const onStart = item && item.onStart ? item.onStart : null;
+      const onEnd = item && item.onEnd ? item.onEnd : null;
+
+      this.speak(text, onStart, () => {
+        if (onEnd) onEnd();
+        if (currentIndex < items.length) {
+          const timer = setTimeout(() => {
+            playNext();
+          }, delayAfter);
+          this.activeSequenceTimers.push(timer);
+        } else {
+          if (onComplete) onComplete();
+        }
+      });
     };
 
-    utterance.onend = () => {
-      this.isSpeaking = false;
-      if (onEnd) onEnd();
-    };
-
-    utterance.onerror = () => {
-      this.isSpeaking = false;
-      if (onEnd) onEnd();
-    };
-
-    this.speechSynth.speak(utterance);
+    playNext();
   }
 
   stopSpeech() {
+    this.activeSequenceTimers.forEach(t => clearTimeout(t));
+    this.activeSequenceTimers = [];
+
     if (this.preCompiled) {
       this.preCompiled.stop();
+    }
+    if (this.localHuman) {
+      this.localHuman.stop();
     }
     if (this.speechSynth) {
       this.speechSynth.cancel();

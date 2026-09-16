@@ -172,8 +172,6 @@ export class MemoryCardsEngine {
     const timerText = wrapperEl.querySelector('#memory-timer-sec');
     const previewFill = wrapperEl.querySelector('#memory-preview-fill');
 
-    sound.speak('Memorize the card pairs!');
-
     if (previewFill) {
       previewFill.style.transition = 'width 3s linear';
       previewFill.style.width = '0%';

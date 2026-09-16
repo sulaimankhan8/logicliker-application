@@ -838,13 +838,50 @@ class AppController {
 
   speakCurrentQuestion() {
     if (!this.currentStageData) return;
+    const stage = this.currentStageData;
     const btnSpeak = document.getElementById('btn-audio-speak');
-    if (btnSpeak) btnSpeak.classList.add('is-speaking');
 
+    // If the stage has a spoken word or is listen-and-choose, sequence Prompt -> Word
+    const spokenTarget = stage.spokenWord || stage.targetWord;
+    if (stage.type === 'listen-and-choose' && spokenTarget) {
+      sound.speakSequence([
+        {
+          text: stage.prompt,
+          delayAfter: 400,
+          onStart: () => {
+            const btn = document.getElementById('btn-audio-speak');
+            if (btn) btn.classList.add('is-speaking');
+          },
+          onEnd: () => {
+            const btn = document.getElementById('btn-audio-speak');
+            if (btn) btn.classList.remove('is-speaking');
+          }
+        },
+        {
+          text: spokenTarget,
+          delayAfter: 0,
+          onStart: () => {
+            const speakerBtn = document.getElementById('btn-main-speaker');
+            const waveBars = document.getElementById('sound-wave-bars');
+            if (speakerBtn) speakerBtn.classList.add('is-active-speaker');
+            if (waveBars) waveBars.classList.add('playing');
+          },
+          onEnd: () => {
+            const speakerBtn = document.getElementById('btn-main-speaker');
+            const waveBars = document.getElementById('sound-wave-bars');
+            if (speakerBtn) speakerBtn.classList.remove('is-active-speaker');
+            if (waveBars) waveBars.classList.remove('playing');
+          }
+        }
+      ]);
+      return;
+    }
+
+    // Standard question prompt speech
     sound.speakStagePrompt(
       this.activeGame.category,
-      this.currentStageData.stageNum,
-      this.currentStageData.prompt,
+      stage.stageNum,
+      stage.prompt,
       () => {
         const btn = document.getElementById('btn-audio-speak');
         if (btn) btn.classList.add('is-speaking');
@@ -1412,67 +1449,6 @@ class AppController {
     }
   }
 
-  handleCorrectAnswer() {
-    sound.playSuccess();
-    sound.playStar();
-
-    this.mascot.reactToSuccess(this.currentStageData.title);
-    this.hintEngine.recordSuccess();
-
-    const gameId = this.activeGame.id;
-    if (!this.playerState.completedStages[gameId]) {
-      this.playerState.completedStages[gameId] = {};
-    }
-    
-    const prevStars = this.playerState.completedStages[gameId][this.currentStageData.stageNum] || 0;
-    const newStars = 3;
-    
-    if (newStars > prevStars) {
-      this.playerState.stars += (newStars - prevStars);
-    }
-    
-    this.playerState.completedStages[gameId][this.currentStageData.stageNum] = newStars;
-    this.playerState.rankLevel = this.getRankLevel();
-    this.saveState();
-
-    this.closeGameModal();
-
-    const nextIdx = this.activeStageIndex + 1;
-    const isFinalStage = nextIdx >= this.activeGame.stages.length;
-
-    if (this.elBtnVictoryNext) {
-      if (isFinalStage) {
-        this.elBtnVictoryNext.innerHTML = `${getSvgIcon('trophy', 'icon-xs')} <span>Diploma</span>`;
-      } else {
-        const nextStage = this.activeGame.stages[nextIdx];
-        this.elBtnVictoryNext.innerHTML = `${getSvgIcon('play', 'icon-xs')} <span>Next (${nextStage.stageNum}/${this.activeGame.stages.length})</span>`;
-      }
-    }
-
-    if (this.elVictoryFeedbackSub) {
-      this.elVictoryFeedbackSub.textContent = isFinalStage
-        ? "Awesome! Course completed!"
-        : "Great job! Keep going!";
-    }
-
-    this.elVictoryStars.innerHTML = `
-      ${getSvgIcon('star-filled', 'icon-lg')}
-      ${getSvgIcon('star-filled', 'icon-lg')}
-      ${getSvgIcon('star-filled', 'icon-lg')}
-    `;
-    this.renderHeader();
-    this.elVictoryModal.classList.add('open');
-  }
-
-  handleWrongAnswer(reviewExplanation) {
-    this.mascot.reactToMistake();
-    this.hintEngine.recordMistake(this.currentStageData.hint || reviewExplanation);
-    const arena = this.elGameArena;
-    if (arena) {
-      arena.classList.add('soft-wobble');
-      setTimeout(() => arena.classList.remove('soft-wobble'), 600);
-    }
-  }
 }
 
 // Initialize on DOM ready

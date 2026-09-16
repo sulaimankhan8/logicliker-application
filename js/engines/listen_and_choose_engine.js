@@ -116,50 +116,27 @@ export class ListenAndChooseEngine {
     btnSpeaker.addEventListener('click', () => {
       this.playWordAudio(targetWord);
     });
-
-    setTimeout(() => {
-      this.playWordAudio(targetWord);
-    }, 350);
   }
 
-  playWordAudio(word, isSlow = false) {
+  playWordAudio(word, isSlow = false, onComplete = null) {
     const speakerBtn = document.getElementById('btn-main-speaker');
     const waveBars = document.getElementById('sound-wave-bars');
-    
-    if (speakerBtn) speakerBtn.classList.add('is-active-speaker');
-    if (waveBars) waveBars.classList.add('playing');
 
     sound.init();
-    sound.playTap();
+    sound.stopSpeech();
 
-    if (window.speechSynthesis && !sound.muted) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(word);
-      utterance.rate = isSlow ? 0.65 : 0.9;
-      utterance.pitch = 1.15;
+    const onStart = () => {
+      if (speakerBtn) speakerBtn.classList.add('is-active-speaker');
+      if (waveBars) waveBars.classList.add('playing');
+    };
 
-      utterance.onstart = () => {
-        if (speakerBtn) speakerBtn.classList.add('is-active-speaker');
-        if (waveBars) waveBars.classList.add('playing');
-      };
+    const onEnd = () => {
+      if (speakerBtn) speakerBtn.classList.remove('is-active-speaker');
+      if (waveBars) waveBars.classList.remove('playing');
+      if (onComplete) onComplete();
+    };
 
-      utterance.onend = () => {
-        if (speakerBtn) speakerBtn.classList.remove('is-active-speaker');
-        if (waveBars) waveBars.classList.remove('playing');
-      };
-
-      utterance.onerror = () => {
-        if (speakerBtn) speakerBtn.classList.remove('is-active-speaker');
-        if (waveBars) waveBars.classList.remove('playing');
-      };
-
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setTimeout(() => {
-        if (speakerBtn) speakerBtn.classList.remove('is-active-speaker');
-        if (waveBars) waveBars.classList.remove('playing');
-      }, 1200);
-    }
+    sound.speak(word, onStart, onEnd);
   }
 
   handleOptionClick(opt, cardEl, targetWord) {
@@ -168,21 +145,17 @@ export class ListenAndChooseEngine {
       sound.playStar();
       cardEl.classList.add('correct-glow');
 
-      sound.speak(`Awesome! ${opt.label}!`);
-
       setTimeout(() => {
         this.app.handleCorrectAnswer();
-      }, 700);
+      }, 500);
     } else {
       sound.playError();
       cardEl.classList.add('wrong-wobble');
 
-      sound.speak(`That is ${opt.label}! Listen again for ${targetWord}.`);
-
       setTimeout(() => {
         cardEl.classList.remove('wrong-wobble');
         this.app.handleWrongAnswer(`You chose "${opt.label}". Listen closely for "${targetWord}"!`);
-      }, 600);
+      }, 500);
     }
   }
 

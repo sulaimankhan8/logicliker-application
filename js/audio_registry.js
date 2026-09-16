@@ -2254,7 +2254,7 @@ export const TEACHER_MANIFEST = {
 
 export class PreCompiledAudioPlayer {
   constructor() {
-    this.persona = localStorage.getItem('kiddylearn_voice_persona') || 'child'; // 'child' | 'teacher'
+    this.persona = (typeof localStorage !== 'undefined') ? (localStorage.getItem('kiddylearn_voice_persona') || 'child') : 'child'; // 'child' | 'teacher'
     this.currentAudio = null;
 
     // Build text index for child

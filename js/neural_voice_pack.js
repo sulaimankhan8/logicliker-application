@@ -10,7 +10,7 @@
 export class NeuralVoicePack {
   constructor(audioCtx) {
     this.ctx = audioCtx;
-    this.apiKey = localStorage.getItem('kiddylearn_tts_key') || null;
+    this.apiKey = (typeof localStorage !== 'undefined') ? (localStorage.getItem('kiddylearn_tts_key') || null) : null;
     this.cloudProvider = 'elevenlabs'; // 'elevenlabs', 'openai', 'native-neural'
     
     // Voice catalog of pre-mapped human-like audio lines
