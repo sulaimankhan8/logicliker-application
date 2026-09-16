@@ -288,7 +288,7 @@
         <div class="streak-days-row" id="streak-days-row">
           <!-- Populated by JS -->
         </div>
-        <button class="btn-continue" id="btn-claim-streak" style="margin-top:16px;">
+        <button class="btn-continue" id="btn-claim-streak">
           <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M12 22C16.4 22 20 18.4 20 14C20 9.8 16.8 6.5 14.5 4C14.8 6.5 13.8 8.8 12 10.5C10.5 8.8 9.8 6.5 10 4C7.5 6.5 4 9.8 4 14C4 18.4 7.6 22 12 22Z" fill="#FFFFFF"/><path d="M12 19C10.3 19 9 17.7 9 16C9 14 10.5 12.5 12 11C13.5 12.5 15 14 15 16C15 17.7 13.7 19 12 19Z" fill="#FEF08A"/></svg>
           <span>Claim Bonus</span>
         </button>
@@ -299,58 +299,66 @@
   <!-- Official Diploma Certificate Modal -->
   <div class="modal-overlay" id="certificate-modal">
     <div class="game-card-modal certificate-modal-card">
-      <button class="btn-icon cert-close-btn" id="btn-close-certificate">
-        <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-      </button>
-      <div class="certificate-paper" id="printable-certificate">
-        <div class="cert-border-outer">
-          <div class="cert-border-inner">
-            <div class="cert-header">
-              <div class="cert-badge-emblem">
-                <svg class="kiddy-icon icon-hero" viewBox="0 0 36 36" fill="none">
-                  <rect width="36" height="36" rx="10" fill="url(#grad-cert-brand)"/>
-                  <path d="M9 13.5L18 8L27 13.5L18 19L9 13.5Z" fill="#FFFFFF"/>
-                  <path d="M12 17.5V23C12 25.5 14.7 27.5 18 27.5C21.3 27.5 24 25.5 24 23V17.5L18 21.2L12 17.5Z" fill="#FEF08A"/>
-                  <circle cx="18" cy="13.5" r="2.5" fill="#3B82F6"/>
-                  <defs>
-                    <linearGradient id="grad-cert-brand" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                      <stop stop-color="#3B82F6"/>
-                      <stop offset="1" stop-color="#8B5CF6"/>
-                    </linearGradient>
-                  </defs>
-                </svg>
+      <div class="certificate-modal-top-bar">
+        <div class="cert-modal-header-title">
+          <span class="cert-top-icon">📜</span>
+          <h3>Early Learning Diploma</h3>
+        </div>
+        <button class="btn-icon cert-close-btn" id="btn-close-certificate" aria-label="Close Diploma">
+          <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="certificate-paper-scroll">
+        <div class="certificate-paper" id="printable-certificate">
+          <div class="cert-border-outer">
+            <div class="cert-border-inner">
+              <div class="cert-header">
+                <div class="cert-badge-emblem">
+                  <svg class="kiddy-icon" viewBox="0 0 36 36" fill="none" style="width:50px; height:50px;">
+                    <rect width="36" height="36" rx="10" fill="url(#grad-cert-brand)"/>
+                    <path d="M9 13.5L18 8L27 13.5L18 19L9 13.5Z" fill="#FFFFFF"/>
+                    <path d="M12 17.5V23C12 25.5 14.7 27.5 18 27.5C21.3 27.5 24 25.5 24 23V17.5L18 21.2L12 17.5Z" fill="#FEF08A"/>
+                    <circle cx="18" cy="13.5" r="2.5" fill="#3B82F6"/>
+                    <defs>
+                      <linearGradient id="grad-cert-brand" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#3B82F6"/>
+                        <stop offset="1" stop-color="#8B5CF6"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <h1 class="cert-title">CERTIFICATE OF MASTERY</h1>
+                <p class="cert-subtitle">KIDDY LEARN COGNITIVE ACADEMY</p>
               </div>
-              <h1 class="cert-title">CERTIFICATE OF EARLY LEARNING MASTERY</h1>
-              <p class="cert-subtitle">KIDDY LEARN COGNITIVE ACADEMY</p>
-            </div>
-            
-            <div class="cert-body">
-              <p class="cert-present-text">Presented with excellence to</p>
-              <input type="text" class="cert-student-name" id="cert-student-name" value="Young Star" placeholder="Enter Student Name">
-              <p class="cert-achievement-text">
-                For outstanding curiosity, deductive logic, and cognitive problem-solving across Mathematics, Science & Nature, and Visual Logic.
-              </p>
-              <div class="cert-skills-chips" id="cert-skills-container">
-                <!-- Rendered cleanly with SVG icons -->
+              
+              <div class="cert-body">
+                <p class="cert-present-text">Presented with excellence to</p>
+                <input type="text" class="cert-student-name" id="cert-student-name" value="Young Star" placeholder="Enter Student Name">
+                <p class="cert-achievement-text">
+                  For outstanding curiosity, deductive logic, and cognitive problem-solving across Mathematics, Science & Nature, and Visual Logic.
+                </p>
+                <div class="cert-skills-chips" id="cert-skills-container">
+                  <!-- Rendered cleanly with SVG icons -->
+                </div>
               </div>
-            </div>
 
-            <div class="cert-footer">
-              <div class="cert-seal">
-                <div class="seal-ribbon">OFFICIAL SEAL</div>
-                <div class="seal-text">KIDDY LEARN</div>
-              </div>
-              <div class="cert-stats">
-                <p><strong>Stars Bank:</strong> <span id="cert-stars-val">0 ★</span></p>
-                <p><strong>Rank Title:</strong> <span id="cert-rank-val">Grandmaster</span></p>
-                <p><strong>Issue Date:</strong> <span id="cert-date-val">Today</span></p>
+              <div class="cert-footer">
+                <div class="cert-seal">
+                  <div class="seal-ribbon">OFFICIAL SEAL</div>
+                  <div class="seal-text">KIDDY LEARN</div>
+                </div>
+                <div class="cert-stats">
+                  <p><strong>Stars Bank:</strong> <span id="cert-stars-val">0 ★</span></p>
+                  <p><strong>Rank Title:</strong> <span id="cert-rank-val">Grandmaster</span></p>
+                  <p><strong>Issue Date:</strong> <span id="cert-date-val">Today</span></p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="cert-actions-bar">
-        <button class="btn-continue" id="btn-print-certificate">
+        <button class="btn-continue btn-cert-print" id="btn-print-certificate">
           <svg class="kiddy-icon icon-xs" viewBox="0 0 24 24" fill="none"><path d="M6 9V3H18V9M6 18H4C2.9 18 2 17.1 2 16V11C2 9.9 2.9 9 4 9H20C21.1 9 22 9.9 22 11V16C22 17.1 21.1 18 20 18H18M6 14H18V21H6V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           <span>Print / Save Diploma PDF</span>
         </button>
