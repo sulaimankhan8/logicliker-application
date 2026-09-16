@@ -18,8 +18,8 @@ export const GAMES_CATALOG = [
     allUnlocked: true,
     description: "Instant testing sandbox featuring all 10 interactive game engines — fully unlocked!",
     levelThemes: [
-      { level: 1, name: "Visual & Spoken Interaction (Engines 1–5)", icon: "✨", desc: "Cards Grid, Outline Trace, Memory Cards, Spoken Word & Category Sorting" },
-      { level: 2, name: "Logic, Deduction & Physics (Engines 6–10)", icon: "🧠", desc: "Matching Cords, Balance Scale, Rebus Math, 3D Spatial & Sudoku Matrix" }
+      { level: 1, name: "Visual & Spoken (1–5)", icon: "✨", desc: "Cards, Outline Tracing, Memory & Audio" },
+      { level: 2, name: "Logic & Physics (6–10)", icon: "🧠", desc: "Balance Scale, Rebus Math, 3D Cubes & Sudoku" }
     ],
     stages: [
       /* --- Level 1: Visual & Spoken Engines --- */

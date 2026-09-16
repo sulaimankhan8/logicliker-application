@@ -317,6 +317,9 @@ class AppController {
   }
 
   closeAllModals() {
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
     document.querySelectorAll('.modal-overlay').forEach(modal => {
       modal.classList.remove('open');
     });
@@ -394,14 +397,22 @@ class AppController {
       }
     });
 
-    // Close Buttons for all Modals
-    if (this.elCloseModalBtn) this.elCloseModalBtn.addEventListener('click', () => this.closeAllModals());
-    if (this.elCloseAnalytics) this.elCloseAnalytics.addEventListener('click', () => this.closeAllModals());
-    if (this.elCloseBadges) this.elCloseBadges.addEventListener('click', () => this.closeAllModals());
-    if (this.elCloseStreak) this.elCloseStreak.addEventListener('click', () => this.closeAllModals());
-    if (this.elCloseCertificate) this.elCloseCertificate.addEventListener('click', () => this.closeAllModals());
+    // Universal Close Event for all Modal Close Buttons
+    const closeButtons = document.querySelectorAll('#btn-close-modal, #btn-close-analytics, #btn-close-badges, #btn-close-streak, #btn-close-certificate, .cert-close-btn, .btn-icon');
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.closeAllModals();
+      });
+      btn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.closeAllModals();
+      });
+    });
 
-    // Backdrop Click on Overlay Closes Modal
+    // Backdrop Click / Tap on Overlay Closes Modal
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
@@ -459,7 +470,7 @@ class AppController {
       });
     }
 
-    // Mobile Bottom Navigation Bar Wireup
+    // Mobile Bottom Navigation Bar Wireup (Toggle behavior on tap)
     const mobHome = document.getElementById('mob-nav-home');
     const mobBadges = document.getElementById('mob-nav-badges');
     const mobStreak = document.getElementById('mob-nav-streak');
@@ -472,11 +483,50 @@ class AppController {
       });
     };
 
-    if (mobHome) mobHome.addEventListener('click', () => { sound.playTap(); this.closeAllModals(); this.renderRoadmap(); this.setActiveMobNav('mob-nav-home'); });
-    if (mobBadges) mobBadges.addEventListener('click', () => { this.setActiveMobNav('mob-nav-badges'); this.openBadgesModal(); });
-    if (mobStreak) mobStreak.addEventListener('click', () => { this.setActiveMobNav('mob-nav-streak'); this.openStreakModal(); });
-    if (mobAnalytics) mobAnalytics.addEventListener('click', () => { this.setActiveMobNav('mob-nav-analytics'); this.openAnalyticsModal(); });
-    if (mobCert) mobCert.addEventListener('click', () => { this.setActiveMobNav('mob-nav-certificate'); this.openCertificateModal(); });
+    if (mobHome) {
+      mobHome.addEventListener('click', () => {
+        sound.playTap();
+        this.closeAllModals();
+        this.renderRoadmap();
+        this.setActiveMobNav('mob-nav-home');
+      });
+    }
+    if (mobBadges) {
+      mobBadges.addEventListener('click', () => {
+        if (this.elBadgesModal && this.elBadgesModal.classList.contains('open')) {
+          this.closeAllModals();
+        } else {
+          this.openBadgesModal();
+        }
+      });
+    }
+    if (mobStreak) {
+      mobStreak.addEventListener('click', () => {
+        if (this.elStreakModal && this.elStreakModal.classList.contains('open')) {
+          this.closeAllModals();
+        } else {
+          this.openStreakModal();
+        }
+      });
+    }
+    if (mobAnalytics) {
+      mobAnalytics.addEventListener('click', () => {
+        if (this.elAnalyticsModal && this.elAnalyticsModal.classList.contains('open')) {
+          this.closeAllModals();
+        } else {
+          this.openAnalyticsModal();
+        }
+      });
+    }
+    if (mobCert) {
+      mobCert.addEventListener('click', () => {
+        if (this.elCertificateModal && this.elCertificateModal.classList.contains('open')) {
+          this.closeAllModals();
+        } else {
+          this.openCertificateModal();
+        }
+      });
+    }
 
     if (this.elBtnResetProgress) {
       this.elBtnResetProgress.addEventListener('click', () => {
@@ -523,6 +573,14 @@ class AppController {
         this.renderRoadmap();
       });
       this.elCategoryNav.appendChild(btn);
+    });
+
+    // Auto-scroll the active category tab smoothly into view on mobile
+    requestAnimationFrame(() => {
+      const activeBtn = this.elCategoryNav.querySelector('.nav-tab.active');
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
     });
   }
 

@@ -157,11 +157,11 @@ export const UI_ICONS = {
   `),
 
   'demo-course': svg('0 0 24 24', `
+    <rect width="20" height="13" x="2" y="5.5" rx="6" fill="#FDF2F8" stroke="#EC4899" stroke-width="2"/>
     <line x1="6" x2="10" y1="12" y2="12" stroke="#EC4899" stroke-width="2" stroke-linecap="round"/>
     <line x1="8" x2="8" y1="10" y2="14" stroke="#EC4899" stroke-width="2" stroke-linecap="round"/>
-    <line x1="15" x2="15.01" y1="13" y2="13" stroke="#EC4899" stroke-width="2.5" stroke-linecap="round"/>
-    <line x1="18" x2="18.01" y1="11" y2="11" stroke="#EC4899" stroke-width="2.5" stroke-linecap="round"/>
-    <rect width="20" height="12" x="2" y="6" rx="6" fill="#FDF2F8" stroke="#EC4899" stroke-width="2"/>
+    <circle cx="15" cy="12.5" r="1.2" fill="#EC4899"/>
+    <circle cx="18" cy="10.5" r="1.2" fill="#EC4899"/>
   `),
 
   // Engine Types

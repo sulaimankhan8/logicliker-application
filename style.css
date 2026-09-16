@@ -314,31 +314,76 @@ body {
   transform: scale(1.08);
 }
 
-.btn-icon {
+.btn-icon,
+.cert-close-btn,
+button.btn-icon,
+button.cert-close-btn {
   background: #F1F5F9;
   border: 2px solid #CBD5E1;
   color: #475569;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1 !important;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   font-size: 15px;
   font-weight: 900;
-  transition: var(--transition-bounce);
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
   line-height: 1;
-  flex-shrink: 0;
-  z-index: 10;
+  flex-shrink: 0 !important;
+  z-index: 20;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-focus-ring-color: transparent !important;
+  overflow: hidden !important;
+  touch-action: manipulation;
 }
 
-.btn-icon:hover {
-  background: #EF4444;
-  border-color: #DC2626;
-  color: white;
-  transform: scale(1.08) rotate(90deg);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+.btn-icon *,
+.cert-close-btn * {
+  pointer-events: none;
+}
+
+.btn-icon:focus,
+.btn-icon:focus-visible,
+.btn-icon:active,
+.cert-close-btn:focus,
+.cert-close-btn:focus-visible,
+.cert-close-btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-icon:hover,
+  .cert-close-btn:hover {
+    background: #EF4444;
+    border-color: #DC2626;
+    color: white;
+    transform: scale(1.08) rotate(90deg);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  }
+}
+
+.btn-icon:active,
+.cert-close-btn:active {
+  transform: scale(0.92);
 }
 
 /* Category Navigation Tabs */
@@ -427,28 +472,45 @@ body {
 
 /* World Hero Banner */
 .hub-hero-banner {
-  border-radius: 16px;
-  padding: 10px 18px;
+  border-radius: 18px;
+  padding: 12px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(30, 27, 75, 0.15);
   flex-shrink: 0;
   gap: 16px;
   color: white;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.hub-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.22) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hub-hero-banner.course-demo-course {
+  background: linear-gradient(135deg, #9D174D 0%, #DB2777 50%, #EC4899 100%);
 }
 
 .hub-hero-banner.course-math-course {
-  background: linear-gradient(135deg, #3730A3, #6366F1);
+  background: linear-gradient(135deg, #312E81 0%, #4F46E5 50%, #6366F1 100%);
 }
 
 .hub-hero-banner.course-science-course {
-  background: linear-gradient(135deg, #065F46, #10B981);
+  background: linear-gradient(135deg, #064E3B 0%, #059669 50%, #10B981 100%);
 }
 
 .hub-hero-banner.course-aptitude-course {
-  background: linear-gradient(135deg, #9A3412, #F59E0B);
+  background: linear-gradient(135deg, #7C2D12 0%, #D97706 50%, #F59E0B 100%);
 }
 
 .hub-hero-left {
@@ -4421,13 +4483,18 @@ canvas.isometric-canvas:active {
    KID-FRIENDLY DELIGHT SYSTEM: MASCOT, SQUISHY UX & ADVENTURE MAP
    ========================================================================== */
 
-/* Universal Squishy Button Tap */
-button, .clickable, .game-card, .option-pill {
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
-}
-
-button:active, .clickable:active, .game-card:active {
-  transform: scale(0.92);
+/* Tactile micro-interactions on standalone buttons */
+.btn-shell-action:active,
+.btn-continue:active,
+.btn-hint:active,
+.btn-victory-next:active,
+.btn-victory-road:active,
+.btn-audio-speak:active,
+.btn-cert-print:active,
+.btn-streak-repair:active,
+.btn-header-audio:active,
+.btn-voice-toggle:active {
+  transform: scale(0.95);
 }
 
 /* 1. Living Mascot Companion Floating Dock */
@@ -5207,11 +5274,15 @@ button,
   touch-action: manipulation;
 }
 
-button:active:not(:disabled),
-.stat-pill:active,
-.btn-shell-action:active,
-.btn-continue:active,
-.btn-hint:active,
+/* Targeted tactile feedback for interactive items */
+.btn-deck-action:active,
+.keypad-btn:active,
+.option-btn:active,
+.game-option-card:active,
+.drag-item-chip:active {
+  transform: scale(0.95);
+}
+
 /* ==========================================================================
    STREAK MODAL & DUOLINGO-STYLE STREAK REPAIR SYSTEM
    ========================================================================== */
@@ -5247,20 +5318,39 @@ button:active:not(:disabled),
   background: #FFEDD5;
   border: 1.5px solid #FDBA74;
   color: #9A3412;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer;
-  transition: var(--transition-bounce);
+  padding: 0 !important;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
-.streak-modal-header .btn-icon:hover {
-  background: #FED7AA;
-  color: #7C2D12;
-  transform: scale(1.08);
+.streak-modal-header .btn-icon:focus,
+.streak-modal-header .btn-icon:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .streak-modal-header .btn-icon:hover {
+    background: #FED7AA;
+    color: #7C2D12;
+    transform: scale(1.08);
+  }
+}
+
+.streak-modal-header .btn-icon:active {
+  transform: scale(0.92);
 }
 
 .streak-calendar-wrapper {
@@ -5615,25 +5705,42 @@ button:active:not(:disabled),
     height: 30px;
   }
 
-  /* Horizontal Category Tabs */
+  /* Horizontal Category Tabs with Smooth Swipe & Scrollbar Cue */
   .category-nav {
-    padding: 6px 10px;
+    padding: 8px 12px;
     justify-content: flex-start;
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99, 102, 241, 0.3) transparent;
+    gap: 8px;
+    scroll-snap-type: x proximity;
+    background: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
 
   .category-nav::-webkit-scrollbar {
-    display: none;
+    height: 3px;
+    display: block;
+  }
+
+  .category-nav::-webkit-scrollbar-track {
+    background: #F1F5F9;
+    border-radius: 3px;
+  }
+
+  .category-nav::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 3px;
   }
 
   .nav-tab {
-    padding: 5px 11px;
+    padding: 6px 12px;
     font-size: 12px;
-    border-radius: 10px;
+    border-radius: 12px;
     flex-shrink: 0;
+    scroll-snap-align: center;
   }
 
   /* Hub Container */
@@ -5650,35 +5757,113 @@ button:active:not(:disabled),
     gap: 8px;
   }
 
+  /* Fixed Consistent Hero Banner Height (Eliminates Jumps When Switching Courses) */
   .hub-hero-banner {
-    padding: 8px 12px;
-    border-radius: 14px;
-    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 16px;
+    gap: 8px;
     flex-direction: column;
     align-items: stretch;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    min-height: 126px;
+    max-height: 126px;
+    height: 126px;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .hub-hero-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
   }
 
   .hero-level-emblem {
     width: 42px;
     height: 42px;
     font-size: 22px;
-    border-radius: 11px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.22);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-level-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .hero-title-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+    margin-bottom: 1px;
+  }
+
+  .hero-course-tag {
+    font-size: 10px;
+    font-weight: 900;
+    background: rgba(0, 0, 0, 0.28);
+    color: white;
+    padding: 1px 7px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .hero-mastery-tag {
+    font-size: 10px;
+    font-weight: 900;
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    padding: 1px 7px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .hero-level-heading {
-    font-size: 15px;
+    font-size: 14.5px;
+    font-weight: 900;
+    color: white;
+    line-height: 1.2;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .hero-level-sub {
     font-size: 11px;
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* Scrollable Level World Pills */
   .world-pills-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding-bottom: 2px;
+    padding: 4px 0 2px;
     width: 100%;
     justify-content: flex-start;
   }
@@ -5688,10 +5873,31 @@ button:active:not(:disabled),
   }
 
   .level-world-pill {
-    padding: 5px 10px;
-    font-size: 11px;
-    border-radius: 10px;
+    padding: 6px 12px;
+    font-size: 11.5px;
+    border-radius: 12px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    color: white;
+    font-weight: 800;
+  }
+
+  .level-world-pill.active {
+    background: white;
+    color: var(--primary-indigo);
+    border-color: white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+    font-weight: 900;
+  }
+
+  .level-world-pill.active .world-pill-status {
+    background: #EEF2FF;
+    color: var(--primary-indigo);
+    font-weight: 900;
   }
 
   /* Responsive Stage Grid */
@@ -5737,7 +5943,7 @@ button:active:not(:disabled),
   .game-card-modal {
     width: 100%;
     max-width: 100%;
-    max-height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 16px);
     height: auto;
     border-radius: 22px 22px 14px 14px;
     margin: 0;
@@ -5932,6 +6138,59 @@ button:active:not(:disabled),
     font-size: 11.5px;
   }
 }
+
+/* Ultra-Compact Smartphone Viewports (<= 380px) */
+@media (max-width: 380px) {
+  .app-header {
+    padding: 4px 8px;
+  }
+
+  .brand-title {
+    font-size: 15px;
+  }
+
+  .stat-pill {
+    padding: 2px 5px;
+    font-size: 10px;
+    gap: 2px;
+  }
+
+  .category-nav {
+    padding: 4px 6px;
+    gap: 4px;
+  }
+
+  .nav-tab {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .mobile-nav-item .mob-nav-label {
+    font-size: 9.5px;
+  }
+
+  .game-card-modal {
+    border-radius: 20px 20px 0 0;
+  }
+
+  .streak-hero-count {
+    font-size: 32px;
+  }
+
+  .streak-day-box {
+    padding: 4px 1px;
+  }
+
+  .streak-day-box .day-label {
+    font-size: 8.5px;
+  }
+
+  .streak-day-box .day-flame-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 
 
 
